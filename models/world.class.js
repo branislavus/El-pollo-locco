@@ -41,7 +41,9 @@ class World {
         if (mo.characterDirectionLeft) {
             this.flipImage(mo);
         }
-        this.ctx.drawImage(mo.img, mo.x, mo.y, mo.width, mo.height);
+        mo.draw(this.ctx);
+        mo.drawBorderFrames(this.ctx);
+       
         if (mo.characterDirectionLeft) {
             this.flipImageBack(mo);
         }
