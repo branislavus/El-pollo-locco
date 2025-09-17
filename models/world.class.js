@@ -5,6 +5,7 @@ class World {
     ctx;
     keyboard;
     camera_x = 0;
+    statusBar = new Statusbar();
 
     constructor(canvas, keyboard) {
         this.ctx = canvas.getContext("2d");
@@ -12,6 +13,20 @@ class World {
         this.keyboard = keyboard;
         this.draw();
         this.setWorld();
+        this.checkColliesions();
+    }
+
+    checkColliesions(){
+        setInterval(() => {
+            this.level.enemies.forEach( (enemy) => {
+                  if ( this.character.isColliding(enemy)){
+                    // energieLoos, hurtAnimation, 
+                    this.character.hit();                    
+                  }
+            });
+             
+        }, 200);
+       
     }
 
     draw() {

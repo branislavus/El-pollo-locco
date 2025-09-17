@@ -61,12 +61,15 @@ class Character extends MovableObject {
     speed = 8;
     currentImage = 0;
     world;
+    energy = 100;
 
 
     constructor() {
         super().loadImage('img/2_character_pepe/2_walk/W-21.png');
         this.loadImages(this.IMAGES_WALKING);
         this.loadImages(this.IMAGES_JUMPING);
+        this.loadImages(this.IMAGES_DEAD);
+        this.loadImages(this.IMAGES_HURT);
         this.animate();
         this.applyGravity();
 
@@ -84,8 +87,6 @@ class Character extends MovableObject {
                 this.characterDirectionLeft = true;
             }
 
-            console.log('this.speedY :' + this.speedY);
-
             if (this.world.keyboard.UP && !this.isAboveGround() || this.world.keyboard.SPACE && !this.isAboveGround()) {
                 this.jump();
             }
@@ -95,7 +96,11 @@ class Character extends MovableObject {
 
 
         setInterval(() => {
-            if (this.isAboveGround()) {
+            if (this.isDead()) {
+                this.playAnimation(this.IMAGES_DEAD);
+            } else if (this.isHurt()) {
+                this.playAnimation(this.IMAGES_HURT);
+            } else if (this.isAboveGround()) {
                 this.playAnimation(this.IMAGES_JUMPING);
             } else {
                 if (this.world.keyboard.RIGHT || this.world.keyboard.LEFT) {

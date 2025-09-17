@@ -1,14 +1,10 @@
-class MovableObject {
-    x = 100;
-    y = 225;
-    img;
-    imagePool = {};
-    height = 100;
-    width = 100;
+class MovableObject extends DrawableObject {
+
     speed = 0.15;
     characterDirectionLeft = false;
     speedY = 0;
     acceleration = 2;
+    lastHit = 0;
 
     applyGravity() {
         setInterval(() => {
@@ -23,19 +19,6 @@ class MovableObject {
         return this.y < 221;
     }
 
-    loadImage(path) {
-        this.img = new Image();
-        this.img.src = path;
-    }
-
-    loadImages(arr) {
-        arr.forEach(path => {
-            let img = new Image();
-            img.src = path;
-            this.imagePool[path] = path;
-        });
-    }
-
     moveRight() {
         this.x += this.speed;
     }
@@ -45,24 +28,47 @@ class MovableObject {
     }
 
     playAnimation(images) {
-        let i = this.currentImage % this.IMAGES_WALKING.length;
+        let i = this.currentImage % images.length;
         let path = images[i];
         this.img.src = this.imagePool[path];
         this.currentImage++;
     }
 
-    draw(ctx) {
-        ctx.drawImage(this.img, this.x, this.y, this.width, this.height);
+
+
+    isColliding(mo) {
+        return this.x + this.width > mo.x &&
+            this.y + this.height > mo.y &&
+            this.x < mo.x + mo.width &&
+            this.y < mo.y + mo.height
     }
 
-    drawBorderFrames(ctx) {
-        if (this instanceof Character || this instanceof Chicken || this instanceof Endboss) {
-            ctx.beginPath();
-            ctx.lineWidth = '3';
-            ctx.strokeStyle = 'blue';
-            ctx.rect(this.x, this.y, this.width, this.height);
-            ctx.stroke();
-        }
+    offset = {
+        top: 0,
+        left: 0,
+        right: 0,
+        bottom: 0,
+    };
 
+    hit() {
+        this.energy -= 5;
+        if (this.energy < 0) {
+            this.energy = 0
+        }else{
+            this.lastHit = new Date().getTime();
+        }
+     
+    }
+
+    isDead() {
+        return this.energy == 0;
+    }
+
+    isHurt() {
+        let timePast = new Date().getTime() - this.lastHit;
+        timePast = timePast / 1000;
+        // console.log(Math.round(timePast));
+        
+        return timePast < 1.5; 
     }
 }
