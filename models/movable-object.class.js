@@ -30,7 +30,7 @@ class MovableObject extends DrawableObject {
     playAnimation(images) {
         let i = this.currentImage % images.length;
         let path = images[i];
-        this.img.src = this.imagePool[path];
+        this.img = this.imagePool[path];
         this.currentImage++;
     }
 
@@ -67,7 +67,7 @@ class MovableObject extends DrawableObject {
     isHurt() {
         let timePast = new Date().getTime() - this.lastHit;
         timePast = timePast / 1000;
-        // console.log(Math.round(timePast));
+        // .log(Math.round(timePast));
         
         return timePast < 1.5; 
     }

@@ -16,7 +16,7 @@ class DrawableObject {
         arr.forEach(path => {
             let img = new Image();
             img.src = path;
-            this.imagePool[path] = path;
+            this.imagePool[path] = img;
         });
     }
 

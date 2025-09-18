@@ -1,4 +1,4 @@
-class Statusbar extends DrawableObject  {
+class Statusbar extends DrawableObject {
 
    IMAGES_HEALTH_BLUE = [
       'img/7_statusbars/1_statusbar/2_statusbar_health/blue/0.png',
@@ -8,30 +8,16 @@ class Statusbar extends DrawableObject  {
       'img/7_statusbars/1_statusbar/2_statusbar_health/blue/80.png',
       'img/7_statusbars/1_statusbar/2_statusbar_health/blue/100.png'
    ];
-   IMAGES_HEALTH_GREEN = [
-      'img/7_statusbars/1_statusbar/2_statusbar_health/green/0.png',
-      'img/7_statusbars/1_statusbar/2_statusbar_health/green/20.png',
-      'img/7_statusbars/1_statusbar/2_statusbar_health/green/40.png',
-      'img/7_statusbars/1_statusbar/2_statusbar_health/green/60.png',
-      'img/7_statusbars/1_statusbar/2_statusbar_health/green/80.png',
-      'img/7_statusbars/1_statusbar/2_statusbar_health/green/100.png'
-   ];
-   IMAGES_HEALTH_ORANGE = [
-      'img/7_statusbars/1_statusbar/2_statusbar_health/orange/0.png',
-      'img/7_statusbars/1_statusbar/2_statusbar_health/orange/20.png',
-      'img/7_statusbars/1_statusbar/2_statusbar_health/orange/40.png',
-      'img/7_statusbars/1_statusbar/2_statusbar_health/orange/60.png',
-      'img/7_statusbars/1_statusbar/2_statusbar_health/orange/80.png',
-      'img/7_statusbars/1_statusbar/2_statusbar_health/orange/100.png'
-   ];
 
    percentage = 100;
 
    constructor() {
       super();
       this.loadImages(this.IMAGES_HEALTH_BLUE);
-      this.x = 100;
-      this.y = 100;
+      this.x = 25;
+      this.y = 10;
+      this.width = 120;
+      this.height = 40;
       this.setPercentage(100);
    }
 

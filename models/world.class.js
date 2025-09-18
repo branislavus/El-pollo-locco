@@ -16,28 +16,35 @@ class World {
         this.checkColliesions();
     }
 
-    checkColliesions(){
+    checkColliesions() {
         setInterval(() => {
-            this.level.enemies.forEach( (enemy) => {
-                  if ( this.character.isColliding(enemy)){
+            this.level.enemies.forEach((enemy) => {
+                if (this.character.isColliding(enemy)) {
                     // energieLoos, hurtAnimation, 
-                    this.character.hit();                    
-                  }
+                    this.character.hit();
+                    this.statusBar.setPercentage(this.character.energy)
+                }
             });
-             
+
         }, 200);
-       
+
     }
 
     draw() {
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
         this.ctx.translate(this.camera_x, 0);
 
+
+
         this.addObjectsToMap(this.level.backgroundObjects);
         this.addObjectsToMap(this.level.enemies);
         this.addObjectsToMap(this.level.clouds);
-        this.addToMap(this.character);
 
+this.ctx.translate(-this.camera_x, 0);
+        this.addToMap(this.statusBar);
+this.ctx.translate(this.camera_x, 0);
+
+        this.addToMap(this.character);
         this.ctx.translate(-this.camera_x, 0);
 
         let self = this;
@@ -58,7 +65,7 @@ class World {
         }
         mo.draw(this.ctx);
         mo.drawBorderFrames(this.ctx);
-       
+
         if (mo.characterDirectionLeft) {
             this.flipImageBack(mo);
         }
