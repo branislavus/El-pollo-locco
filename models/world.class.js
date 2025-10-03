@@ -5,7 +5,10 @@ class World {
     ctx;
     keyboard;
     camera_x = 0;
-    statusBar = new Statusbar();
+    statusBarHealth = new StatusBarHealth();
+    statusBarCoins = new StatusBarCoins();
+    statusBarBottles = new StatusBarBottles();
+    throwableObject = [];
 
     constructor(canvas, keyboard) {
         this.ctx = canvas.getContext("2d");
@@ -13,39 +16,50 @@ class World {
         this.keyboard = keyboard;
         this.draw();
         this.setWorld();
-        this.checkColliesions();
+        this.run();
     }
 
-    checkColliesions() {
+    run() {
         setInterval(() => {
+            this.checkCollisions();
+            this.handleThrowableObject();
+        }, 200);
+    }
+
+    handleThrowableObject(){
+        if(this.keyboard.D){
+            let bottle = new ThrowableObject(this.character.x + 40, this.character.y + 60, this.character.characterDirectionLeft);
+            this.throwableObject.push(bottle);
+        }
+    }
+
+
+    checkCollisions(){
             this.level.enemies.forEach((enemy) => {
                 if (this.character.isColliding(enemy)) {
-                    // energieLoos, hurtAnimation, 
                     this.character.hit();
                     this.statusBar.setPercentage(this.character.energy)
                 }
             });
-
-        }, 200);
-
     }
 
     draw() {
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+        this.ctx.save();
         this.ctx.translate(this.camera_x, 0);
-
-
-
         this.addObjectsToMap(this.level.backgroundObjects);
         this.addObjectsToMap(this.level.enemies);
         this.addObjectsToMap(this.level.clouds);
+        this.addObjectsToMap(this.throwableObject);
+        this.ctx.restore();
 
-this.ctx.translate(-this.camera_x, 0);
-        this.addToMap(this.statusBar);
-this.ctx.translate(this.camera_x, 0);
 
+        this.addToMap(this.statusBarHealth);
+        // this.addToMap(this.statusBarCoins);
+        // this.addToMap(this.statusBarBottles);
+         this.ctx.translate(this.camera_x, 0);
         this.addToMap(this.character);
-        this.ctx.translate(-this.camera_x, 0);
+         this.ctx.translate(-this.camera_x, 0);
 
         let self = this;
         requestAnimationFrame(function () {

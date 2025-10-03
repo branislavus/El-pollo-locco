@@ -16,15 +16,21 @@ class MovableObject extends DrawableObject {
     }
 
     isAboveGround() {
-        return this.y < 221;
+        if (this instanceof ThrowableObject) {
+            return true;
+        } else {
+            return this.y < 221;
+        }
     }
 
     moveRight() {
         this.x += this.speed;
+        this.characterDirectionLeft = false;
     }
 
     moveLeft() {
         this.x -= this.speed;
+        this.characterDirectionLeft = true;
     }
 
     playAnimation(images) {
@@ -54,10 +60,10 @@ class MovableObject extends DrawableObject {
         this.energy -= 5;
         if (this.energy < 0) {
             this.energy = 0
-        }else{
+        } else {
             this.lastHit = new Date().getTime();
         }
-     
+
     }
 
     isDead() {
@@ -68,7 +74,7 @@ class MovableObject extends DrawableObject {
         let timePast = new Date().getTime() - this.lastHit;
         timePast = timePast / 1000;
         // .log(Math.round(timePast));
-        
-        return timePast < 1.5; 
+
+        return timePast < 1.5;
     }
 }

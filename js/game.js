@@ -8,7 +8,7 @@ function init() {
 
 }
 
-window.addEventListener("keydown", (e) => {
+window.addEventListener("keydown", (e) => {    
     if(e.keyCode == 39){
         keybord.RIGHT = true
     }
@@ -23,6 +23,9 @@ window.addEventListener("keydown", (e) => {
     }
      if(e.keyCode == 40){
         keybord.DOWN = true
+    }
+      if(e.keyCode == 68){
+        keybord.D = true
     }
 });
 
@@ -41,5 +44,8 @@ window.addEventListener("keyup", (e) => {
     }
      if(e.keyCode == 40){
         keybord.DOWN = false
+    }
+       if(e.keyCode == 68){
+        keybord.D = false
     }
 });
