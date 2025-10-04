@@ -44,13 +44,32 @@ class World {
 
 
     checkCollisions() {
+        this.checkEnemyCollisions();
+        this.checkBottlesCollisions();
+    }
+
+    checkEnemyCollisions() {
         this.level.enemies.forEach((enemy) => {
             if (this.character.isColliding(enemy)) {
                 this.character.hit();
-                this.statusBar.setPercentage(this.character.energy)
+                this.statusBarHealth.setPercentage(this.character.energy)
             }
         });
     }
+
+    checkBottlesCollisions() {
+        this.level.bottles.forEach((bottle) => {
+            if (this.character.isColliding(bottle)) {
+                this.character.collectBottle(bottle);
+                // Flasche aus Level entfernen
+                this.level.bottles.splice(this.level.bottles.indexOf(bottle), 1);
+                // Optional: Statusbar für Flaschen aktualisieren
+                this.statusBarBottles.setBottlesAmount(this.character.collectedBottles);
+            }
+        });
+    }
+
+
 
     draw() {
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);

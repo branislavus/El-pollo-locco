@@ -5,6 +5,7 @@ class MovableObject extends DrawableObject {
     speedY = 0;
     acceleration = 2;
     lastHit = 0;
+    collectedBottles = 0;
 
     applyGravity() {
         setInterval(() => {
@@ -30,7 +31,10 @@ class MovableObject extends DrawableObject {
 
     moveLeft() {
         this.x -= this.speed;
-        this.characterDirectionLeft = true;
+        if(this instanceof Character){
+      this.characterDirectionLeft = true;
+        }
+  
     }
 
     playAnimation(images) {
@@ -57,7 +61,7 @@ class MovableObject extends DrawableObject {
     };
 
     hit() {
-        this.energy -= 5;
+        this.energy -= 2;
         if (this.energy < 0) {
             this.energy = 0
         } else {
@@ -73,8 +77,19 @@ class MovableObject extends DrawableObject {
     isHurt() {
         let timePast = new Date().getTime() - this.lastHit;
         timePast = timePast / 1000;
-        // .log(Math.round(timePast));
-
         return timePast < 1.5;
     }
+
+    collectBottle(bottle){
+        if (!bottle) return;
+        if(this.isColliding(bottle)){
+            this.collectedBottles += 1 ;
+            this.refreshStatusbarBottles();
+        }
+    }
+
+    refreshStatusbarBottles(){
+        
+    }
+
 }

@@ -18,10 +18,11 @@ class StatusBarBottles extends DrawableObject {
         this.y = 40;
         this.width = 120;
         this.height = 40;
-        this.setBottlesAmount();
+        this.setBottlesAmount(0);
     }
 
-    setBottlesAmount() {
+    setBottlesAmount(bottlesCollected) {
+        this.bottlesCollected = bottlesCollected;
         let path = this.IMAGES_BOTTLES_BLUE[this.bottlesCollected];
         this.img = this.imagePool[path];
     }
