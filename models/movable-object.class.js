@@ -17,7 +17,7 @@ class MovableObject extends DrawableObject {
 
     isAboveGround() {
         if (this instanceof ThrowableObject) {
-            return true;
+            return this.y < 355;
         } else {
             return this.y < 221;
         }

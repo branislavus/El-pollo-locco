@@ -98,9 +98,8 @@ class Character extends MovableObject {
             } else if (this.isAboveGround()) {
                 this.playAnimation(this.IMAGES_JUMPING);
             } else {
-                if (this.world.keyboard.RIGHT || this.world.keyboard.LEFT) {
+                if (this.canMove()) 
                     this.playAnimation(this.IMAGES_WALKING);
-                }
             }
         },1000/25);
     }
@@ -121,4 +120,7 @@ class Character extends MovableObject {
         return this.world.keyboard.LEFT && this.x > this.world.level.level_end_y;
     }
 
+    canMove(){
+        return this.world.keyboard.RIGHT || this.world.keyboard.LEFT;
+    }
 }
