@@ -9,6 +9,7 @@ class World {
     // statusBarCoins = new StatusBarCoins();
     statusBarBottles = new StatusBarBottles();
     throwableObject = [];
+    lastThrow = 0;
 
     constructor(canvas, keyboard) {
         this.ctx = canvas.getContext("2d");
@@ -26,21 +27,29 @@ class World {
         }, 200);
     }
 
-    handleThrowableObject(){
-        if(this.keyboard.D){
+    handleThrowableObject() {
+        if (this.keyboard.D && !this.isThrown()) {
             let bottle = new ThrowableObject(this.character.x + 40, this.character.y + 60, this.character.characterDirectionLeft);
             this.throwableObject.push(bottle);
+            this.lastThrow = new Date().getTime();
         }
     }
 
+    isThrown() {
+        let timePast = new Date().getTime() - this.lastThrow;
+        timePast = timePast / 1000;
+        return timePast < 2;
+    }
 
-    checkCollisions(){
-            this.level.enemies.forEach((enemy) => {
-                if (this.character.isColliding(enemy)) {
-                    this.character.hit();
-                    this.statusBar.setPercentage(this.character.energy)
-                }
-            });
+
+
+    checkCollisions() {
+        this.level.enemies.forEach((enemy) => {
+            if (this.character.isColliding(enemy)) {
+                this.character.hit();
+                this.statusBar.setPercentage(this.character.energy)
+            }
+        });
     }
 
     draw() {
@@ -58,9 +67,9 @@ class World {
         this.addToMap(this.statusBarHealth);
         // this.addToMap(this.statusBarCoins);
         this.addToMap(this.statusBarBottles);
-         this.ctx.translate(this.camera_x, 0);
+        this.ctx.translate(this.camera_x, 0);
         this.addToMap(this.character);
-         this.ctx.translate(-this.camera_x, 0);
+        this.ctx.translate(-this.camera_x, 0);
 
         let self = this;
         requestAnimationFrame(function () {
