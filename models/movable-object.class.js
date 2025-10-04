@@ -6,6 +6,7 @@ class MovableObject extends DrawableObject {
     acceleration = 2;
     lastHit = 0;
     collectedBottles = 0;
+    collectedCoins = 0;
 
     applyGravity() {
         setInterval(() => {
@@ -84,12 +85,13 @@ class MovableObject extends DrawableObject {
         if (!bottle) return;
         if(this.isColliding(bottle)){
             this.collectedBottles += 1 ;
-            this.refreshStatusbarBottles();
         }
     }
 
-    refreshStatusbarBottles(){
-        
+      collectCoin(coin){
+        if (!coin) return;
+        if(this.isColliding(coin)){
+            this.collectedCoins += 1 ;
+        }
     }
-
 }
