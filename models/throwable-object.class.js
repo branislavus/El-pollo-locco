@@ -47,6 +47,10 @@ class ThrowableObject extends MovableObject {
                 clearInterval(splashInterval);
             }
         }, 100);
+
+        setTimeout(() => {
+            this.shouldBeRemoved = true;
+        }, 2000);
     }
 
     draw(ctx) {

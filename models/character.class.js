@@ -75,14 +75,17 @@ class Character extends MovableObject {
     }
 
     animate() {
+        this.movementEnabled = true; // Flag für Bewegung
 
         setInterval(() => {
-            if (this.canMoveRight())
-                this.moveRight();
-            if (this.canMoveLeft())
-                this.moveLeft();
-            if (this.canJump()) {
-                this.jump();
+            if (this.movementEnabled) { // Nur bewegen wenn erlaubt
+                if (this.canMoveRight())
+                    this.moveRight();
+                if (this.canMoveLeft())
+                    this.moveLeft();
+                if (this.canJump()) {
+                    this.jump();
+                }
             }
             this.world.camera_x = -this.x + 100;
         }, 1000 / 60);
@@ -91,7 +94,7 @@ class Character extends MovableObject {
 
         setInterval(() => {
             if (this.isDead()) {
-                this.playAnimation(this.IMAGES_DEAD);
+                this.playDeadAnimationOnce();               
             } else if (this.isHurt()) {
                 this.playAnimation(this.IMAGES_HURT);
             } else if (this.isAboveGround()) {
@@ -103,23 +106,45 @@ class Character extends MovableObject {
         },1000/20);
     }
 
+    playDeadAnimationOnce(){
+
+         this.playAnimationOnce(this.IMAGES_DEAD);
+    }
+
     jump() {
         this.speedY = 30;
     }
 
-    canJump() {
-        return this.world.keyboard.UP && !this.isAboveGround() || this.world.keyboard.SPACE && !this.isAboveGround();
-    }
+
 
     canMoveRight() {
-        return this.world.keyboard.RIGHT && this.x < this.world.level.level_end_x;
+        return this.movementEnabled && this.world.keyboard.RIGHT && this.x < this.world.level.level_end_x && !this.isDead();
     }
 
     canMoveLeft() {
-        return this.world.keyboard.LEFT && this.x > this.world.level.level_end_y;
+        return this.movementEnabled && this.world.keyboard.LEFT && this.x > this.world.level.level_end_y && !this.isDead();
     }
 
     canMove(){
-        return this.world.keyboard.RIGHT || this.world.keyboard.LEFT;
+        return this.movementEnabled && (this.world.keyboard.RIGHT || this.world.keyboard.LEFT) && !this.isDead();
+    }
+
+    canJump() {
+        return this.movementEnabled && (this.world.keyboard.UP && !this.isAboveGround() || this.world.keyboard.SPACE && !this.isAboveGround()) && !this.isDead();
+    }
+
+    // Methoden zum Steuern der Bewegung
+    disableMovement() {
+        this.movementEnabled = false;
+    }
+
+    enableMovement() {
+        this.movementEnabled = true;
+    }
+
+    stopAllMovement() {
+        this.speedY = 0; // Stoppt Sprung/Fall
+        this.speed = 0;  // Stoppt horizontale Bewegung
+        this.disableMovement();
     }
 }

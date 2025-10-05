@@ -24,7 +24,12 @@ class World {
         setInterval(() => {
             this.checkCollisions();
             this.handleThrowableObject();
+            this.removeFinishedThrowableObjects();
         }, 200);
+    }
+
+    removeFinishedThrowableObjects() {
+        this.throwableObject = this.throwableObject.filter(obj => !obj.shouldBeRemoved);
     }
 
     handleThrowableObject() {
@@ -32,7 +37,7 @@ class World {
             let bottle = new ThrowableObject(this.character.x + 40, this.character.y + 60, this.character.characterDirectionLeft);
             this.throwableObject.push(bottle);
             this.lastThrow = new Date().getTime();
-            this.thrownBottlesCorrection();
+            this.collectedBottlesCorrection();
         }
     }
 
@@ -46,7 +51,7 @@ class World {
         return timePast < 2;
     }
 
-    thrownBottlesCorrection() {
+    collectedBottlesCorrection() {
         this.character.collectedBottles -= 1;
         this.statusBarBottles.setBottlesAmount(this.character.collectedBottles);
     }

@@ -32,10 +32,10 @@ class MovableObject extends DrawableObject {
 
     moveLeft() {
         this.x -= this.speed;
-        if(this instanceof Character){
-      this.characterDirectionLeft = true;
+        if (this instanceof Character) {
+            this.characterDirectionLeft = true;
         }
-  
+
     }
 
     playAnimation(images) {
@@ -45,7 +45,21 @@ class MovableObject extends DrawableObject {
         this.currentImage++;
     }
 
+    playAnimationOnce(images) {
+        let i = this.currentImage % images.length;
+        let path = images[i];
+        this.img = this.imagePool[path];
+        if (this.currentImage >= images.length) {
+            this.currentImage = images.length -1;
+            console.log('this.currentImage >= images.length', this.currentImage);
+            this.movementEnabled = false;
+        }  
+        if(this.currentImage < images.length){
+            this.currentImage++;
+             console.log('else this.currentImage', this.currentImage);
+        }
 
+    }
 
     isColliding(mo) {
         return this.x + this.width > mo.x &&
@@ -81,17 +95,17 @@ class MovableObject extends DrawableObject {
         return timePast < 1.5;
     }
 
-    collectBottle(bottle){
+    collectBottle(bottle) {
         if (!bottle) return;
-        if(this.isColliding(bottle)){
-            this.collectedBottles += 1 ;
+        if (this.isColliding(bottle)) {
+            this.collectedBottles += 1;
         }
     }
 
-      collectCoin(coin){
+    collectCoin(coin) {
         if (!coin) return;
-        if(this.isColliding(coin)){
-            this.collectedCoins += 1 ;
+        if (this.isColliding(coin)) {
+            this.collectedCoins += 1;
         }
     }
 }
