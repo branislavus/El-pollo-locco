@@ -75,10 +75,10 @@ class Character extends MovableObject {
     }
 
     animate() {
-        this.movementEnabled = true; // Flag für Bewegung
+        this.movementEnabled = true;
 
         setInterval(() => {
-            if (this.movementEnabled) { // Nur bewegen wenn erlaubt
+            if (this.movementEnabled) { 
                 if (this.canMoveRight())
                     this.moveRight();
                 if (this.canMoveLeft())
@@ -133,7 +133,7 @@ class Character extends MovableObject {
         return this.movementEnabled && (this.world.keyboard.UP && !this.isAboveGround() || this.world.keyboard.SPACE && !this.isAboveGround()) && !this.isDead();
     }
 
-    // Methoden zum Steuern der Bewegung
+
     disableMovement() {
         this.movementEnabled = false;
     }
@@ -143,8 +143,8 @@ class Character extends MovableObject {
     }
 
     stopAllMovement() {
-        this.speedY = 0; // Stoppt Sprung/Fall
-        this.speed = 0;  // Stoppt horizontale Bewegung
+        this.speedY = 0;
+        this.speed = 0; 
         this.disableMovement();
     }
 }

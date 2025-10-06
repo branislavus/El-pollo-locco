@@ -63,21 +63,51 @@ class World {
     }
 
     checkEnemyCollisions() {
-        this.level.enemies.forEach((enemy) => {
-            if (this.character.isColliding(enemy)) {
-                this.character.hit();
-                this.statusBarHealth.setPercentage(this.character.energy)
+        this.level.enemies.forEach((enemy, index) => {
+            if (enemy.isDead() || !this.isColliding(enemy)) return;
+            
+            if (this.isJumpingOnEnemy(enemy)) {
+                this.killEnemy(enemy, index);
+            } else {
+                this.damageCharacter();
             }
         });
+    }
+
+    isColliding(enemy) {
+        return this.character.x + this.character.width > enemy.x &&
+               this.character.y + this.character.height > enemy.y &&
+               this.character.x < enemy.x + enemy.width &&
+               this.character.y < enemy.y + enemy.height;
+    }
+
+    isJumpingOnEnemy(enemy) {
+        let characterBottom = this.character.y + this.character.height;
+        let enemyTop = enemy.y;
+        let isFalling = this.character.speedY <= 0;
+        let isLandingOnTop = Math.abs(characterBottom - enemyTop) <= 35;
+        let isAboveEnemy = this.character.y < enemyTop - 10;
+        
+        return isFalling && isLandingOnTop && isAboveEnemy;
+    }
+
+    killEnemy(enemy, index) {
+        this.level.enemies.splice(index, 1);
+        this.character.speedY = 15;
+    }
+
+    damageCharacter() {
+        if (!this.character.isHurt()) {
+            this.character.hit();
+            this.statusBarHealth.setPercentage(this.character.energy);
+        }
     }
 
     checkBottlesCollisions() {
         this.level.bottles.forEach((bottle) => {
             if (this.character.isColliding(bottle)) {
                 this.character.collectBottle(bottle);
-                // Flasche aus Level entfernen
                 this.level.bottles.splice(this.level.bottles.indexOf(bottle), 1);
-                // Optional: Statusbar für Flaschen aktualisieren
                 this.statusBarBottles.setBottlesAmount(this.character.collectedBottles);
             }
         });
@@ -92,8 +122,6 @@ class World {
             }
         });
     }
-
-
 
     draw() {
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);

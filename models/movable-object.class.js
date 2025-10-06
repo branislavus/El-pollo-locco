@@ -7,6 +7,7 @@ class MovableObject extends DrawableObject {
     lastHit = 0;
     collectedBottles = 0;
     collectedCoins = 0;
+    isEnemyDead = false;
 
     applyGravity() {
         setInterval(() => {
@@ -50,13 +51,11 @@ class MovableObject extends DrawableObject {
         let path = images[i];
         this.img = this.imagePool[path];
         if (this.currentImage >= images.length) {
-            this.currentImage = images.length -1;
-            console.log('this.currentImage >= images.length', this.currentImage);
+            this.currentImage = images.length - 1;
             this.movementEnabled = false;
-        }  
-        if(this.currentImage < images.length){
+        }
+        if (this.currentImage < images.length) {
             this.currentImage++;
-             console.log('else this.currentImage', this.currentImage);
         }
 
     }
@@ -65,8 +64,9 @@ class MovableObject extends DrawableObject {
         return this.x + this.width > mo.x &&
             this.y + this.height > mo.y &&
             this.x < mo.x + mo.width &&
-            this.y < mo.y + mo.height
+            this.y < mo.y + mo.height;
     }
+
 
     offset = {
         top: 0,
@@ -108,4 +108,16 @@ class MovableObject extends DrawableObject {
             this.collectedCoins += 1;
         }
     }
+
+    die() {
+    this.isDead = true;
+    this.speed = 0;
+    this.playDeathAnimation && this.playDeathAnimation();
+
+
+    setTimeout(() => {
+        let index = world.level.enemies.indexOf(this);
+        if (index > -1) world.level.enemies.splice(index, 1);
+    }, 800);
+}
 }
