@@ -62,6 +62,9 @@ class Character extends MovableObject {
     currentImage = 0;
     world;
     energy = 100;
+    lastMove;
+    lastMoveTime;
+    lastCharacterX;
 
 
     constructor() {
@@ -70,6 +73,8 @@ class Character extends MovableObject {
         this.loadImages(this.IMAGES_JUMPING);
         this.loadImages(this.IMAGES_DEAD);
         this.loadImages(this.IMAGES_HURT);
+         this.loadImages(this.IMAGES_IDLE);
+    this.loadImages(this.IMAGES_LONG_IDLE);
         this.animate();
         this.applyGravity();
     }
@@ -78,7 +83,7 @@ class Character extends MovableObject {
         this.movementEnabled = true;
 
         setInterval(() => {
-            if (this.movementEnabled) { 
+            if (this.movementEnabled) {
                 if (this.canMoveRight())
                     this.moveRight();
                 if (this.canMoveLeft())
@@ -93,26 +98,52 @@ class Character extends MovableObject {
 
 
         setInterval(() => {
+            this.updateLastMove();
+
             if (this.isDead()) {
-                this.playDeadAnimationOnce();               
+                this.playDeadAnimationOnce();
             } else if (this.isHurt()) {
                 this.playAnimation(this.IMAGES_HURT);
+            } else if (this.isIdle()) {
+                this.isBored();
             } else if (this.isAboveGround()) {
                 this.playAnimation(this.IMAGES_JUMPING);
             } else {
-                if (this.canMove()) 
+                if (this.canMove())
                     this.playAnimation(this.IMAGES_WALKING);
             }
-        },1000/20);
+        }, 1000 / 10);
     }
 
-    playDeadAnimationOnce(){
+    isBored() {
+        if (this.lastMoveTime > 6000) {
+            this.playAnimation(this.IMAGES_LONG_IDLE);
+        } else {
+            this.playAnimation(this.IMAGES_IDLE);
+        }
+    }
 
-         this.playAnimationOnce(this.IMAGES_DEAD);
+
+    updateLastMove() {
+        let currentTime = new Date().getTime();
+        if (this.lastCharacterX != this.x) {
+            this.lastMove = currentTime;
+            this.lastCharacterX = this.x;
+        }
+        this.lastMoveTime = currentTime - (this.lastMove || currentTime);
+    }
+
+    isIdle() {
+        return this.lastMoveTime > 3000;
+    }
+
+    playDeadAnimationOnce() {
+        this.playAnimationOnce(this.IMAGES_DEAD);
     }
 
     jump() {
         this.speedY = 30;
+        this.lastMove = new Date().getTime();
     }
 
 
@@ -125,7 +156,7 @@ class Character extends MovableObject {
         return this.movementEnabled && this.world.keyboard.LEFT && this.x > this.world.level.level_end_y && !this.isDead();
     }
 
-    canMove(){
+    canMove() {
         return this.movementEnabled && (this.world.keyboard.RIGHT || this.world.keyboard.LEFT) && !this.isDead();
     }
 
@@ -144,7 +175,7 @@ class Character extends MovableObject {
 
     stopAllMovement() {
         this.speedY = 0;
-        this.speed = 0; 
+        this.speed = 0;
         this.disableMovement();
     }
 }

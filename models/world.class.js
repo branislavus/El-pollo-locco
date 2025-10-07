@@ -32,8 +32,13 @@ class World {
     showMyInterval() {
         setInterval(() => {
             console.log(this.character.x);
+            this.character.lastCharacterX = this.character.x ;
+            this.character.isBored();
+            
         }, 1000);
     }
+
+    
 
     shouldShowEndbossStatusbar() {
         // Zeige Endboss-Statusbar wenn Character Position x=1000 erreicht
@@ -202,12 +207,14 @@ class World {
         this.addObjectsToMap(this.level.backgroundObjects);
         this.addObjectsToMap(this.level.enemies);
         this.addObjectsToMap(this.level.clouds);
-    
         this.addObjectsToMap(this.level.bottles);
         this.addObjectsToMap(this.level.coins);
+        this.addToMap(this.character);
+        this.addObjectsToMap(this.throwableObject);
+        
         this.ctx.restore();
 
-
+        // UI-Elemente (immer im Vordergrund)
         this.addToMap(this.statusBarHealth);
         this.addToMap(this.statusBarCoins);
         this.addToMap(this.statusBarBottles);
@@ -216,10 +223,6 @@ class World {
         if (this.statusBarEndboss && this.shouldShowEndbossStatusbar()) {
             this.addToMap(this.statusBarEndboss);
         }
-        this.ctx.translate(this.camera_x, 0);
-        this.addToMap(this.character);
-            this.addObjectsToMap(this.throwableObject);
-        this.ctx.translate(-this.camera_x, 0);
 
         let self = this;
         requestAnimationFrame(function () {
@@ -261,7 +264,4 @@ class World {
         this.character.world = this;
     }
 
-    loadAllBackgrounds() {
-
-    }
 }
