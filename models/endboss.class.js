@@ -4,7 +4,7 @@ class Endboss extends MovableObject {
     width = 300;
     y = 140;
     bossEnergy = 5;
-    
+
     IMAGES_WALKING = [
         'img/4_enemie_boss_chicken/1_walk/G1.png',
         'img/4_enemie_boss_chicken/1_walk/G2.png',
@@ -48,14 +48,61 @@ class Endboss extends MovableObject {
 
     constructor() {
         super().loadImage(this.IMAGES_ALERT[0]);
+        this.loadImages(this.IMAGES_WALKING);
         this.loadImages(this.IMAGES_ALERT);
+        this.loadImages(this.IMAGES_ATTACK);
+        this.loadImages(this.IMAGES_HURT);
+        this.loadImages(this.IMAGES_DEAD);
         this.x = 2000;
         this.animate();
     }
 
     animate() {
         setInterval(() => {
-            this.playAnimation(this.IMAGES_ALERT);
+            if (this.isDead()) {
+                this.dead();
+            } else if (this.isHurt()) {
+                this.hurt();
+            } else if (this.isAttacking()) {
+                this.atack();
+            } else if (this.isMoving()) {
+                this.walk();
+            } else if (this.angry()) {
+                this.alert();
+            } else {
+               this.alert();
+            }
         }, 200);
+    }
+
+    isAttacking() {
+        // Füge hier Logik hinzu wann der Endboss angreift
+        return false; // Vorerst deaktiviert
+    }
+
+    isMoving() {
+        // Füge hier Logik hinzu wann der Endboss sich bewegt
+        return false; // Vorerst deaktiviert
+    }
+
+
+    atack() {
+        this.playAnimation(this.IMAGES_ATTACK);
+    }
+
+    walk() {
+        this.playAnimation(this.IMAGES_WALKING);
+    }
+
+    alert() {
+        this.playAnimation(this.IMAGES_ALERT);
+    }
+
+    dead() {
+        this.playDeadAnimationOnce(this.IMAGES_DEAD);
+    }
+
+    hurt() {
+        this.playDeadAnimationOnce(this.IMAGES_HURT);
     }
 }

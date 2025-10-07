@@ -73,8 +73,8 @@ class Character extends MovableObject {
         this.loadImages(this.IMAGES_JUMPING);
         this.loadImages(this.IMAGES_DEAD);
         this.loadImages(this.IMAGES_HURT);
-         this.loadImages(this.IMAGES_IDLE);
-    this.loadImages(this.IMAGES_LONG_IDLE);
+        this.loadImages(this.IMAGES_IDLE);
+        this.loadImages(this.IMAGES_LONG_IDLE);
         this.animate();
         this.applyGravity();
     }
@@ -116,7 +116,7 @@ class Character extends MovableObject {
     }
 
     isBored() {
-        if (this.lastMoveTime > 6000) {
+        if (this.lastMoveTime > 10000) {
             this.playAnimation(this.IMAGES_LONG_IDLE);
         } else {
             this.playAnimation(this.IMAGES_IDLE);

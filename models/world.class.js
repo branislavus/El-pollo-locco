@@ -32,13 +32,13 @@ class World {
     showMyInterval() {
         setInterval(() => {
             console.log(this.character.x);
-            this.character.lastCharacterX = this.character.x ;
+            this.character.lastCharacterX = this.character.x;
             this.character.isBored();
-            
+
         }, 1000);
     }
 
-    
+
 
     shouldShowEndbossStatusbar() {
         // Zeige Endboss-Statusbar wenn Character Position x=1000 erreicht
@@ -108,7 +108,7 @@ class World {
         this.throwableObject.forEach((bottle, bottleIndex) => {
             this.level.enemies.forEach((enemy, enemyIndex) => {
                 if (enemy.isDead() || bottle.shouldBeRemoved) return;
-                
+
                 if (this.isBottleCollidingWithEnemy(bottle, enemy)) {
                     this.handleBottleHitEnemy(enemy, bottle);
                 }
@@ -117,10 +117,21 @@ class World {
     }
 
     isBottleCollidingWithEnemy(bottle, enemy) {
-        return bottle.x + bottle.width > enemy.x &&
-               bottle.y + bottle.height > enemy.y &&
-               bottle.x < enemy.x + enemy.width &&
-               bottle.y < enemy.y + enemy.height;
+        // Präzisere Kollision - nur wenn Flasche wirklich den Enemy-Kern trifft
+        let bottleCenterX = bottle.x + bottle.width / 2;
+        let bottleCenterY = bottle.y + bottle.height / 2;
+
+        // Kleinere Kollisions-Zone für Enemies (besonders Endboss)
+        let enemyCollisionMargin = this.isEndboss(enemy) ? 50 : 10;
+        let enemyLeft = enemy.x + enemyCollisionMargin;
+        let enemyRight = enemy.x + enemy.width - enemyCollisionMargin;
+        let enemyTop = enemy.y + enemyCollisionMargin;
+        let enemyBottom = enemy.y + enemy.height - enemyCollisionMargin;
+
+        return bottleCenterX > enemyLeft &&
+            bottleCenterX < enemyRight &&
+            bottleCenterY > enemyTop &&
+            bottleCenterY < enemyBottom;
     }
 
     handleBottleHitEnemy(enemy, bottle) {
@@ -128,10 +139,9 @@ class World {
         if (this.isEndboss(enemy)) {
             this.hurtEndboss(enemy);
         }
-        
+
         // Flasche explodiert immer bei Treffer
         bottle.startSplashAnimation();
-        bottle.shouldBeRemoved = true;
     }
 
     isEndboss(enemy) {
@@ -140,21 +150,30 @@ class World {
     }
 
     hurtEndboss(endboss) {
-        if (endboss.energy) {
-            endboss.energy -= 1;
-            // Optional: Endboss-Statusbar aktualisieren
+        if (endboss.bossEnergy > 0) {
+            endboss.bossEnergy -= 1;
+            console.log('Endboss verletzt! Energie:', endboss.bossEnergy);
+            
+            // Endboss-Statusbar aktualisieren
             if (this.statusBarEndboss) {
-                this.statusBarEndboss.setBossEnergyAmount(endboss.energy);
+                this.statusBarEndboss.setBossEnergyAmount(endboss.bossEnergy);
+            }
+
+            // Prüfe ob Endboss besiegt ist
+            if (endboss.bossEnergy <= 0) {
+                console.log('Endboss besiegt!');
+                endboss.isDead = true;
             }
         }
     }
 
     isColliding(enemy) {
-        return this.character.x + this.character.width > enemy.x &&
+        return this.character.x + this.character.width / 2 > enemy.x &&
             this.character.y + this.character.height > enemy.y &&
             this.character.x < enemy.x + enemy.width &&
             this.character.y < enemy.y + enemy.height;
     }
+
 
     isJumpingOnEnemy(enemy) {
         let characterBottom = this.character.y + this.character.height;
@@ -211,14 +230,14 @@ class World {
         this.addObjectsToMap(this.level.coins);
         this.addToMap(this.character);
         this.addObjectsToMap(this.throwableObject);
-        
+
         this.ctx.restore();
 
         // UI-Elemente (immer im Vordergrund)
         this.addToMap(this.statusBarHealth);
         this.addToMap(this.statusBarCoins);
         this.addToMap(this.statusBarBottles);
-        
+
         // Endboss-Statusbar nur anzeigen wenn Boss nah genug ist
         if (this.statusBarEndboss && this.shouldShowEndbossStatusbar()) {
             this.addToMap(this.statusBarEndboss);
