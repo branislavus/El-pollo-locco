@@ -4,6 +4,8 @@ class Endboss extends MovableObject {
     width = 300;
     y = 140;
     bossEnergy = 5;
+    hurtImageIndex = 0;
+    movementEnabled = true;
 
     IMAGES_WALKING = [
         'img/4_enemie_boss_chicken/1_walk/G1.png',
@@ -41,6 +43,9 @@ class Endboss extends MovableObject {
     ];
 
     IMAGES_DEAD = [
+        'img/4_enemie_boss_chicken/4_hurt/G21.png',
+        'img/4_enemie_boss_chicken/4_hurt/G22.png',
+        'img/4_enemie_boss_chicken/4_hurt/G23.png',
         'img/4_enemie_boss_chicken/5_dead/G24.png',
         'img/4_enemie_boss_chicken/5_dead/G25.png',
         'img/4_enemie_boss_chicken/5_dead/G26.png'
@@ -54,23 +59,35 @@ class Endboss extends MovableObject {
         this.loadImages(this.IMAGES_HURT);
         this.loadImages(this.IMAGES_DEAD);
         this.x = 2000;
+        this.energy = 100; // Setze energy hoch, damit MovableObject-Methoden nicht interferieren
         this.animate();
     }
 
     animate() {
+        // Standard Loop-Animationen (Alert, Walk, Attack)
+        setInterval(() => {
+            if (!this.isDead() && !this.isHurt()) {
+                if (this.isAttacking()) {
+                    this.atack();
+                } else if (this.isMoving()) {
+                    this.walk();
+                } else {
+                    this.alert();
+                }
+            }
+        }, 200);
+
+        // Hurt-Animation (eigenes Interval)
+        setInterval(() => {
+            if (this.isHurt()) {
+                this.hurt();
+            }
+        }, 200);
+
+        // Death-Animation (eigenes Interval)
         setInterval(() => {
             if (this.isDead()) {
                 this.dead();
-            } else if (this.isHurt()) {
-                this.hurt();
-            } else if (this.isAttacking()) {
-                this.atack();
-            } else if (this.isMoving()) {
-                this.walk();
-            } else if (this.angry()) {
-                this.alert();
-            } else {
-               this.alert();
             }
         }, 200);
     }
@@ -83,6 +100,16 @@ class Endboss extends MovableObject {
     isMoving() {
         // Füge hier Logik hinzu wann der Endboss sich bewegt
         return false; // Vorerst deaktiviert
+    }
+
+    isHurt() {
+        // Überschreibt die Methode aus MovableObject
+        return this.hurtImageIndex == 1;
+    }
+
+    isDead() {
+        // Überschreibt die Methode aus MovableObject - verwendet bossEnergy statt energy
+        return this.bossEnergy <= 0;
     }
 
 
@@ -99,10 +126,19 @@ class Endboss extends MovableObject {
     }
 
     dead() {
-        this.playDeadAnimationOnce(this.IMAGES_DEAD);
+        this.playAnimationOnce(this.IMAGES_DEAD);
     }
 
     hurt() {
-        this.playDeadAnimationOnce(this.IMAGES_HURT);
+        this.playAnimationOnce(this.IMAGES_HURT);
+        
+        // Reset nach kompletter Animation
+        if (this.currentImage >= this.IMAGES_HURT.length - 1) {
+            setTimeout(() => {
+                this.hurtImageIndex = 0;
+                this.currentImage = 0;
+                this.movementEnabled = true;
+            }, 200);
+        }
     }
 }

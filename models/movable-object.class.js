@@ -50,14 +50,11 @@ class MovableObject extends DrawableObject {
         let i = this.currentImage % images.length;
         let path = images[i];
         this.img = this.imagePool[path];
-        if (this.currentImage >= images.length) {
-            this.currentImage = images.length - 1;
+        if (this.currentImage < images.length - 1) {
+            this.currentImage++;
+        } else {
             this.movementEnabled = false;
         }
-        if (this.currentImage < images.length) {
-            this.currentImage++;
-        }
-
     }
 
     isColliding(mo) {

@@ -26,15 +26,12 @@ class World {
     initializeStatusBars() {
         // Erstelle Endboss-Statusbar
         this.statusBarEndboss = new StatusBarEndBoss();
-        console.log('Endboss statusbar erstellt:', this.statusBarEndboss);
     }
 
     showMyInterval() {
         setInterval(() => {
-            console.log(this.character.x);
             this.character.lastCharacterX = this.character.x;
             this.character.isBored();
-
         }, 1000);
     }
 
@@ -43,9 +40,6 @@ class World {
     shouldShowEndbossStatusbar() {
         // Zeige Endboss-Statusbar wenn Character Position x=1000 erreicht
         let shouldShow = this.character.x >= 1300;
-        if (shouldShow) {
-            console.log('Statusbar sollte angezeigt werden - Character.x:', this.character.x, 'StatusBar vorhanden:', !!this.statusBarEndboss);
-        }
         return shouldShow;
     }
 
@@ -152,17 +146,11 @@ class World {
     hurtEndboss(endboss) {
         if (endboss.bossEnergy > 0) {
             endboss.bossEnergy -= 1;
-            console.log('Endboss verletzt! Energie:', endboss.bossEnergy);
+            endboss.hurtImageIndex = 1; // Triggert Hurt-Animation
             
             // Endboss-Statusbar aktualisieren
             if (this.statusBarEndboss) {
                 this.statusBarEndboss.setBossEnergyAmount(endboss.bossEnergy);
-            }
-
-            // Prüfe ob Endboss besiegt ist
-            if (endboss.bossEnergy <= 0) {
-                console.log('Endboss besiegt!');
-                endboss.isDead = true;
             }
         }
     }
