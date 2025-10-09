@@ -65,6 +65,12 @@ class Character extends MovableObject {
     lastMove;
     lastMoveTime;
     lastCharacterX;
+        offset = {
+        top: 0,
+        left: 50,
+        right: 10,
+        bottom: -10 ,
+    };
 
 
     constructor() {
@@ -93,6 +99,8 @@ class Character extends MovableObject {
                 }
             }
             this.world.camera_x = -this.x + 100;
+         
+            
         }, 1000 / 60);
 
 
@@ -112,11 +120,12 @@ class Character extends MovableObject {
                 if (this.canMove())
                     this.playAnimation(this.IMAGES_WALKING);
             }
+
         }, 1000 / 10);
     }
 
     isBored() {
-        if (this.lastMoveTime > 10000) {
+        if (this.lastMoveTime > 16000) {
             this.playAnimation(this.IMAGES_LONG_IDLE);
         } else {
             this.playAnimation(this.IMAGES_IDLE);

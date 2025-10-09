@@ -6,6 +6,7 @@ class Endboss extends MovableObject {
     bossEnergy = 5;
     hurtImageIndex = 0;
     movementEnabled = true;
+    world;
 
     IMAGES_WALKING = [
         'img/4_enemie_boss_chicken/1_walk/G1.png',
@@ -64,41 +65,43 @@ class Endboss extends MovableObject {
     }
 
     animate() {
-        // Standard Loop-Animationen (Alert, Walk, Attack)
-        setInterval(() => {
-            if (!this.isDead() && !this.isHurt()) {
-                if (this.isAttacking()) {
-                    this.atack();
-                } else if (this.isMoving()) {
-                    this.walk();
-                } else {
-                    this.alert();
-                }
-            }
-        }, 200);
+        setInterval(() => { if (!this.isDead() && !this.isHurt()) this.alert(); }, 200);
 
-        // Hurt-Animation (eigenes Interval)
-        setInterval(() => {
-            if (this.isHurt()) {
-                this.hurt();
-            }
-        }, 200);
+        setInterval(() => { if (this.isAttacking()) this.atack(); }, 200);
 
-        // Death-Animation (eigenes Interval)
-        setInterval(() => {
-            if (this.isDead()) {
-                this.dead();
-            }
-        }, 200);
+        setInterval(() => { if (this.isMoving()) this.walk(); }, 200);
+
+        setInterval(() => { if (this.isHurt()) this.hurt(); }, 200);
+
+        setInterval(() => { if (this.isDead()) this.dead(); }, 200);
+    }
+
+    getRandomAtackInterval() {
+        return Math.floor(Math.random() * 20) + 8;
     }
 
     isAttacking() {
-        // Füge hier Logik hinzu wann der Endboss angreift
-        return false; // Vorerst deaktiviert
+        if (this.world && this.world.character) {
+            let characterX = this.world.character.x;
+            let distanceToCharacter = Math.abs(this.x - characterX);
+
+            // Greife an wenn Character in Reichweite ist (z.B. 200 Pixel)
+            return distanceToCharacter < 200;
+        }
+        return false; // Kein Character gefunden
     }
 
+    atack() {
+        this.playAnimation(this.IMAGES_ATTACK);
+    }
+
+    walk() {
+        this.playAnimation(this.IMAGES_WALKING);
+    }
+
+
     isMoving() {
-        // Füge hier Logik hinzu wann der Endboss sich bewegt
+        this.playAnimation(this.IMAGES_WALKING);
         return false; // Vorerst deaktiviert
     }
 
@@ -113,13 +116,6 @@ class Endboss extends MovableObject {
     }
 
 
-    atack() {
-        this.playAnimation(this.IMAGES_ATTACK);
-    }
-
-    walk() {
-        this.playAnimation(this.IMAGES_WALKING);
-    }
 
     alert() {
         this.playAnimation(this.IMAGES_ALERT);
@@ -131,7 +127,7 @@ class Endboss extends MovableObject {
 
     hurt() {
         this.playAnimationOnce(this.IMAGES_HURT);
-        
+
         // Reset nach kompletter Animation
         if (this.currentImage >= this.IMAGES_HURT.length - 1) {
             setTimeout(() => {

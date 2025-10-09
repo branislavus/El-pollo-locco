@@ -156,7 +156,7 @@ class World {
     }
 
     isColliding(enemy) {
-        return this.character.x + this.character.width / 2 > enemy.x &&
+        return this.character.x + this.character.width - 20 > enemy.x &&
             this.character.y + this.character.height > enemy.y &&
             this.character.x < enemy.x + enemy.width &&
             this.character.y < enemy.y + enemy.height;
@@ -164,13 +164,23 @@ class World {
 
 
     isJumpingOnEnemy(enemy) {
-        let characterBottom = this.character.y + this.character.height;
-        let enemyTop = enemy.y;
+        // Character Kollisionsbox mit Offset
+        let characterLeft = this.character.x + this.character.offset.left;
+        let characterRight = this.character.x + this.character.width - this.character.offset.right;
+        let characterBottom = this.character.y + this.character.height - this.character.offset.bottom;
+        let characterTop = this.character.y + this.character.offset.top;
+        
+        // Enemy Kollisionsbox (falls Enemy auch Offset hat, sonst normale Werte)
+        let enemyLeft = enemy.x + (enemy.offset ? enemy.offset.left : 0);
+        let enemyRight = enemy.x + enemy.width - (enemy.offset ? enemy.offset.right : 0);
+        let enemyTop = enemy.y + (enemy.offset ? enemy.offset.top : 0);
+        
         let isFalling = this.character.speedY <= 0;
-        let isLandingOnTop = Math.abs(characterBottom - enemyTop) <= 35;
-        let isAboveEnemy = this.character.y < enemyTop - 10;
+        let isLandingOnTop = Math.abs(characterBottom - enemyTop) <= 40;
+        let isAboveEnemy = characterTop < enemyTop - 20;
+        let isHorizontallyOverlapping = characterRight > enemyLeft && characterLeft < enemyRight;
 
-        return isFalling && isLandingOnTop && isAboveEnemy;
+        return isFalling && isLandingOnTop && isAboveEnemy && isHorizontallyOverlapping;
     }
 
     killEnemy(enemy, index) {
@@ -188,21 +198,19 @@ class World {
     }
 
     checkBottlesCollisions() {
-        this.level.bottles.forEach((bottle) => {
-            if (this.character.isColliding(bottle)) {
-                this.character.collectBottle(bottle);
-                this.level.bottles.splice(this.level.bottles.indexOf(bottle), 1);
-                this.statusBarBottles.setBottlesAmount(this.character.collectedBottles);
-            }
-        });
+        this.checkCollectableCollisions(this.level.bottles, 'collectBottle', this.statusBarBottles, 'setBottlesAmount', 'collectedBottles');
     }
 
     checkCoinsCollisions() {
-        this.level.coins.forEach((coin) => {
-            if (this.character.isColliding(coin)) {
-                this.character.collectCoin(coin);
-                this.level.coins.splice(this.level.coins.indexOf(coin), 1);
-                this.statusBarCoins.setCoinsAmount(this.character.collectedCoins);
+        this.checkCollectableCollisions(this.level.coins, 'collectCoin', this.statusBarCoins, 'setCoinsAmount', 'collectedCoins');
+    }
+
+    checkCollectableCollisions(items, collectMethod, statusBar, statusMethod, counterProperty) {
+        items.forEach((item, index) => {
+            if (this.character.isColliding(item)) {
+                this.character[collectMethod](item);
+                items.splice(index, 1);
+                statusBar[statusMethod](this.character[counterProperty]);
             }
         });
     }
@@ -269,6 +277,11 @@ class World {
 
     setWorld() {
         this.character.world = this;
+        
+        // Setze World-Referenz auch für alle Enemies (besonders Endboss)
+        this.level.enemies.forEach(enemy => {
+            enemy.world = this;
+        });
     }
 
 }
