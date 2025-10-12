@@ -22,22 +22,54 @@ class DrawableObject {
 
     draw(ctx) {
         try {
-             ctx.drawImage(this.img, this.x, this.y, this.width, this.height);
+            ctx.drawImage(this.img, this.x, this.y, this.width, this.height);
         } catch (error) {
-            console.warn('Error loading image :', error );
-            console.log('this image :', this.img );
-        } 
+            console.warn('Error loading image :', error);
+            console.log('this image :', this.img);
+        }
+    }
+
+    drawOffsetFrames(ctx) {
+        if (this instanceof Character) {
+            if (this.offset) {
+                ctx.beginPath();
+                ctx.lineWidth = '3'; // Etwas dicker für bessere Sichtbarkeit
+                ctx.strokeStyle = 'red';
+                // Zeichne die echte Kollisionsbox mit Offsets
+                let offsetX = this.x + this.offset.left;
+                let offsetY = this.y + this.offset.top;
+                let offsetWidth = this.width - this.offset.left - this.offset.right;
+                let offsetHeight = this.height - this.offset.top - this.offset.bottom;
+                ctx.rect(offsetX, offsetY, offsetWidth, offsetHeight);
+                ctx.stroke();
+            }
+        }
+    }
+
+    drawOffsetLineFrames(ctx) {
+        if (this instanceof Character) {
+            if (this.offsetLine) {
+                ctx.beginPath();
+                ctx.lineWidth = '3';
+                ctx.strokeStyle = 'green';
+                let offsetX = this.x + this.offsetLine.left;
+                let offsetY = this.y + this.offsetLine.top;
+                let offsetWidth = this.width - this.offsetLine.left - this.offsetLine.right;
+                let offsetHeight = this.height - this.offsetLine.top - this.offsetLine.bottom;
+                ctx.rect(offsetX, offsetY, offsetWidth, offsetHeight);
+                ctx.stroke();
+            }
+        }
     }
 
     drawBorderFrames(ctx) {
-        if (this instanceof Character || this instanceof Chicken || this instanceof ChickenSmall || this instanceof Endboss || this instanceof Bottles || this instanceof Coins) {
+        if (this instanceof Character || this instanceof Chicken || this instanceof ChickenSmall || this instanceof Endboss) {
             ctx.beginPath();
             ctx.lineWidth = '3';
             ctx.strokeStyle = 'blue';
             ctx.rect(this.x, this.y, this.width, this.height);
             ctx.stroke();
         }
-
     }
 
 }

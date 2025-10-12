@@ -65,11 +65,17 @@ class Character extends MovableObject {
     lastMove;
     lastMoveTime;
     lastCharacterX;
-        offset = {
-        top: 0,
-        left: 50,
-        right: 10,
-        bottom: -10 ,
+    offset = {
+        top: 70,
+        left: 25,
+        right: 35,
+        bottom: 10,
+    };
+    offsetLine = {
+        top: 70,
+        left: 49,
+        right: 50,
+        bottom: 10,
     };
 
 
@@ -81,12 +87,20 @@ class Character extends MovableObject {
         this.loadImages(this.IMAGES_HURT);
         this.loadImages(this.IMAGES_IDLE);
         this.loadImages(this.IMAGES_LONG_IDLE);
+        this.y = 226; // Standard Laufposition setzen
         this.animate();
         this.applyGravity();
+
+    }
+
+    isAboveGround() {
+        // Überschreibt MovableObject - Character soll immer bei y=221 landen
+        return this.y < 226;
     }
 
     animate() {
         this.movementEnabled = true;
+
 
         setInterval(() => {
             if (this.movementEnabled) {
@@ -99,8 +113,6 @@ class Character extends MovableObject {
                 }
             }
             this.world.camera_x = -this.x + 100;
-         
-            
         }, 1000 / 60);
 
 

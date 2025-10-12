@@ -1,12 +1,4 @@
 class Endboss extends MovableObject {
-    currentImage = 0;
-    height = 300;
-    width = 300;
-    y = 140;
-    bossEnergy = 5;
-    hurtImageIndex = 0;
-    movementEnabled = true;
-    world;
 
     IMAGES_WALKING = [
         'img/4_enemie_boss_chicken/1_walk/G1.png',
@@ -52,6 +44,21 @@ class Endboss extends MovableObject {
         'img/4_enemie_boss_chicken/5_dead/G26.png'
     ];
 
+    currentImage = 0;
+    height = 300;
+    width = 300;
+    speed = 15;
+    y = 140;
+    bossEnergy = 5;
+    hurtImageIndex = 0;
+    movementEnabled = true;
+    world;
+    attackInProgress = false;
+    attackPhase = 'idle';  // idle, moving_left, attacking, moving_right
+    attackDuration = 300; // Dauer der Attack-Animation
+    moveSpeed = 10;         // Bewegungsgeschwindigkeit
+
+
     constructor() {
         super().loadImage(this.IMAGES_ALERT[0]);
         this.loadImages(this.IMAGES_WALKING);
@@ -61,23 +68,100 @@ class Endboss extends MovableObject {
         this.loadImages(this.IMAGES_DEAD);
         this.x = 2000;
         this.energy = 100; // Setze energy hoch, damit MovableObject-Methoden nicht interferieren
+        this.isDeathAnimationComplete = false;
+        this.shouldBeRemoved = false;
+        this.hurtAnimationStarted = false;
+        this.deathAnimationStarted = false;
         this.animate();
     }
 
     animate() {
-        setInterval(() => { if (!this.isDead() && !this.isHurt()) this.alert(); }, 200);
-
-        setInterval(() => { if (this.isAttacking()) this.atack(); }, 200);
-
-        setInterval(() => { if (this.isMoving()) this.walk(); }, 200);
-
-        setInterval(() => { if (this.isHurt()) this.hurt(); }, 200);
-
-        setInterval(() => { if (this.isDead()) this.dead(); }, 200);
+        setInterval(() => {
+            if (this.isDeathAnimationComplete) return;
+            if (!this.isDead() && !this.isHurt() && !this.attackInProgress && !this.isDeathAnimationComplete)
+                this.alert();
+            if (this.isAttacking() && !this.attackInProgress && !this.isDead() && !this.isDeathAnimationComplete)
+                this.atackAnimation();
+            if (this.isHurt() && !this.isDead() && !this.isDeathAnimationComplete)
+                this.hurt();
+            if (this.isDead() && !this.isDeathAnimationComplete)
+                this.dead();
+        }, 200);
     }
 
     getRandomAtackInterval() {
         return Math.floor(Math.random() * 20) + 8;
+    }
+
+
+    atackAnimation() {
+        if (this.attackInProgress) return;
+
+        this.attackInProgress = true;
+        this.attackPhase = 'moving_left';
+
+        const attackConfig = this.getRandomAttackSettings();
+        const startX = this.x;
+
+        this.executeAttackSequence(attackConfig, startX);
+    }
+
+    getRandomAttackSettings() {
+        return {
+            moveDuration: Math.floor(Math.random() * 1500) + 500,    // 500-2000ms
+            attackDuration: Math.floor(Math.random() * 400) + 200,   // 200-600ms
+            moveSpeed: Math.floor(Math.random() * 8) + 5             // 5-12 speed
+        };
+    }
+
+    executeAttackSequence(config, startX) {
+        // Phase 1: Move Left
+        const moveLeftInterval = this.startMoveLeftPhase(config.moveSpeed);
+
+        setTimeout(() => {
+            clearInterval(moveLeftInterval);
+            this.startAttackPhase(config, startX);
+        }, config.moveDuration);
+    }
+
+    startMoveLeftPhase(moveSpeed) {
+        this.attackPhase = 'moving_left';
+        return setInterval(() => {
+            this.x -= moveSpeed;
+            this.playAnimation(this.IMAGES_WALKING);
+        }, 1000 / 25);
+    }
+
+    startAttackPhase(config, startX) {
+        this.attackPhase = 'attacking';
+
+        const attackInterval = setInterval(() => {
+            this.playAnimation(this.IMAGES_ATTACK);
+        }, 200);
+
+        setTimeout(() => {
+            clearInterval(attackInterval);
+            this.startMoveRightPhase(config.moveSpeed, startX);
+        }, config.attackDuration);
+    }
+
+    startMoveRightPhase(moveSpeed, startX) {
+        this.attackPhase = 'moving_right';
+
+        const moveRightInterval = setInterval(() => {
+            if (this.x < startX) {
+                this.x += moveSpeed;
+                this.playAnimation(this.IMAGES_WALKING);
+            } else {
+                clearInterval(moveRightInterval);
+                this.resetAttackState();
+            }
+        }, 1000 / 25);
+    }
+
+    resetAttackState() {
+        this.attackInProgress = false;
+        this.attackPhase = 'idle';
     }
 
     isAttacking() {
@@ -86,7 +170,7 @@ class Endboss extends MovableObject {
             let distanceToCharacter = Math.abs(this.x - characterX);
 
             // Greife an wenn Character in Reichweite ist (z.B. 200 Pixel)
-            return distanceToCharacter < 200;
+            return distanceToCharacter < 250;
         }
         return false; // Kein Character gefunden
     }
@@ -122,19 +206,59 @@ class Endboss extends MovableObject {
     }
 
     dead() {
-        this.playAnimationOnce(this.IMAGES_DEAD);
+        if (!this.deathAnimationStarted) {
+            // Stoppe alle Bewegungen sofort
+            this.attackInProgress = false;
+            this.movementEnabled = false;
+            this.deathAnimationStarted = true;
+            this.currentImage = 0; // Reset für saubere Animation
+
+            // Spiele Death-Animation komplett ab
+            let deathInterval = setInterval(() => {
+                if (this.currentImage < this.IMAGES_DEAD.length) {
+                    let path = this.IMAGES_DEAD[this.currentImage];
+                    this.img = this.imagePool[path];
+                    this.currentImage++;
+                } else {
+                    // Animation komplett - bleibt am letzten Bild
+                    clearInterval(deathInterval);
+                    this.isDeathAnimationComplete = true;
+
+                    // Zeige letztes Bild der Death-Animation
+                    let lastFrame = this.IMAGES_DEAD[this.IMAGES_DEAD.length - 1];
+                    this.img = this.imagePool[lastFrame];
+
+                    // Nach 2 Sekunden verschwinden
+                    setTimeout(() => {
+                        this.shouldBeRemoved = true;
+                    }, 2000);
+                }
+            }, 200); // 200ms pro Frame für deutlich sichtbare Death-Animation
+        }
     }
 
     hurt() {
-        this.playAnimationOnce(this.IMAGES_HURT);
+        if (!this.hurtAnimationStarted) {
+            this.hurtAnimationStarted = true;
+            this.currentImage = 0; // Reset für saubere Animation
 
-        // Reset nach kompletter Animation
-        if (this.currentImage >= this.IMAGES_HURT.length - 1) {
-            setTimeout(() => {
-                this.hurtImageIndex = 0;
-                this.currentImage = 0;
-                this.movementEnabled = true;
-            }, 200);
+            // Spiele Hurt-Animation komplett ab
+            let hurtInterval = setInterval(() => {
+                if (this.currentImage < this.IMAGES_HURT.length) {
+                    let path = this.IMAGES_HURT[this.currentImage];
+                    this.img = this.imagePool[path];
+                    this.currentImage++;
+                } else {
+                    // Animation komplett - Reset
+                    clearInterval(hurtInterval);
+                    this.hurtAnimationStarted = false;
+                    this.hurtImageIndex = 0;
+                    this.currentImage = 0;
+                    this.movementEnabled = true;
+                }
+            }, 150); // 150ms pro Frame für sichtbare Animation
         }
     }
+
+
 }
