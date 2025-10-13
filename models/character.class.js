@@ -67,8 +67,8 @@ class Character extends MovableObject {
     lastCharacterX;
     offset = {
         top: 70,
-        left: 25,
-        right: 35,
+        left: 30,
+        right: 40,
         bottom: 10,
     };
     offsetLine = {

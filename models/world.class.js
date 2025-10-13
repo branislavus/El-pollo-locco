@@ -48,17 +48,11 @@ class World {
             this.checkCollisions();
             this.handleThrowableObject();
             this.removeFinishedThrowableObjects();
-            this.removeDeadEnemies();
         }, 200);
     }
 
     removeFinishedThrowableObjects() {
         this.throwableObject = this.throwableObject.filter(obj => !obj.shouldBeRemoved);
-    }
-
-    removeDeadEnemies() {
-        // Entferne Enemies die shouldBeRemoved haben (wie tote Endboss nach 2 Sekunden)
-        this.level.enemies = this.level.enemies.filter(enemy => !enemy.shouldBeRemoved);
     }
 
     handleThrowableObject() {
@@ -95,12 +89,11 @@ class World {
     checkEnemyCollisions() {
         this.level.enemies.forEach((enemy, index) => {
             if (enemy.isDead() || !this.isColliding(enemy)) return;
-
-            if (this.isJumpingOnEnemy(enemy)) {
-                this.killEnemy(index);
-            } else {
+            this.isJumpingOnEnemy(enemy) ?
+                this.killEnemy(enemy, index) :
                 this.damageCharacter();
-            }
+            if (this.character.y < 226)
+                this.character.y = 226
         });
     }
 
@@ -162,7 +155,7 @@ class World {
     }
 
     isColliding(enemy) {
-        return this.character.x + this.character.width > enemy.x &&
+        return this.character.x + this.character.width - 20 > enemy.x &&
             this.character.y + this.character.height > enemy.y &&
             this.character.x < enemy.x + enemy.width &&
             this.character.y < enemy.y + enemy.height;
@@ -170,25 +163,28 @@ class World {
 
 
     isJumpingOnEnemy(enemy) {
-        return this.character.y < enemy.y &&
-            this.character.speedY > 0 &&
-            this.character.x + this.character.width > enemy.x &&
-            this.character.x < enemy.x + enemy.width;
+        // Character Kollisionsbox mit Offset
+        let characterLeft = this.character.x + this.character.offset.left;
+        let characterRight = this.character.x + this.character.width - this.character.offset.right;
+        let characterBottom = this.character.y + this.character.height - this.character.offset.bottom;
+
+        // Enemy Kollisionsbox (falls Enemy auch Offset hat, sonst normale Werte)
+        let enemyLeft = enemy.x + (enemy.offset ? enemy.offset.left : 0);
+        let enemyRight = enemy.x + enemy.width - (enemy.offset ? enemy.offset.right : 0);
+        let enemyTop = enemy.y + (enemy.offset ? enemy.offset.top : 0);
+
+        let isFalling = this.character.speedY <= 0;
+        let isLandingOnTop = Math.abs(characterBottom - enemyTop) <= 40;
+        let isAboveEnemy = characterBottom < enemyTop + 25;
+        let isHorizontallyOverlapping = characterRight > enemyLeft && characterLeft < enemyRight;
+
+        return isFalling && isLandingOnTop && isAboveEnemy && isHorizontallyOverlapping;
     }
 
-    killEnemy(index) {
+    killEnemy(enemy, index) {
         this.level.enemies.splice(index, 1);
         this.character.speedY = 12;
 
-        // Sanftere Korrektur nach kürzerer Zeit
-        setTimeout(() => {
-            if (this.character.y >= 226) {
-                this.character.y = 226; // Korrigiere Y-Position zur Laufhöhe
-                this.character.speedY = 0; // Stoppe Bewegung
-            } else if (this.character.y < 150) {
-                this.character.speedY = 30; // Sanft nach unten
-            }
-        }, 250); // Frühere Überprüfung
     }
 
 
@@ -259,10 +255,8 @@ class World {
             this.flipImage(mo);
         }
         mo.draw(this.ctx);
-        mo.drawBorderFrames(this.ctx);        // Blaue Original-Rahmen
-        mo.drawOffsetFrames(this.ctx);        // Rote Offset-Rahmen
-        mo.drawOffsetLineFrames(this.ctx);    // Grüne OffsetLine-Rahmen
-
+        mo.drawBorderFrames(this.ctx);
+        mo.drawOffsetFrames(this.ctx);
         if (mo.characterDirectionLeft) {
             this.flipImageBack(mo);
         }
