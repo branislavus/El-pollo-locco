@@ -96,7 +96,7 @@ class Endboss extends MovableObject {
 
     atackAnimation() {
         if (this.attackInProgress) return;
-
+        this.world.character.energy -= 10;
         this.attackInProgress = true;
         this.attackPhase = 'moving_left';
 

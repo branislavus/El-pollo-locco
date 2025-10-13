@@ -1,8 +1,116 @@
-body{
+/* chewy-regular - latin */
+@font-face {
+    font-display: swap;
+    /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
+    font-family: 'Chewy';
+    font-style: normal;
+    font-weight: 400;
+    src: url('../fonts/chewy-v18-latin-regular.woff2') format('woff2');
+    /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.d_none{
+    display: none;
+}
+
+
+
+body {
+    width: 100%;
+    height: 100vh;
     display: flex;
     flex-direction: column;
+    justify-content: center;
     align-items: center;
+    font-family: 'Chewy', Arial, Helvetica, sans-serif;
+    text-shadow: 5px 5px 10px rgb(230, 92, 0);
+    background-image: url(./img/wallpaper/desert3.png);
+    background-repeat: no-repeat;
+    background-size: cover;
+    overflow: hidden;
 }
-canvas{
+
+canvas {
     background-color: black;
+    border: 5px red ridge;
+    display: none;
+}
+
+h1 {
+    margin-bottom: 40px;
+    font-size: 56px;
+}
+
+
+.startWallpaper {
+    display: block;
+    background-image: url(./img/9_intro_outro_screens/start/startscreen_1.png);
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    width: 720px;
+    height: 480px;
+    border: 5px red ridge;
+    display: flex;
+    justify-content: center;
+    align-items: start;
+}
+
+.startButton {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100px;
+    height: 100px;
+    border: 5px red ridge;
+    border-radius: 50px;
+    background-color: rgba(255, 255, 255, 0.8);
+    font-family: 'Chewy', Arial, Helvetica, sans-serif;
+    font-size: 32px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin-top: 20px;
+     text-shadow: none;
+}
+
+.startButton:hover {
+    background-color: rgba(255, 255, 255, 1);
+}
+
+/* Tablet Landscape */
+@media only screen and (max-width: 933px) {
+    canvas {
+        width: 100vw;
+        height: 66.67vw;
+        /* Maintains 3:2 aspect ratio */
+        max-height: 100vh;
+    }
+
+    h1 {
+        font-size: 32px;
+        margin-bottom: 20px;
+    }
+}
+
+/* Mobile */
+@media only screen and (max-height: 480px) {
+    canvas {
+        width: 100vw;
+        height: auto;
+    }
+
+    h1 {
+        display: none;
+        margin-bottom: 0;
+    }
+
+    body {
+        justify-content: center;
+    }
 }

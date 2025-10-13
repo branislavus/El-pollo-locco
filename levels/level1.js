@@ -1,4 +1,6 @@
-const level1 = new Level(
+let level1;
+function initLevel(){
+level1 = new Level(
     [
         new Cloud(),
         new Cloud(),
@@ -66,3 +68,4 @@ const level1 = new Level(
          new Coins(1820, 200)
     ]
 );
+} 
