@@ -2,36 +2,36 @@ class AudioManager {
   constructor() {
     this.sounds = {
       // Button & UI Sounds
-      click: new Audio('audio/toy-button-105724.mp3'),
+      click: new Audio('audio/button.mp3'),
       
       // Character Sounds
-      jump: new Audio('audio/jumping_1-6452.mp3'),
-      land: new Audio('audio/land-81509.mp3'),
-      walk: new Audio('audio/walking-in-sand-36204.mp3'),
-      hurt: new Audio('audio/man-yelp-in-pain-269719.mp3'),
+      jump: new Audio('audio/jumping.mp3'),
+      land: new Audio('audio/land.mp3'),
+      walk: new Audio('audio/walking-in-sand.mp3'),
+      hurt: new Audio('audio/yelp-in-pain.mp3'),
       
       // Enemy Sounds
-      chicken1: new Audio('audio/chicken-noise-196746.mp3'),
-      chicken2: new Audio('audio/chicken-noise-228106.mp3'),
-      chickenHit: new Audio('audio/chiken-sound-370337.mp3'),
+      chicken1: new Audio('audio/chicken-noise1.mp3'),
+      chicken2: new Audio('audio/chicken-noise2.mp3'),
+      chickenHit: new Audio('audio/chicken-sound.mp3'),
+      chickenSquish: new Audio('audio/chicken-squish.mp3'),
       
       // Item Sounds
-      coin: new Audio('audio/coin-3-42413.mp3'),
-      bottle: new Audio('audio/bottle-205353.mp3'),
-      bottleBreak: new Audio('audio/broken-beer-bottle-311131.mp3'),
-      tomatoHit: new Audio('audio/tomato-squishwet-103934.mp3'),
+      coin: new Audio('audio/coin.mp3'),
+      bottle: new Audio('audio/bottle.mp3'),
+      bottleBreak: new Audio('audio/broken-bottle.mp3'),
+      bottleWhoosh: new Audio('audio/whoosh-bottle.mp3'),
       
       // Action Sounds
-      throw: new Audio('audio/swing-whoosh-110410.mp3'),
-      fireball: new Audio('audio/fireball-whoosh-1-179125.mp3'),
-      fire: new Audio('audio/fire-burning-364605.mp3'),
+      throw: new Audio('audio/swing-whoosh.mp3'),
+      fire: new Audio('audio/burning-boss.mp3'),
       
       // Environment Sounds
-      wind: new Audio('audio/wind-56428.mp3'),
-      windGust: new Audio('audio/wind-gust-386158.mp3'),
+      wind: new Audio('audio/wind.mp3'),
+      windGust: new Audio('audio/wind-gust.mp3'),
       
       // Background Music
-      backgroundMusic: new Audio('audio/wildwest-soundtrack-acoustic-guitar-69109.mp3')
+      backgroundMusic: new Audio('audio/wildwest-soundtrack.mp3')
     };
 
     this.isMuted = false;
@@ -140,12 +140,12 @@ class AudioManager {
     this.playSound('chicken2', 0.9);
   }
 
-  onChicken3() {
-    this.playSound('chicken3', 1.2);
-  }
-
   onChickenHit() {
     this.playSound('chickenHit', 1.4);
+  }
+
+  onChickenSquish() {
+    this.playSound('chickenSquish', 1.2);
   }
 
   // Item Sounds
@@ -161,8 +161,8 @@ class AudioManager {
     this.playSound('bottleBreak', 0.8);
   }
 
-  onTomatoHit() {
-    this.playSound('tomatoHit', 1.1);
+  onBottleWhoosh() {
+    this.playSound('bottleWhoosh', 1.0);
   }
 
   // Action Sounds
@@ -170,16 +170,8 @@ class AudioManager {
     this.playSound('throw', 1.2);
   }
 
-  onFireball() {
-    this.playSound('fireball', 0.9);
-  }
-
   onFire() {
     this.playSound('fire', 0.7);
-  }
-
-  onExplosion() {
-    this.playSound('explosion', 0.9);
   }
 
   // Environment Sounds
