@@ -1,0 +1,220 @@
+class AudioManager {
+  constructor() {
+    this.sounds = {
+      // Button & UI Sounds
+      click: new Audio('audio/toy-button-105724.mp3'),
+      
+      // Character Sounds
+      jump: new Audio('audio/jumping_1-6452.mp3'),
+      land: new Audio('audio/land-81509.mp3'),
+      walk: new Audio('audio/walking-in-sand-36204.mp3'),
+      hurt: new Audio('audio/man-yelp-in-pain-269719.mp3'),
+      
+      // Enemy Sounds
+      chicken1: new Audio('audio/chicken-noise-196746.mp3'),
+      chicken2: new Audio('audio/chicken-noise-228106.mp3'),
+      chicken3: new Audio('audio/chicken-noise-228106 (1).mp3'),
+      chickenHit: new Audio('audio/chiken-sound-370337.mp3'),
+      
+      // Item Sounds
+      coin: new Audio('audio/coin-3-42413.mp3'),
+      bottle: new Audio('audio/bottle-205353.mp3'),
+      bottleBreak: new Audio('audio/broken-beer-bottle-311131.mp3'),
+      tomatoHit: new Audio('audio/tomato-squishwet-103934.mp3'),
+      
+      // Action Sounds
+      throw: new Audio('audio/swing-whoosh-110410.mp3'),
+      fireball: new Audio('audio/fireball-whoosh-1-179125.mp3'),
+      fire: new Audio('audio/fire-burning-364605.mp3'),
+      explosion: new Audio('audio/fire-burning-364605 (1).mp3'),
+      
+      // Environment Sounds
+      wind: new Audio('audio/wind-56428.mp3'),
+      windGust: new Audio('audio/wind-gust-386158.mp3'),
+      
+      // Background Music
+      backgroundMusic: new Audio('audio/wildwest-soundtrack-acoustic-guitar-69109.mp3')
+    };
+
+    this.isMuted = false;
+    this.masterVolume = 1.0;
+    this.musicVolume = 0.3;
+    this.sfxVolume = 0.8;
+
+    this.initializeSounds();
+  }
+
+  initializeSounds() {
+    Object.keys(this.sounds).forEach(key => {
+      if (key === 'backgroundMusic') {
+        this.sounds[key].volume = this.musicVolume;
+        this.sounds[key].loop = true;
+      } else {
+        this.sounds[key].volume = this.sfxVolume;
+      }
+    });
+  }
+
+  // Core sound playing method
+  playSound(soundName, playbackRate = 1.0, volume = null) {
+    if (this.isMuted || !this.sounds[soundName]) return;
+    
+    const sound = this.sounds[soundName];
+    sound.currentTime = 0;
+    sound.playbackRate = playbackRate;
+    
+    if (volume !== null) {
+      sound.volume = volume * this.masterVolume;
+    }
+    
+    sound.play().catch(e => console.log('Audio play failed:', e));
+  }
+
+  // Volume and mute controls
+  setMasterVolume(volume) {
+    this.masterVolume = Math.max(0, Math.min(1, volume));
+    this.updateAllVolumes();
+  }
+
+  setMusicVolume(volume) {
+    this.musicVolume = Math.max(0, Math.min(1, volume));
+    this.sounds.backgroundMusic.volume = this.musicVolume * this.masterVolume;
+  }
+
+  setSfxVolume(volume) {
+    this.sfxVolume = Math.max(0, Math.min(1, volume));
+    this.updateAllVolumes();
+  }
+
+  mute() {
+    this.isMuted = true;
+  }
+
+  unmute() {
+    this.isMuted = false;
+  }
+
+  toggleMute() {
+    this.isMuted = !this.isMuted;
+    return this.isMuted;
+  }
+
+  updateAllVolumes() {
+    Object.keys(this.sounds).forEach(key => {
+      if (key === 'backgroundMusic') {
+        this.sounds[key].volume = this.musicVolume * this.masterVolume;
+      } else {
+        this.sounds[key].volume = this.sfxVolume * this.masterVolume;
+      }
+    });
+  }
+
+  // ===== GAME SOUND METHODS =====
+
+  // Button & UI Sounds
+  onClick() {
+    this.playSound('click');
+  }
+
+  // Character Sounds
+  onJump() {
+    this.playSound('jump', 1.3);
+  }
+
+  onLand() {
+    this.playSound('land', 0.8);
+  }
+
+  onWalk() {
+    this.playSound('walk');
+  }
+
+  onHurt() {
+    this.playSound('hurt', 1.1);
+  }
+
+  // Enemy Sounds
+  onChicken1() {
+    this.playSound('chicken1');
+  }
+
+  onChicken2() {
+    this.playSound('chicken2', 0.9);
+  }
+
+  onChicken3() {
+    this.playSound('chicken3', 1.2);
+  }
+
+  onChickenHit() {
+    this.playSound('chickenHit', 1.4);
+  }
+
+  // Item Sounds
+  onCoin() {
+    this.playSound('coin', 1.5);
+  }
+
+  onBottle() {
+    this.playSound('bottle');
+  }
+
+  onBottleBreak() {
+    this.playSound('bottleBreak', 0.8);
+  }
+
+  onTomatoHit() {
+    this.playSound('tomatoHit', 1.1);
+  }
+
+  // Action Sounds
+  onThrow() {
+    this.playSound('throw', 1.2);
+  }
+
+  onFireball() {
+    this.playSound('fireball', 0.9);
+  }
+
+  onFire() {
+    this.playSound('fire', 0.7);
+  }
+
+  onExplosion() {
+    this.playSound('explosion', 0.9);
+  }
+
+  // Environment Sounds
+  onWind() {
+    this.playSound('wind', 0.8);
+  }
+
+  onWindGust() {
+    this.playSound('windGust', 1.1);
+  }
+
+  // Background Music
+  startBackgroundMusic() {
+    if (!this.isMuted) {
+      this.sounds.backgroundMusic.play().catch(e => console.log('Music play failed:', e));
+    }
+  }
+
+  stopBackgroundMusic() {
+    this.sounds.backgroundMusic.pause();
+    this.sounds.backgroundMusic.currentTime = 0;
+  }
+
+  pauseBackgroundMusic() {
+    this.sounds.backgroundMusic.pause();
+  }
+
+  resumeBackgroundMusic() {
+    if (!this.isMuted) {
+      this.sounds.backgroundMusic.play().catch(e => console.log('Music play failed:', e));
+    }
+  }
+}
+
+// Global instance for easy access
+const audioManager = new AudioManager();

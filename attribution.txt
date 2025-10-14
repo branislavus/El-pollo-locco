@@ -2,3 +2,5 @@ attribution: Chewy
 Apache License, Version 2.0
 
 Chewy-Regular.ttf: Copyright (c) 2010 by Font Diner, Inc DBA Sideshow. All rights reserved. 
+
+"by [Contributor] via Pixabay"

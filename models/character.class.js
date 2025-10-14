@@ -56,6 +56,8 @@ class Character extends MovableObject {
         'img/2_character_pepe/5_dead/D-56.png',
         'img/2_character_pepe/5_dead/D-57.png'
     ];
+
+    audio = new AudioManager();
     height = 200;
     width = 100;
     speed = 3;
@@ -88,9 +90,9 @@ class Character extends MovableObject {
         this.loadImages(this.IMAGES_IDLE);
         this.loadImages(this.IMAGES_LONG_IDLE);
         this.y = 226; // Standard Laufposition setzen
+        this.lastWalkSoundTime = 0; // Für Walk-Sound Throttling
         this.animate();
         this.applyGravity();
-
     }
 
     isAboveGround() {
@@ -104,12 +106,24 @@ class Character extends MovableObject {
 
         setInterval(() => {
             if (this.movementEnabled) {
-                if (this.canMoveRight())
+                let isWalking = false;
+                
+                if (this.canMoveRight()) {
                     this.moveRight();
-                if (this.canMoveLeft())
+                    isWalking = true;
+                }
+                if (this.canMoveLeft()) {
                     this.moveLeft();
+                    isWalking = true;
+                }
                 if (this.canJump()) {
                     this.jump();
+                    this.audio.onJump(); // Jump-Sound direkt hier
+                }
+                
+                // Walk-Sound nur wenn tatsächlich gelaufen wird
+                if (isWalking && !this.isAboveGround()) {
+                    this.playWalkSoundThrottled();
                 }
             }
             this.world.camera_x = -this.x + 100;
@@ -165,6 +179,15 @@ class Character extends MovableObject {
     jump() {
         this.speedY = 30;
         this.lastMove = new Date().getTime();
+    }
+
+    // Spielt Walk-Sound nur alle 300ms ab (nicht 60x/s)
+    playWalkSoundThrottled() {
+        const currentTime = new Date().getTime();
+        if (currentTime - this.lastWalkSoundTime > 300) { // 300ms Pause zwischen Sounds
+            this.audio.onWalk();
+            this.lastWalkSoundTime = currentTime;
+        }
     }
 
 
