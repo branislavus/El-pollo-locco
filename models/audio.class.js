@@ -13,7 +13,6 @@ class AudioManager {
       // Enemy Sounds
       chicken1: new Audio('audio/chicken-noise-196746.mp3'),
       chicken2: new Audio('audio/chicken-noise-228106.mp3'),
-      chicken3: new Audio('audio/chicken-noise-228106 (1).mp3'),
       chickenHit: new Audio('audio/chiken-sound-370337.mp3'),
       
       // Item Sounds
@@ -26,7 +25,6 @@ class AudioManager {
       throw: new Audio('audio/swing-whoosh-110410.mp3'),
       fireball: new Audio('audio/fireball-whoosh-1-179125.mp3'),
       fire: new Audio('audio/fire-burning-364605.mp3'),
-      explosion: new Audio('audio/fire-burning-364605 (1).mp3'),
       
       // Environment Sounds
       wind: new Audio('audio/wind-56428.mp3'),

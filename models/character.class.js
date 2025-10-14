@@ -110,20 +110,24 @@ class Character extends MovableObject {
                 
                 if (this.canMoveRight()) {
                     this.moveRight();
-                    isWalking = true;
+                    if (!this.isAboveGround()) {
+                        isWalking = true;
+                    }
                 }
                 if (this.canMoveLeft()) {
                     this.moveLeft();
-                    isWalking = true;
+                    if (!this.isAboveGround()) {
+                        isWalking = true;
+                    }
                 }
                 if (this.canJump()) {
                     this.jump();
-                    this.audio.onJump(); // Jump-Sound direkt hier
+                    this.audio.onJump();
                 }
                 
-                // Walk-Sound nur wenn tatsächlich gelaufen wird
-                if (isWalking && !this.isAboveGround()) {
-                    this.playWalkSoundThrottled();
+                // Walk-Sound mit einfachem Throttling
+                if (isWalking) {
+                    this.playWalkSoundIfReady();
                 }
             }
             this.world.camera_x = -this.x + 100;
@@ -181,10 +185,10 @@ class Character extends MovableObject {
         this.lastMove = new Date().getTime();
     }
 
-    // Spielt Walk-Sound nur alle 300ms ab (nicht 60x/s)
-    playWalkSoundThrottled() {
+    // Einfaches Walk-Sound Throttling - spielt nur alle 200ms
+    playWalkSoundIfReady() {
         const currentTime = new Date().getTime();
-        if (currentTime - this.lastWalkSoundTime > 300) { // 300ms Pause zwischen Sounds
+        if (currentTime - this.lastWalkSoundTime > 350) { // 200ms = 5x pro Sekunde max
             this.audio.onWalk();
             this.lastWalkSoundTime = currentTime;
         }

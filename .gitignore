@@ -1,0 +1,25 @@
+# Audio files
+audio/
+*.mp3
+*.wav
+*.ogg
+
+# Development files
+.vscode/
+*.log
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Node modules (if using npm)
+node_modules/
+
+# Build output
+dist/
+build/
