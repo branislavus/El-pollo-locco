@@ -107,7 +107,7 @@ class Character extends MovableObject {
         setInterval(() => {
             if (this.movementEnabled) {
                 let isWalking = false;
-                
+
                 if (this.canMoveRight()) {
                     this.moveRight();
                     if (!this.isAboveGround()) {
@@ -124,10 +124,10 @@ class Character extends MovableObject {
                     this.jump();
                     this.audio.onJump();
                 }
-                
+
                 // Walk-Sound mit einfachem Throttling
                 if (isWalking) {
-                    this.playWalkSoundIfReady();
+                    this.playSoundIfDoingSomething('onWalk', 300);
                 }
             }
             this.world.camera_x = -this.x + 100;
@@ -139,8 +139,10 @@ class Character extends MovableObject {
             this.updateLastMove();
 
             if (this.isDead()) {
+                this.playSoundIfDoingSomething('onDie', 9000);
                 this.playDeadAnimationOnce();
             } else if (this.isHurt()) {
+                this.playSoundIfDoingSomething('onHurt', 2000);
                 this.playAnimation(this.IMAGES_HURT);
             } else if (this.isIdle()) {
                 this.isBored();
@@ -155,13 +157,23 @@ class Character extends MovableObject {
     }
 
     isBored() {
+        let isSleeping = false;
         if (this.lastMoveTime > 16000) {
             this.playAnimation(this.IMAGES_LONG_IDLE);
+            this.playSoundIfDoingSomething('onSleep', 3000);
+
         } else {
             this.playAnimation(this.IMAGES_IDLE);
         }
     }
 
+    playSoundIfDoingSomething(sound, time) {
+        const currentTime = new Date().getTime();
+        if (currentTime - this.lastWalkSoundTime > time) {
+            this.audio[sound]();
+            this.lastWalkSoundTime = currentTime;
+        }
+    }
 
     updateLastMove() {
         let currentTime = new Date().getTime();
@@ -184,17 +196,6 @@ class Character extends MovableObject {
         this.speedY = 30;
         this.lastMove = new Date().getTime();
     }
-
-    // Einfaches Walk-Sound Throttling - spielt nur alle 200ms
-    playWalkSoundIfReady() {
-        const currentTime = new Date().getTime();
-        if (currentTime - this.lastWalkSoundTime > 300) { // 200ms = 5x pro Sekunde max
-            this.audio.onWalk();
-            this.lastWalkSoundTime = currentTime;
-        }
-    }
-
-
 
     canMoveRight() {
         return this.movementEnabled && this.world.keyboard.RIGHT && this.x < this.world.level.level_end_x && !this.isDead();

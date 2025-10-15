@@ -9,6 +9,8 @@ class AudioManager {
       land: new Audio('audio/land.mp3'),
       walk: new Audio('audio/walking-in-sand.mp3'),
       hurt: new Audio('audio/yelp-in-pain.mp3'),
+      snoring: new Audio('audio/snoring.mp3'),
+      dieScream: new Audio('audio/die-scream.mp3'),
       
       // Enemy Sounds
       chicken1: new Audio('audio/chicken-noise1.mp3'),
@@ -128,7 +130,15 @@ class AudioManager {
   }
 
   onHurt() {
-    this.playSound('hurt', 1.1);
+    this.playSound('hurt', 0.7);
+  }
+
+    onSleep() {
+    this.playSound('snoring', 1.1);
+  }
+
+      onDie() {
+    this.playSound('dieScream', 1.1);
   }
 
   // Enemy Sounds
