@@ -17,6 +17,7 @@ class ChickenSmall extends MovableObject {
         super().loadImage('img/3_enemies_chicken/chicken_normal/1_walk/1_w.png');
         this.x = 120 + Math.random() * 500;
         this.loadImages(this.IMAGES_WALKING);
+        this.loadImage(this.IMAGE_DEAD);
         this.speed = 0.1 + Math.random() * 0.3;
         this.animate();
 
@@ -31,4 +32,23 @@ class ChickenSmall extends MovableObject {
             this.playAnimation(this.IMAGES_WALKING);
         }, 200);
     }
+
+    showDeadChicken() {
+        // Stoppe alle Bewegungen und Animationen
+        this.speed = 0;
+        this.isDead = () => true;
+        
+        // Lade das Todes-Bild
+        this.loadImage(this.IMAGE_DEAD);
+        
+        // Stoppe die laufenden Animationen
+        this.stopAnimations();
+    }
+
+    stopAnimations() {
+        // Überschreibt die animate Methode um Animationen zu stoppen
+        this.animate = () => {};
+    }
+
+    
 }

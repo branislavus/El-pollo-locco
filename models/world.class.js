@@ -24,7 +24,6 @@ class World {
     }
 
     initializeStatusBars() {
-        // Erstelle Endboss-Statusbar
         this.statusBarEndboss = new StatusBarEndBoss();
     }
 
@@ -35,10 +34,7 @@ class World {
         }, 1000);
     }
 
-
-
     shouldShowEndbossStatusbar() {
-        // Zeige Endboss-Statusbar wenn Character Position x=1000 erreicht
         let shouldShow = this.character.x >= 1300;
         return shouldShow;
     }
@@ -87,14 +83,17 @@ class World {
     }
 
     checkEnemyCollisions() {
-        this.level.enemies.forEach((enemy, index) => {
-            if (enemy.isDead() || !this.isColliding(enemy)) return;
-            this.isJumpingOnEnemy(enemy) ?
-                this.killEnemy(enemy, index) :
-                this.damageCharacter();
-            if (this.character.y < 226)
-                this.character.y = 226
-        });
+        for (let i = this.level.enemies.length - 1; i >= 0; i--) {
+            let enemy = this.level.enemies[i];
+            if (enemy.isDead() || !this.isColliding(enemy)) continue;
+
+            this.isJumpingOnEnemy(enemy) ? is.killEnemy(enemy, i) : this.damageCharacter();
+            this.setRightCharecterYPosition();
+        }
+    }
+
+    setRightCharecterYPosition() {
+        if (this.character.y < 226) this.character.y = 226;
     }
 
     checkBottleEnemyCollisions() {
@@ -102,24 +101,22 @@ class World {
             this.level.enemies.forEach((enemy, enemyIndex) => {
                 if (enemy.isDead() || bottle.shouldBeRemoved) return;
 
-                if (this.isBottleCollidingWithEnemy(bottle, enemy)) {
-                    this.handleBottleHitEnemy(enemy, bottle);
-                }
+                if (this.isBottleCollidingWithEnemy(bottle, enemy)) this.handleBottleHitEnemy(enemy, bottle);
             });
         });
     }
 
     isBottleCollidingWithEnemy(bottle, enemy) {
-        // Präzisere Kollision - nur wenn Flasche wirklich den Enemy-Kern trifft
+        // Einfache Kollisionserkennung - Flasche-Zentrum trifft Gegner
         let bottleCenterX = bottle.x + bottle.width / 2;
         let bottleCenterY = bottle.y + bottle.height / 2;
 
-        // Kleinere Kollisions-Zone für Enemies (besonders Endboss)
-        let enemyCollisionMargin = this.isEndboss(enemy) ? 50 : 10;
-        let enemyLeft = enemy.x + enemyCollisionMargin;
-        let enemyRight = enemy.x + enemy.width - enemyCollisionMargin;
-        let enemyTop = enemy.y + enemyCollisionMargin;
-        let enemyBottom = enemy.y + enemy.height - enemyCollisionMargin;
+        // Margin nur für Endboss, Chickens ohne Margin
+        let margin = this.isEndboss(enemy) ? 50 : 0;
+        let enemyLeft = enemy.x + margin;
+        let enemyRight = enemy.x + enemy.width - margin;
+        let enemyTop = enemy.y + margin;
+        let enemyBottom = enemy.y + enemy.height - margin;
 
         return bottleCenterX > enemyLeft &&
             bottleCenterX < enemyRight &&
@@ -128,30 +125,41 @@ class World {
     }
 
     handleBottleHitEnemy(enemy, bottle) {
-        // Nur Endboss wird von Flaschen verletzt
-        if (this.isEndboss(enemy)) {
-            this.hurtEndboss(enemy);
-        }
-
+        // Alle Gegner werden von Flaschen getötet
+        this.killEnemyByBottle(enemy);
         // Flasche explodiert immer bei Treffer
         bottle.startSplashAnimation();
     }
 
     isEndboss(enemy) {
-        // Prüft ob Enemy ein Endboss ist (z.B. durch Klassename oder Property)
+        // Prüft ob Enemy ein Endboss ist
         return enemy.constructor.name === 'Endboss' || enemy.isEndboss === true;
+    }
+
+    killEnemyByBottle(enemy) {
+        // Zeige Todes-Animation
+        if (enemy.showDeadChicken) enemy.showDeadChicken();
+        
+        // Audio für getöteten Gegner
+        if (typeof audioManager !== 'undefined') audioManager.onChickenSquish();
+        
+        // Entferne Gegner nach Animation
+        setTimeout(() => {
+            let index = this.level.enemies.indexOf(enemy);
+            if (index > -1) this.level.enemies.splice(index, 1);
+        }, 2000);
     }
 
     hurtEndboss(endboss) {
         if (endboss.bossEnergy > 0) {
             endboss.bossEnergy -= 1;
             endboss.hurtImageIndex = 1; // Triggert Hurt-Animation
-
-            // Endboss-Statusbar aktualisieren
-            if (this.statusBarEndboss) {
-                this.statusBarEndboss.setBossEnergyAmount(endboss.bossEnergy);
-            }
+            this.refreshStatusbarEndboss();
         }
+    }
+
+    refreshStatusbarEndboss() {
+        if (this.statusBarEndboss) this.statusBarEndboss.setBossEnergyAmount(endboss.bossEnergy);
     }
 
     isColliding(enemy) {
@@ -182,12 +190,20 @@ class World {
     }
 
     killEnemy(enemy, index) {
-        this.level.enemies.splice(index, 1);
+        // Character springt nach oben
         this.character.speedY = 12;
 
+        // 1. Zeige Todes-Animation des Gegners
+        if (enemy.showDeadChicken) enemy.showDeadChicken();
+
+        // 2. Audio für getöteten Gegner abspielen
+        if (typeof audioManager !== 'undefined') audioManager.onChickenSquish();
+
+        // 3. Nach 2 Sekunden: Entferne Gegner aus dem Array
+        setTimeout(() => {
+            this.level.enemies.splice(index, 1);
+        }, 2000);
     }
-
-
 
     damageCharacter() {
         if (!this.character.isHurt()) {
@@ -207,11 +223,19 @@ class World {
     checkCollectableCollisions(items, collectMethod, statusBar, statusMethod, counterProperty) {
         items.forEach((item, index) => {
             if (this.character.isColliding(item)) {
-                this.character[collectMethod](item);
-                items.splice(index, 1);
-                statusBar[statusMethod](this.character[counterProperty]);
+                this.collectItem(item, index, items, collectMethod);
+                this.updateStatusBar(statusBar, statusMethod, counterProperty);
             }
         });
+    }
+
+    collectItem(item, index, items, collectMethod) {
+        this.character[collectMethod](item);
+        items.splice(index, 1);
+    }
+
+    updateStatusBar(statusBar, statusMethod, counterProperty) {
+        statusBar[statusMethod](this.character[counterProperty]);
     }
 
     draw() {
@@ -276,8 +300,6 @@ class World {
 
     setWorld() {
         this.character.world = this;
-
-        // Setze World-Referenz auch für alle Enemies (besonders Endboss)
         this.level.enemies.forEach(enemy => {
             enemy.world = this;
         });

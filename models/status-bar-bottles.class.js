@@ -22,8 +22,8 @@ class StatusBarBottles extends DrawableObject {
     }
 
     setBottlesAmount(bottlesCollected) {
-        this.bottlesCollected = bottlesCollected;
-        let path = this.IMAGES_BOTTLES_BLUE[this.bottlesCollected];
+        bottlesCollected > 5 ? this.botCol = 5 : this.botCol = bottlesCollected;
+        let path = this.IMAGES_BOTTLES_BLUE[this.botCol];
         this.img = this.imagePool[path];
     }
 

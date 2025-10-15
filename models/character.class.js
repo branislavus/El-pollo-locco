@@ -188,7 +188,7 @@ class Character extends MovableObject {
     // Einfaches Walk-Sound Throttling - spielt nur alle 200ms
     playWalkSoundIfReady() {
         const currentTime = new Date().getTime();
-        if (currentTime - this.lastWalkSoundTime > 350) { // 200ms = 5x pro Sekunde max
+        if (currentTime - this.lastWalkSoundTime > 300) { // 200ms = 5x pro Sekunde max
             this.audio.onWalk();
             this.lastWalkSoundTime = currentTime;
         }

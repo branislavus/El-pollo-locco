@@ -37,6 +37,7 @@ level1 = new Level(
         new BackgroundObject('img/5_background/layers/1_first_layer/2.png', 720*3)
     ],
     [
+        new Bottles(280, 362),
         new Bottles(300, 362),
         new Bottles(600, 362),
         new Bottles(900, 362),

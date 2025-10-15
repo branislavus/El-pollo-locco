@@ -19,7 +19,7 @@ function showStartWallpaper() {
 }
 
 function StartGame() {
-    audioManager.startBackgroundMusic();
+    // audioManager.startBackgroundMusic();
     
     initLevel();
     init();
