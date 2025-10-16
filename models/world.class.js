@@ -127,7 +127,7 @@ class World {
     handleBottleHitEnemy(enemy, bottle) {
         // Alle Gegner werden von Flaschen getötet
         this.killEnemyByBottle(enemy);
-        // Flasche explodiert immer bei Treffer
+        // Bottle-Break Sound direkt abspielen
         bottle.startSplashAnimation();
     }
 
@@ -139,10 +139,10 @@ class World {
     killEnemyByBottle(enemy) {
         // Zeige Todes-Animation
         if (enemy.showDeadChicken) enemy.showDeadChicken();
-        
+
         // Audio für getöteten Gegner
         if (typeof audioManager !== 'undefined') audioManager.onChickenSquish();
-        
+
         // Entferne Gegner nach Animation
         setTimeout(() => {
             let index = this.level.enemies.indexOf(enemy);

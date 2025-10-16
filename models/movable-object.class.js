@@ -107,14 +107,22 @@ class MovableObject extends DrawableObject {
     }
 
     die() {
-    this.isDead = true;
-    this.speed = 0;
-    this.playDeathAnimation && this.playDeathAnimation();
+        this.isDead = true;
+        this.speed = 0;
+        this.playDeathAnimation && this.playDeathAnimation();
 
 
-    setTimeout(() => {
-        let index = world.level.enemies.indexOf(this);
-        if (index > -1) world.level.enemies.splice(index, 1);
-    }, 800);
-}
+        setTimeout(() => {
+            let index = world.level.enemies.indexOf(this);
+            if (index > -1) world.level.enemies.splice(index, 1);
+        }, 800);
+    }
+
+    playSoundIfDoingSomething(sound, time) {
+        const currentTime = new Date().getTime();
+        if (currentTime - this.lastWalkSoundTime > time) {
+            this.audio[sound]();
+            this.lastWalkSoundTime = currentTime;
+        }
+    }
 }

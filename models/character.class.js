@@ -167,13 +167,7 @@ class Character extends MovableObject {
         }
     }
 
-    playSoundIfDoingSomething(sound, time) {
-        const currentTime = new Date().getTime();
-        if (currentTime - this.lastWalkSoundTime > time) {
-            this.audio[sound]();
-            this.lastWalkSoundTime = currentTime;
-        }
-    }
+
 
     updateLastMove() {
         let currentTime = new Date().getTime();

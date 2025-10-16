@@ -23,6 +23,7 @@ class ThrowableObject extends MovableObject {
     }
 
     throw() {
+        if (typeof audioManager !== 'undefined') audioManager.onBottleWhoosh();
         this.speedY = 30;
         this.applyGravity();
         this.rotationAngle = 0;
@@ -39,6 +40,7 @@ class ThrowableObject extends MovableObject {
     }
 
     startSplashAnimation() {
+        if (typeof audioManager !== 'undefined') audioManager.onBottleBreak();
         let splashIndex = 0;
         let splashInterval = setInterval(() => {
             if (splashIndex < this.BOTTLE_SPLASH.length) {
