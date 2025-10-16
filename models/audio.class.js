@@ -160,7 +160,7 @@ class AudioManager {
 
   // Item Sounds
   onCoin() {
-    this.playSound('coin', 1.5);
+    this.playSound('coin', 1);
   }
 
   onBottle() {

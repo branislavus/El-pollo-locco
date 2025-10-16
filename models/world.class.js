@@ -232,6 +232,16 @@ class World {
     collectItem(item, index, items, collectMethod) {
         this.character[collectMethod](item);
         items.splice(index, 1);
+        this.playCollectSound(collectMethod);
+    }
+
+    playCollectSound(collectMethod) {
+        if (collectMethod === 'collectBottle') {
+            if (typeof audioManager !== 'undefined') audioManager.onBottle();
+        }
+        if (collectMethod === 'collectCoin') {
+            if (typeof audioManager !== 'undefined') audioManager.onCoin();
+        }
     }
 
     updateStatusBar(statusBar, statusMethod, counterProperty) {
