@@ -87,7 +87,7 @@ class World {
             let enemy = this.level.enemies[i];
             if (enemy.isDead() || !this.isColliding(enemy)) continue;
 
-            this.isJumpingOnEnemy(enemy) ? is.killEnemy(enemy, i) : this.damageCharacter();
+            this.isJumpingOnEnemy(enemy) ? this.killEnemy(enemy, i) : this.damageCharacter();
             this.setRightCharecterYPosition();
         }
     }
@@ -125,9 +125,14 @@ class World {
     }
 
     handleBottleHitEnemy(enemy, bottle) {
-        // Alle Gegner werden von Flaschen getötet
-        this.killEnemyByBottle(enemy);
-        // Bottle-Break Sound direkt abspielen
+        if (this.isEndboss(enemy)) {
+            // Endboss nimmt nur Schaden, verschwindet nicht
+            this.hurtEndboss(enemy);
+        } else {
+            // Normale Gegner werden getötet
+            this.killEnemyByBottle(enemy);
+        }
+        // Starte nur die Animation, Sound wird in startSplashAnimation() abgespielt
         bottle.startSplashAnimation();
     }
 
@@ -154,11 +159,11 @@ class World {
         if (endboss.bossEnergy > 0) {
             endboss.bossEnergy -= 1;
             endboss.hurtImageIndex = 1; // Triggert Hurt-Animation
-            this.refreshStatusbarEndboss();
+            this.refreshStatusbarEndboss(endboss);
         }
     }
 
-    refreshStatusbarEndboss() {
+    refreshStatusbarEndboss(endboss) {
         if (this.statusBarEndboss) this.statusBarEndboss.setBossEnergyAmount(endboss.bossEnergy);
     }
 

@@ -170,7 +170,7 @@ class Endboss extends MovableObject {
             let distanceToCharacter = Math.abs(this.x - characterX);
 
             // Greife an wenn Character in Reichweite ist (z.B. 200 Pixel)
-            return distanceToCharacter < 250;
+            return distanceToCharacter < 350;
         }
         return false; // Kein Character gefunden
     }
@@ -241,7 +241,7 @@ class Endboss extends MovableObject {
         if (!this.hurtAnimationStarted) {
             this.hurtAnimationStarted = true;
             this.currentImage = 0; // Reset für saubere Animation
-
+            audioManager.onBossHurt();
             // Spiele Hurt-Animation komplett ab
             let hurtInterval = setInterval(() => {
                 if (this.currentImage < this.IMAGES_HURT.length) {

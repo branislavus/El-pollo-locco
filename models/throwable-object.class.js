@@ -10,6 +10,7 @@ class ThrowableObject extends MovableObject {
     ]
 
     shouldBeRemoved = false;
+    soundPlayed = false; // Flag um doppelte Sounds zu verhindern
 
     constructor(x, y, direction) {
         super().loadImage('img/6_salsa_bottle/salsa_bottle.png');
@@ -23,7 +24,7 @@ class ThrowableObject extends MovableObject {
     }
 
     throw() {
-        if (typeof audioManager !== 'undefined') audioManager.onBottleWhoosh();
+        if (typeof audioManager !== 'undefined') audioManager.onThrow();
         this.speedY = 30;
         this.applyGravity();
         this.rotationAngle = 0;
@@ -40,7 +41,12 @@ class ThrowableObject extends MovableObject {
     }
 
     startSplashAnimation() {
-        if (typeof audioManager !== 'undefined') audioManager.onBottleBreak();
+        // Sound nur einmal abspielen
+        if (!this.soundPlayed && typeof audioManager !== 'undefined') {
+            audioManager.onBottleBreak();
+            this.soundPlayed = true;
+        }
+        
         let splashIndex = 0;
         let splashInterval = setInterval(() => {
             if (splashIndex < this.BOTTLE_SPLASH.length) {

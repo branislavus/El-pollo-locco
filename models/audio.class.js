@@ -3,7 +3,7 @@ class AudioManager {
     this.sounds = {
       // Button & UI Sounds
       click: new Audio('audio/button.mp3'),
-      
+
       // Character Sounds
       jump: new Audio('audio/jumping.mp3'),
       land: new Audio('audio/land.mp3'),
@@ -11,27 +11,27 @@ class AudioManager {
       hurt: new Audio('audio/yelp-in-pain.mp3'),
       snoring: new Audio('audio/snoring.mp3'),
       dieScream: new Audio('audio/die-scream.mp3'),
-      
+
       // Enemy Sounds
       chicken1: new Audio('audio/chicken-noise1.mp3'),
       chicken2: new Audio('audio/chicken-noise2.mp3'),
-      chickenHit: new Audio('audio/chicken-sound.mp3'),
+      chicken3: new Audio('audio/chicken-noise3.mp3'),
       chickenSquish: new Audio('audio/chicken-squish.mp3'),
-      
+
       // Item Sounds
       coin: new Audio('audio/coin.mp3'),
       bottle: new Audio('audio/bottle.mp3'),
       bottleBreak: new Audio('audio/broken-bottle.mp3'),
       bottleWhoosh: new Audio('audio/whoosh-bottle.mp3'),
-      
+
       // Action Sounds
       throw: new Audio('audio/swing-whoosh.mp3'),
       fire: new Audio('audio/burning-boss.mp3'),
-      
+
       // Environment Sounds
       wind: new Audio('audio/wind.mp3'),
       windGust: new Audio('audio/wind-gust.mp3'),
-      
+
       // Background Music
       backgroundMusic: new Audio('audio/wildwest-soundtrack.mp3')
     };
@@ -58,15 +58,15 @@ class AudioManager {
   // Core sound playing method
   playSound(soundName, playbackRate = 1.0, volume = null) {
     if (this.isMuted || !this.sounds[soundName]) return;
-    
+
     const sound = this.sounds[soundName];
     sound.currentTime = 0;
     sound.playbackRate = playbackRate;
-    
+
     if (volume !== null) {
       sound.volume = volume * this.masterVolume;
     }
-    
+
     sound.play().catch(e => console.log('Audio play failed:', e));
   }
 
@@ -126,18 +126,18 @@ class AudioManager {
   }
 
   onWalk() {
-    this.playSound('walk');
+    this.playSound('walk', 1.5);
   }
 
   onHurt() {
-    this.playSound('hurt', 0.7);
+    this.playSound('hurt', 0.6);
   }
 
-    onSleep() {
+  onSleep() {
     this.playSound('snoring', 1.1);
   }
 
-      onDie() {
+  onDie() {
     this.playSound('dieScream', 1.1);
   }
 
@@ -150,12 +150,16 @@ class AudioManager {
     this.playSound('chicken2', 0.9);
   }
 
-  onChickenHit() {
+  onChicken3() {
     this.playSound('chickenHit', 1.4);
   }
 
   onChickenSquish() {
     this.playSound('chickenSquish', 1.2);
+  }
+
+  onBossHurt() {
+    this.playSound('bottleWhoosh', 3);
   }
 
   // Item Sounds
@@ -164,15 +168,11 @@ class AudioManager {
   }
 
   onBottle() {
-    this.playSound('bottle');
+    this.playSound('bottle', 0.6);
   }
 
   onBottleBreak() {
-    this.playSound('bottleBreak', 0.8);
-  }
-
-  onBottleWhoosh() {
-    this.playSound('bottleWhoosh', 1.0);
+    this.playSound('bottleBreak', 1.2);
   }
 
   // Action Sounds
