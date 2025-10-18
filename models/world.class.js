@@ -158,7 +158,7 @@ class World {
     hurtEndboss(endboss) {
         if (endboss.bossEnergy > 0) {
             endboss.bossEnergy -= 1;
-            endboss.hurtImageIndex = 1; // Triggert Hurt-Animation
+            endboss.hurtImageIndex = 1; // Triggert Hurt-Animation (und damit takeDamage())
             this.refreshStatusbarEndboss(endboss);
         }
     }

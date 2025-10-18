@@ -57,6 +57,7 @@ class Endboss extends MovableObject {
     attackPhase = 'idle';  // idle, moving_left, attacking, moving_right
     attackDuration = 300; // Dauer der Attack-Animation
     moveSpeed = 10;         // Bewegungsgeschwindigkeit
+    shouldAttackAfterHurt = false; // Trigger für Angriff nach Schaden
 
 
     constructor() {
@@ -78,14 +79,23 @@ class Endboss extends MovableObject {
     animate() {
         setInterval(() => {
             if (this.isDeathAnimationComplete) return;
-            if (!this.isDead() && !this.isHurt() && !this.attackInProgress && !this.isDeathAnimationComplete)
-                this.alert();
-            if (this.isAttacking() && !this.attackInProgress && !this.isDead() && !this.isDeathAnimationComplete)
-                this.atackAnimation();
-            if (this.isHurt() && !this.isDead() && !this.isDeathAnimationComplete)
-                this.hurt();
-            if (this.isDead() && !this.isDeathAnimationComplete)
+            
+            // Priorität 1: Tod (höchste Priorität)
+            if (this.isDead() && !this.isDeathAnimationComplete) {
                 this.dead();
+            }
+            // Priorität 2: Hurt Animation (muss vor Attack kommen!)
+            else if (this.isHurt() && !this.isDead() && !this.isDeathAnimationComplete) {
+                this.hurt();
+            }
+            // Priorität 3: Angriff (nur wenn nicht hurt oder tot)
+            else if (this.isAttacking() && !this.attackInProgress && !this.isDead() && !this.isHurt() && !this.isDeathAnimationComplete) {
+                this.atackAnimation();
+            }
+            // Priorität 4: Normal Alert (niedrigste Priorität)
+            else if (!this.isDead() && !this.isHurt() && !this.attackInProgress && !this.isDeathAnimationComplete) {
+                this.alert();
+            }
         }, 200);
     }
 
@@ -169,8 +179,14 @@ class Endboss extends MovableObject {
             let characterX = this.world.character.x;
             let distanceToCharacter = Math.abs(this.x - characterX);
 
-            // Greife an wenn Character in Reichweite ist (z.B. 200 Pixel)
-            return distanceToCharacter < 350;
+            // Sofort angreifen wenn Schaden erhalten
+            if (this.shouldAttackAfterHurt && distanceToCharacter < 500) {
+                this.shouldAttackAfterHurt = false; // Reset Flag
+                return true;
+            }
+
+            // Normale Distanz-basierte Angriffe
+            return distanceToCharacter < 300;
         }
         return false; // Kein Character gefunden
     }
@@ -241,7 +257,11 @@ class Endboss extends MovableObject {
         if (!this.hurtAnimationStarted) {
             this.hurtAnimationStarted = true;
             this.currentImage = 0; // Reset für saubere Animation
-            audioManager.onBossHurt();
+            if (typeof audioManager !== 'undefined') audioManager.onBossHurt();
+            
+            // Triggere Angriff nach Schaden
+            this.takeDamage();
+            
             // Spiele Hurt-Animation komplett ab
             let hurtInterval = setInterval(() => {
                 if (this.currentImage < this.IMAGES_HURT.length) {
@@ -249,15 +269,27 @@ class Endboss extends MovableObject {
                     this.img = this.imagePool[path];
                     this.currentImage++;
                 } else {
-                    // Animation komplett - Reset
-                    clearInterval(hurtInterval);
-                    this.hurtAnimationStarted = false;
-                    this.hurtImageIndex = 0;
-                    this.currentImage = 0;
-                    this.movementEnabled = true;
+                    this.resetHurtAnimation(hurtInterval);
                 }
             }, 150); // 150ms pro Frame für sichtbare Animation
         }
+    }
+
+    takeDamage() {
+        // Verzögere den Angriff bis nach der Hurt-Animation
+        if (!this.attackInProgress) {
+            setTimeout(() => {
+                this.shouldAttackAfterHurt = true;
+            }, 500); // 500ms = ca. 3 Frames à 150ms der Hurt-Animation
+        }
+    }
+
+    resetHurtAnimation(hurtInterval) {
+        clearInterval(hurtInterval);
+        this.hurtAnimationStarted = false;
+        this.hurtImageIndex = 0;
+        this.currentImage = 0;
+        this.movementEnabled = true;
     }
 
 

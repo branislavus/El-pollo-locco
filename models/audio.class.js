@@ -159,7 +159,7 @@ class AudioManager {
   }
 
   onBossHurt() {
-    this.playSound('bottleWhoosh', 3);
+    this.playSound('bottleWhoosh');
   }
 
   // Item Sounds
