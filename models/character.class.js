@@ -142,7 +142,7 @@ class Character extends MovableObject {
                 this.playSoundIfDoingSomething('onDie', 9000);
                 this.playDeadAnimationOnce();
             } else if (this.isHurt()) {
-                this.playSoundIfDoingSomething('onHurt', 2000);
+                // Sound wird bereits in damageCharacter() abgespielt
                 this.playAnimation(this.IMAGES_HURT);
             } else if (this.isIdle()) {
                 this.isBored();

@@ -18,6 +18,12 @@ class AudioManager {
       chicken3: new Audio('audio/chicken-noise3.mp3'),
       chickenSquish: new Audio('audio/chicken-squish.mp3'),
 
+      // Boss Sounds
+      bossBite: new Audio('audio/boss-bite.mp3'),
+      bossDeathScream: new Audio('audio/boss-death-scream.mp3'),
+      bossFootStep: new Audio('audio/boss-footstep.mp3'),
+
+
       // Item Sounds
       coin: new Audio('audio/coin.mp3'),
       bottle: new Audio('audio/bottle.mp3'),
@@ -140,6 +146,21 @@ class AudioManager {
   onDie() {
     this.playSound('dieScream', 1.1);
   }
+
+  // Boss sounds
+
+  bossOnWalk() {
+    this.playSound('bossFootStep', 2);
+  }
+
+  bossOnDie() {
+    this.playSound('bossDeathScream');
+  }
+
+  bossOnBite() {
+    this.playSound('bossBite');
+  }
+
 
   // Enemy Sounds
   onChicken1() {

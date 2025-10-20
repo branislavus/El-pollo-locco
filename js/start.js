@@ -27,3 +27,9 @@ function StartGame() {
         hideStartWallpaper();
     }, 500);
 }
+
+function hideEndgameWallpaper(){
+    const endWinWallpaper = document.getElementById('endWinWallpaper');
+    const endLoseWallpaper = document.getElementById('endLoseWallpaper');
+    
+}

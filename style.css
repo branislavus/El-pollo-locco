@@ -83,6 +83,35 @@ h1 {
     background-color: rgba(255, 255, 255, 1);
 }
 
+.endWinWallpaper {
+    display: block;
+    background-image: url(./img/9_intro_outro_screens/start/startscreen_1.png);
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    width: 720px;
+    height: 480px;
+    border: 5px red ridge;
+    display: flex;
+    justify-content: center;
+    align-items: start;
+}
+
+.endLoseWallpaper {
+    display: block;
+    background-image: url(./img/9_intro_outro_screens/game_over/oh\ no\ you\ lost!.png);
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    width: 720px;
+    height: 480px;
+    border: 5px red ridge;
+    display: flex;
+    justify-content: center;
+    align-items: start;
+}
+
+
 /* Tablet Landscape */
 @media only screen and (max-width: 933px) {
     canvas {

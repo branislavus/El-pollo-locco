@@ -213,6 +213,8 @@ class World {
     damageCharacter() {
         if (!this.character.isHurt()) {
             this.character.hit();
+            // Sound sofort abspielen beim Schaden
+            if (typeof audioManager !== 'undefined') audioManager.onHurt();
             this.statusBarHealth.setPercentage(this.character.energy);
         }
     }
