@@ -11,6 +11,8 @@ class World {
     statusBarEndboss = null;
     throwableObject = [];
     lastThrow = 0;
+    gameOver = false;
+    gameActive = true;
 
     constructor(canvas, keyboard) {
         this.ctx = canvas.getContext("2d");
@@ -40,11 +42,40 @@ class World {
     }
 
     run() {
-        setInterval(() => {
+        this.runInterval = setInterval(() => {
+            // Stoppe alle Verarbeitungen wenn Spiel vorbei ist
+            if (this.gameOver || this.gameActive === false) return;
+            
             this.checkCollisions();
             this.handleThrowableObject();
             this.removeFinishedThrowableObjects();
+            this.checkGameOverConditions();
         }, 200);
+    }
+
+    checkGameOverConditions() {
+        // Prüfe Character Tod
+        if (this.character.energy <= 0 && !loseGame && !winGame)
+            this.youLoseTheGame();
+
+        // Prüfe Endboss Tod
+        let endboss = this.level.enemies.find(enemy => this.isEndboss(enemy));
+        if (endboss && endboss.isDead() && !winGame && !loseGame)
+            this.youWonTheGame();
+    }
+
+    youLoseTheGame() {
+        loseGame = true;
+        setTimeout(() => {
+            endGame();
+        }, 1000); // 1 Sekunde Verzögerung für Death-Animation
+    }
+
+    youWonTheGame() {
+        winGame = true;
+        setTimeout(() => {
+            endGame();
+        }, 2000); // 2 Sekunden Verzögerung für Death-Animation
     }
 
     removeFinishedThrowableObjects() {
@@ -143,10 +174,12 @@ class World {
 
     killEnemyByBottle(enemy) {
         // Zeige Todes-Animation
-        if (enemy.showDeadChicken) enemy.showDeadChicken();
+        if (enemy.showDeadChicken)
+            enemy.showDeadChicken();
 
         // Audio für getöteten Gegner
-        if (typeof audioManager !== 'undefined') audioManager.onChickenSquish();
+        if (typeof audioManager !== 'undefined')
+            audioManager.onChickenSquish();
 
         // Entferne Gegner nach Animation
         setTimeout(() => {
@@ -168,8 +201,8 @@ class World {
     }
 
     isColliding(enemy) {
-        return this.character.x + this.character.width - 20 > enemy.x &&
-            this.character.y + this.character.height > enemy.y &&
+        return this.character.x + (this.character.width - 40) > enemy.x &&
+           ( this.character.y +40) + this.character.height > enemy.y &&
             this.character.x < enemy.x + enemy.width &&
             this.character.y < enemy.y + enemy.height;
     }

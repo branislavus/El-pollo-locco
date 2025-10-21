@@ -80,8 +80,8 @@ class Endboss extends MovableObject {
     }
 
     animate() {
-        setInterval(() => {
-            if (this.isDeathAnimationComplete) return;
+        this.animationInterval = setInterval(() => {
+            if (this.isDeathAnimationComplete || !this.movementEnabled) return;
 
             // Priorität 1: Tod (höchste Priorität)
             if (this.isDead() && !this.isDeathAnimationComplete && !this.deathSoundPlayed) {
@@ -148,6 +148,7 @@ class Endboss extends MovableObject {
     startMoveLeftPhase(moveSpeed) {
         this.attackPhase = 'moving_left';
         return setInterval(() => {
+            if (!this.movementEnabled) return; // Stoppe wenn Movement disabled
             this.x -= moveSpeed;
             this.playAnimation(this.IMAGES_WALKING);
             this.playSoundIfDoingSomething('bossOnWalk', 800);
@@ -171,6 +172,10 @@ class Endboss extends MovableObject {
         this.attackPhase = 'moving_right';
 
         const moveRightInterval = setInterval(() => {
+            if (!this.movementEnabled) {
+                clearInterval(moveRightInterval);
+                return;
+            }
             if (this.x < startX) {
                 this.x += moveSpeed;
                 this.playAnimation(this.IMAGES_WALKING);
@@ -299,6 +304,20 @@ class Endboss extends MovableObject {
         this.hurtImageIndex = 0;
         this.currentImage = 0;
         this.movementEnabled = true;
+    }
+
+    stopAnimations() {
+        // Stoppe alle Bewegungen und Sounds
+        this.movementEnabled = false;
+        this.attackInProgress = false;
+        this.shouldAttackAfterHurt = false;
+        this.speed = 0;
+        
+        // Stoppe Animation-Interval
+        if (this.animationInterval) {
+            clearInterval(this.animationInterval);
+            this.animationInterval = null;
+        }
     }
 
 

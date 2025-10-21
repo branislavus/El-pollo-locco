@@ -235,6 +235,14 @@ class AudioManager {
       this.sounds.backgroundMusic.play().catch(e => console.log('Music play failed:', e));
     }
   }
+
+  // Stop all sounds method
+  stopAllSounds() {
+    Object.values(this.sounds).forEach(audio => {
+      audio.pause();
+      audio.currentTime = 0;
+    });
+  }
 }
 
 // Global instance for easy access

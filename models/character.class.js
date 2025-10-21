@@ -103,8 +103,8 @@ class Character extends MovableObject {
     animate() {
         this.movementEnabled = true;
 
-
-        setInterval(() => {
+        // Speichere Interval-IDs um sie stoppen zu können
+        this.movementInterval = setInterval(() => {
             if (this.movementEnabled) {
                 let isWalking = false;
 
@@ -133,9 +133,7 @@ class Character extends MovableObject {
             this.world.camera_x = -this.x + 100;
         }, 1000 / 60);
 
-
-
-        setInterval(() => {
+        this.animationInterval = setInterval(() => {
             this.updateLastMove();
 
             if (this.isDead()) {
@@ -160,8 +158,10 @@ class Character extends MovableObject {
         let isSleeping = false;
         if (this.lastMoveTime > 16000) {
             this.playAnimation(this.IMAGES_LONG_IDLE);
-            this.playSoundIfDoingSomething('onSleep', 3000);
-
+            // Nur Sound abspielen wenn Movement enabled ist (Spiel läuft)
+            if (this.movementEnabled) {
+                this.playSoundIfDoingSomething('onSleep', 3000);
+            }
         } else {
             this.playAnimation(this.IMAGES_IDLE);
         }
@@ -220,5 +220,15 @@ class Character extends MovableObject {
         this.speedY = 0;
         this.speed = 0;
         this.disableMovement();
+        
+        // Stoppe alle Character-Intervals
+        if (this.movementInterval) {
+            clearInterval(this.movementInterval);
+            this.movementInterval = null;
+        }
+        if (this.animationInterval) {
+            clearInterval(this.animationInterval);
+            this.animationInterval = null;
+        }
     }
 }
