@@ -15,7 +15,7 @@
     box-sizing: border-box;
 }
 
-.d_none{
+.d_none {
     display: none !important;
 }
 
@@ -75,10 +75,55 @@ h1 {
     cursor: pointer;
     transition: background-color 0.3s ease;
     margin-top: 20px;
-     text-shadow: none;
+    text-shadow: none;
+}
+
+.touch-key {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 60px;
+    height: 60px;
+    border: 5px red ridge;
+    border-radius: 50px;
+    background-color: rgba(255, 255, 255, 0.8);
+    font-family: 'Chewy', Arial, Helvetica, sans-serif;
+    font-size: 32px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin-top: 20px;
+    text-shadow: none;
+    margin: 8px;
+}
+
+.touch-keys {   
+    position: fixed;
+    width: 720px;
+    height: 480px;
+    display: none;
+    flex-direction: row;
+    align-items: end;
+    justify-content: space-between;
+    z-index: 200;
+     pointer-events: auto;
+     
+}
+
+.keys-doing {
+    display: flex;
+    flex-direction: row;
+}
+
+.keys-moving {
+    display: flex;
+    flex-direction: row;
 }
 
 .startButton:hover {
+    background-color: rgba(255, 255, 255, 1);
+}
+
+.touch-key:hover {
     background-color: rgba(255, 255, 255, 1);
 }
 
@@ -122,6 +167,10 @@ h1 {
         font-size: 32px;
         margin-bottom: 20px;
     }
+
+        .touch-keys {
+          display: flex;
+    }
 }
 
 /* Mobile */
@@ -138,5 +187,26 @@ h1 {
 
     body {
         justify-content: center;
+    }
+
+    .touch-keys {
+        width: 100%;
+        height: 100%;
+        left: 0;
+        top: 0;
+        position: fixed;
+        z-index: 200;
+        pointer-events: auto;
+          display: flex;
+    }
+
+    .touch-key {
+        width: 14vw;
+        height: 14vw;
+        min-width: 32px;
+        min-height: 32px;
+        max-width: 60px;
+        max-height: 60px;
+        font-size: 7vw;
     }
 }
