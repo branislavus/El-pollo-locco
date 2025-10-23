@@ -96,7 +96,7 @@ h1 {
     margin: 8px;
 }
 
-.touch-keys {   
+.touch-keys {
     position: fixed;
     width: 720px;
     height: 480px;
@@ -105,8 +105,8 @@ h1 {
     align-items: end;
     justify-content: space-between;
     z-index: 200;
-     pointer-events: auto;
-     
+    pointer-events: auto;
+
 }
 
 .keys-doing {
@@ -153,6 +153,24 @@ h1 {
     z-index: 100;
 }
 
+.fullscreenIcon {
+    width: 60px;
+    height: 60px;
+    background-image: url(./img/fullscreen.png);
+    background-size:cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    outline: none;
+    display: flex;
+    justify-content: end;
+    align-items: start;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.fullscreenIcon:hover {
+    background-color: rgba(255, 255, 255, 1);
+}
 
 /* Tablet Landscape */
 @media only screen and (max-width: 933px) {
@@ -168,8 +186,8 @@ h1 {
         margin-bottom: 20px;
     }
 
-        .touch-keys {
-          display: flex;
+    .touch-keys {
+        display: flex;
     }
 }
 
@@ -177,7 +195,8 @@ h1 {
 @media only screen and (max-height: 480px) {
     canvas {
         width: 100vw;
-        height: auto;
+        aspect-ratio: 3 / 2;
+        max-height: 100vh;
     }
 
     h1 {
@@ -197,7 +216,7 @@ h1 {
         position: fixed;
         z-index: 200;
         pointer-events: auto;
-          display: flex;
+        display: flex;
     }
 
     .touch-key {

@@ -35,7 +35,7 @@ function showStartWallpaper() {
 function initializeScreens() {
     const endWinWallpaper = document.getElementById('endWinWallpaper');
     const endLoseWallpaper = document.getElementById('endLoseWallpaper');
-    
+
     // Stelle sicher, dass End-Screens versteckt sind
     if (endWinWallpaper) {
         endWinWallpaper.style.display = 'none';
@@ -50,7 +50,7 @@ document.addEventListener('DOMContentLoaded', initializeScreens);
 
 function StartGame() {
     // audioManager.startBackgroundMusic();
-    
+
     initLevel();
     init();
     setTimeout(() => {
@@ -58,8 +58,21 @@ function StartGame() {
     }, 500);
 }
 
-function hideEndgameWallpaper(){
+function hideEndgameWallpaper() {
     const endWinWallpaper = document.getElementById('endWinWallpaper');
     const endLoseWallpaper = document.getElementById('endLoseWallpaper');
 
 }
+
+function touchStart() {
+    const btn = document.getElementById("startButton");
+    if (btn) {
+        btn.addEventListener('click', StartGame);
+        btn.addEventListener('touchstart', (e) => {
+            e.preventDefault();
+            StartGame();
+        });
+    }
+}
+
+document.addEventListener('DOMContentLoaded', touchStart);

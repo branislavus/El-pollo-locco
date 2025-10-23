@@ -6,10 +6,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>El Pollo Locco</title>
     <link rel="icon" type="image/x-icon" href="./img/3_enemies_chicken/chicken_normal/1_walk/1_w.png">
-    
+
     <!-- Preload Chewy Font -->
     <link rel="stylesheet" href="./fonts/chewy-v18-latin-regular.woff2" as="font" type="font/woff2" crossorigin>
-    
+
     <link rel="stylesheet" href="./style.css">
 
     <script src="./models/drawable-object.class.js"></script>
@@ -37,24 +37,29 @@
     <script src="./js/game-over.js"></script>
 </head>
 
-<body>
+<body">
     <h1>El Pollo Locco</h1>
-    <canvas id="canvas" width="720" height="480"></canvas>
-    <div id="startWallpaper" class="startWallpaper">
-        <div id="startButton" class="startButton" onclick="StartGame()">Start</div>
+    <div id="fullscreen" class="fullscreen">
+        <div id="fullscreenIcon" class="fullscreenIcon" onclick="fullscreen()"></div>
+        <canvas id="canvas" width="720" height="480"></canvas>
+        <div id="startWallpaper" class="startWallpaper">
+            <div id="startButton" class="startButton">Start</div>
+        </div>
+        <div id="endWinWallpaper" class="endWinWallpaper d_none"></div>
+        <div id="endLoseWallpaper" class="endLoseWallpaper d_none"></div>
+        <div id="touch-keys" class="touch-keys">
+            <div id="keys-doing" class="keys-doing">
+                <div class="touch-key key-jump" id="key-jump">J</div>
+                <div class="touch-key key-throw" id="key-throw">T</div>
+            </div>
+            <div id="keys-moving" class="keys-moving">
+                <div class="touch-key key-run-left" id="key-run-left">L</div>
+                <div class="touch-key key-run-right" id="key-run-right">R</div>
+            </div>
+        </div>
     </div>
-     <div id="endWinWallpaper" class="endWinWallpaper d_none"></div>
-     <div id="endLoseWallpaper" class="endLoseWallpaper d_none"></div>
-     <div id="touch-keys" class="touch-keys">
-        <div id="keys-doing" class="keys-doing">
-            <div class="touch-key key-jump" id="key-jump">J</div>
-            <div class="touch-key key-throw" id="key-throw">T</div>
-        </div>
-        <div id="keys-moving" class="keys-moving">
-             <div class="touch-key key-run-left" id="key-run-left">L</div>
-            <div class="touch-key key-run-right" id="key-run-right">R</div>
-        </div>
-     </div>
-</body>
+
+
+    </body>
 
 </html>
