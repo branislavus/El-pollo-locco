@@ -52,20 +52,23 @@ window.addEventListener("keyup", (e) => {
 
 function addTouchButton(id, onPress, onRelease) {
     const btn = document.getElementById(id);
-    if (!btn) return;
+      if (!btn) return;
     btn.addEventListener('touchstart', (e) => {
         e.preventDefault();
         onPress();
-    });
+        console.log('touchstart');
+        
+    }, { passive: false });
     btn.addEventListener('touchend', (e) => {
         e.preventDefault();
         onRelease();
-    });
+          console.log('touchend');
+    }, { passive: false });
 }
 
-addTouchButton('key-run-left', () => keybord.RIGHT = true, () => keybord.RIGHT = false);
+addTouchButton('key-run-right', () => keybord.RIGHT = true, () => keybord.RIGHT = false);
 
-addTouchButton('key-run-right', () => keybord.LEFT = true, () => keybord.LEFT = false);
+addTouchButton('key-run-left', () => keybord.LEFT = true, () => keybord.LEFT = false);
 
 addTouchButton('key-jump', () => keybord.UP = true, () => keybord.UP = false);
 

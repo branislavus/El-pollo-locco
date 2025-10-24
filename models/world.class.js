@@ -229,7 +229,7 @@ class World {
 
     killEnemy(enemy, index) {
         // Character springt nach oben
-        this.character.speedY = 12;
+        this.character.speedY = 10;
 
         // 1. Zeige Todes-Animation des Gegners
         if (enemy.showDeadChicken) enemy.showDeadChicken();

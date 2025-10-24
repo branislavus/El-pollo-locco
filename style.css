@@ -79,6 +79,14 @@ h1 {
 }
 
 .touch-key {
+    -webkit-user-select: none;
+    /* Für Safari, Chrome */
+    -moz-user-select: none;
+    /* Für Firefox */
+    -ms-user-select: none;
+    /* Für ältere Edge-Versionen */
+    user-select: none;
+    /* Standard */
     display: flex;
     justify-content: center;
     align-items: center;
@@ -100,7 +108,7 @@ h1 {
     position: fixed;
     width: 720px;
     height: 480px;
-    display: none;
+    display: flex;
     flex-direction: row;
     align-items: end;
     justify-content: space-between;
@@ -157,7 +165,7 @@ h1 {
     width: 60px;
     height: 60px;
     background-image: url(./img/fullscreen.png);
-    background-size:cover;
+    background-size: cover;
     background-repeat: no-repeat;
     background-position: center;
     outline: none;

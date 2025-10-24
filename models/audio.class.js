@@ -16,6 +16,9 @@ class AudioManager {
       chicken1: new Audio('audio/chicken-noise1.mp3'),
       chicken2: new Audio('audio/chicken-noise2.mp3'),
       chicken3: new Audio('audio/chicken-noise3.mp3'),
+      chickenSmall1: new Audio('audio/chicen-small1.mp3'),
+      chickenSmall2: new Audio('audio/chicen-small2.mp3'),
+      chickenSmall3: new Audio('audio/chicen-small3.mp3'),
       chickenSquish: new Audio('audio/chicken-squish.mp3'),
 
       // Boss Sounds
@@ -173,6 +176,18 @@ class AudioManager {
 
   onChicken3() {
     this.playSound('chickenHit', 1.4);
+  }
+
+  onChickeSmall1() {
+    this.playSound('chickenSmall1');
+  }
+
+  onChickenSmall2() {
+    this.playSound('chickenSmall2', 0.9);
+  }
+
+  onChickenSmall3() {
+    this.playSound('chickenSmall3', 1.4);
   }
 
   onChickenSquish() {

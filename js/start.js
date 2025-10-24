@@ -68,10 +68,9 @@ function touchStart() {
     const btn = document.getElementById("startButton");
     if (btn) {
         btn.addEventListener('click', StartGame);
-        btn.addEventListener('touchstart', (e) => {
-            e.preventDefault();
+        btn.addEventListener('touchstart', () => {
             StartGame();
-        });
+        }, { passive: true });
     }
 }
 
