@@ -49,7 +49,7 @@ function initializeScreens() {
 document.addEventListener('DOMContentLoaded', initializeScreens);
 
 function StartGame() {
-    // audioManager.startBackgroundMusic();
+    audioManager.startBackgroundMusic();
 
     initLevel();
     init();

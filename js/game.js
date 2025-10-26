@@ -1,53 +1,29 @@
 let canvas;
 let world;
-let keybord = new Keybord();
+let keyboard = new Keyboard();
 
 function init() {
     canvas = document.getElementById('canvas');
-    world = new World(canvas, keybord);
-
+    world = new World(canvas, keyboard);
+    addTouchButtons();
 }
 
 window.addEventListener("keydown", (e) => {
-    if (e.keyCode == 39) {
-        keybord.RIGHT = true
-    }
-    if (e.keyCode == 37) {
-        keybord.LEFT = true
-    }
-    if (e.keyCode == 32) {
-        keybord.SPACE = true
-    }
-    if (e.keyCode == 38) {
-        keybord.UP = true
-    }
-    if (e.keyCode == 40) {
-        keybord.DOWN = true
-    }
-    if (e.keyCode == 68) {
-        keybord.D = true
-    }
+    if (e.keyCode == 39) keyboard.RIGHT = true;
+    if (e.keyCode == 37) keyboard.LEFT = true;
+    if (e.keyCode == 32) keyboard.SPACE = true;
+    if (e.keyCode == 38) keyboard.UP = true;
+    if (e.keyCode == 40) keyboard.DOWN = true;
+    if (e.keyCode == 68) keyboard.D = true;
 });
 
 window.addEventListener("keyup", (e) => {
-    if (e.keyCode == 39) {
-        keybord.RIGHT = false
-    }
-    if (e.keyCode == 37) {
-        keybord.LEFT = false
-    }
-    if (e.keyCode == 32) {
-        keybord.SPACE = false
-    }
-    if (e.keyCode == 38) {
-        keybord.UP = false
-    }
-    if (e.keyCode == 40) {
-        keybord.DOWN = false
-    }
-    if (e.keyCode == 68) {
-        keybord.D = false
-    }
+    if (e.keyCode == 39) keyboard.RIGHT = false;
+    if (e.keyCode == 37) keyboard.LEFT = false;
+    if (e.keyCode == 32) keyboard.SPACE = false;
+    if (e.keyCode == 38) keyboard.UP = false;
+    if (e.keyCode == 40) keyboard.DOWN = false;
+    if (e.keyCode == 68) keyboard.D = false;
 });
 
 function addTouchButton(id, onPress, onRelease) {
@@ -55,26 +31,20 @@ function addTouchButton(id, onPress, onRelease) {
       if (!btn) return;
     btn.addEventListener('touchstart', (e) => {
         e.preventDefault();
-        onPress();
-        console.log('touchstart');
-        
+        onPress();        
     }, { passive: false });
     btn.addEventListener('touchend', (e) => {
         e.preventDefault();
         onRelease();
-          console.log('touchend');
     }, { passive: false });
 }
 
-addTouchButton('key-run-right', () => keybord.RIGHT = true, () => keybord.RIGHT = false);
-
-addTouchButton('key-run-left', () => keybord.LEFT = true, () => keybord.LEFT = false);
-
-addTouchButton('key-jump', () => keybord.UP = true, () => keybord.UP = false);
-
-addTouchButton('key-throw', () => keybord.D = true, () => keybord.D = false);
-
-
+function addTouchButtons(){
+addTouchButton('key-run-right', () => keyboard.RIGHT = true, () => keyboard.RIGHT = false);
+addTouchButton('key-run-left', () => keyboard.LEFT = true, () => keyboard.LEFT = false);
+addTouchButton('key-jump', () => keyboard.UP = true, () => keyboard.UP = false);
+addTouchButton('key-throw', () => keyboard.D = true, () => keyboard.D = false);
+}
 
 function fullscreen() {
     const fullscreen = document.getElementById('fullscreen');

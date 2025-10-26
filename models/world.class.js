@@ -321,8 +321,8 @@ class World {
             this.flipImage(mo);
         }
         mo.draw(this.ctx);
-        mo.drawBorderFrames(this.ctx);
-        mo.drawOffsetFrames(this.ctx);
+        // mo.drawBorderFrames(this.ctx);
+        // mo.drawOffsetFrames(this.ctx);
         if (mo.characterDirectionLeft) {
             this.flipImageBack(mo);
         }
