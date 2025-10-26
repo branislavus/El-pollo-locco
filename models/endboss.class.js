@@ -129,7 +129,7 @@ class Endboss extends MovableObject {
 
     getRandomAttackSettings() {
         return {
-            moveDuration: Math.floor(Math.random() * 1500) + 700,    // 500-2000ms
+            moveDuration: Math.floor(Math.random() * 1500) + 1000,    // 500-2000ms
             attackDuration: Math.floor(Math.random() * 400) + 200,   // 200-600ms
             moveSpeed: Math.floor(Math.random() * 8) + 10             // 5-12 speed
         };

@@ -116,7 +116,7 @@ class World {
     checkEnemyCollisions() {
         for (let i = this.level.enemies.length - 1; i >= 0; i--) {
             let enemy = this.level.enemies[i];
-            if (enemy.isDead() || !this.isColliding(enemy)) continue;
+            if (enemy.isDead() || !this.character.isColliding(enemy)) continue;
 
             this.isJumpingOnEnemy(enemy) ? this.killEnemy(enemy, i) : this.damageCharacter();
             this.setRightCharecterYPosition();
@@ -199,14 +199,6 @@ class World {
     refreshStatusbarEndboss(endboss) {
         if (this.statusBarEndboss) this.statusBarEndboss.setBossEnergyAmount(endboss.bossEnergy);
     }
-
-    isColliding(enemy) {
-        return this.character.x + (this.character.width - 40) > enemy.x &&
-           ( this.character.y +40) + this.character.height > enemy.y &&
-            this.character.x < enemy.x + enemy.width &&
-            this.character.y < enemy.y + enemy.height;
-    }
-
 
     isJumpingOnEnemy(enemy) {
         // Character Kollisionsbox mit Offset
