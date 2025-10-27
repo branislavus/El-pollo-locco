@@ -19,9 +19,20 @@
     display: none !important;
 }
 
-.text-align-right{
+.text-align-right {
     text-align: right;
 }
+
+table {
+    width: 200px;
+}
+
+.tables {
+    width: 500px;
+    display: flex;
+    justify-content: space-between;
+}
+
 
 body {
     width: 100%;
@@ -38,7 +49,7 @@ body {
     overflow: hidden;
 }
 
-.fullscreen{
+.fullscreen {
     display: flex;
     justify-content: center;
 }
@@ -69,6 +80,26 @@ h1 {
     z-index: 300;
 }
 
+.legendButtons {
+    width: 180px;
+    height: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.legendButtonsName{
+    width: 110px;
+}
+
+.legendButtonsTd {
+    height: 40px;
+    width: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+}
+
 .startButton {
     display: flex;
     justify-content: center;
@@ -84,6 +115,14 @@ h1 {
     transition: background-color 0.3s ease;
     margin-top: 20px;
     text-shadow: none;
+}
+
+.startButtonLegend {
+    width: 38px;
+    height: 38px;
+    font-size: 13px;
+    border: 3px red ridge;
+    margin-bottom: 20px;
 }
 
 .touch-key {
@@ -197,6 +236,14 @@ h1 {
 
 .fullscreenIcon:hover {
     background-color: rgba(255, 255, 255, 0.2);
+}
+
+.fullscreenIconLegend {
+    position: unset;
+    width: 30px;
+    height: 30px;
+    border: none;
+    margin-right: 3px;
 }
 
 /* Tablet Landscape */
