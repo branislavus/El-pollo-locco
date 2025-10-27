@@ -5,7 +5,7 @@
     font-family: 'Chewy';
     font-style: normal;
     font-weight: 400;
-    src: url('../fonts/chewy-v18-latin-regular.woff2') format('woff2');
+    src: url('./fonts/chewy-v18-latin-regular.woff2') format('woff2');
     /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
 }
 
@@ -19,7 +19,9 @@
     display: none !important;
 }
 
-
+.text-align-right{
+    text-align: right;
+}
 
 body {
     width: 100%;
@@ -48,7 +50,7 @@ canvas {
 }
 
 h1 {
-    margin-bottom: 40px;
+    margin-bottom: 20px;
     font-size: 56px;
 }
 
