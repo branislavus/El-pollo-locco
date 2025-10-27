@@ -1,0 +1,107 @@
+@font-face {
+    font-display: swap;
+    /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
+    font-family: 'Chewy';
+    font-style: normal;
+    font-weight: 400;
+    src: url('./fonts/chewy-v18-latin-regular.woff2') format('woff2');
+    /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
+}
+
+html {
+  display: flex;
+  justify-content: center;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+  max-width: 720px;
+  margin: 0;
+  padding: 0;
+  font-family: "Chewy", system-ui, sans-serif;
+  line-height: 1.6;
+  color: #222;
+  background-color: #f9f9f9;
+  text-align: center;
+   background-image: url(./img/wallpaper/desert3.png);
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+/* ===== Überschrift ===== */
+h1 {
+  font-size: 2rem;
+  margin-top: 2rem;
+  margin-bottom: 1.5rem;
+  color: #111;
+}
+
+/* ===== Text ===== */
+p {
+  font-size: 1rem;
+  margin: 0.75rem 0;
+}
+
+strong {
+  color: #000;
+  font-weight: 600;
+}
+
+/* ===== Links ===== */
+a[href] {
+  color: #0645ad;
+  text-decoration: underline;
+  margin: 0 0.25rem;
+  display: inline-block;
+}
+
+a[href]:hover,
+a[href]:focus {
+  color: #0b0080;
+  text-decoration: none;
+}
+
+/* ===== Favicon-Bereich und Abstand ===== */
+body>p:last-of-type {
+  margin-top: 2rem;
+}
+
+/* ===== Responsive Anpassungen ===== */
+
+/* Bis 933px Breite */
+@media only screen and (max-width: 933px) {
+  body {
+    padding: 1rem;
+  }
+
+  h1 {
+    font-size: 1.7rem;
+  }
+
+  p {
+    font-size: 0.95rem;
+  }
+
+  a[href] {
+    font-size: 0.95rem;
+  }
+}
+
+/* Bis 480px Höhe */
+@media only screen and (max-height: 480px) {
+  body {
+    background-color: #fff;
+    padding: 0.5rem;
+  }
+
+  h1 {
+    font-size: 1.4rem;
+    margin-top: 1rem;
+  }
+
+  p {
+    margin: 0.5rem 0;
+  }
+}

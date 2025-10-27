@@ -312,3 +312,19 @@ h1 {
         font-size: 7vw;
     }
 }
+
+a{
+       text-decoration: none;
+       color: black;
+       font-size: 12px;
+       text-align: left;
+       margin-left: 10px;
+}
+
+a:hover{
+     text-shadow: 2px 2px 10px white;
+}
+
+.impressum{
+width: 100%;
+}
