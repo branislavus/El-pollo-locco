@@ -36,6 +36,15 @@ class DrawableObject {
             this.y < mo.y + mo.height;
     }
 
+    isCollidingOffset(mo) {
+        return (
+            this.x + this.offset.left < mo.x + mo.width &&
+            this.x + this.width - this.offset.right > mo.x &&
+            this.y + this.offset.top < mo.y + mo.height &&
+            this.y + this.height - this.offset.bottom > mo.y
+        );
+    }
+
 
     drawOffsetFrames(ctx) {
         if (this instanceof Character) {

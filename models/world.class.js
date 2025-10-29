@@ -212,8 +212,8 @@ class World {
         let enemyTop = enemy.y + (enemy.offset ? enemy.offset.top : 0);
 
         let isFalling = this.character.speedY <= 0;
-        let isLandingOnTop = Math.abs(characterBottom - enemyTop) <= 40;
-        let isAboveEnemy = characterBottom < enemyTop + 25;
+        let isLandingOnTop = Math.abs(characterBottom - enemyTop) <= 55;
+        let isAboveEnemy = characterBottom < enemyTop + 35;
         let isHorizontallyOverlapping = characterRight > enemyLeft && characterLeft < enemyRight;
 
         return isFalling && isLandingOnTop && isAboveEnemy && isHorizontallyOverlapping;
@@ -254,7 +254,7 @@ class World {
 
     checkCollectableCollisions(items, collectMethod, statusBar, statusMethod, counterProperty) {
         items.forEach((item, index) => {
-            if (this.character.isColliding(item)) {
+            if (this.character.isCollidingOffset(item)) {
                 this.collectItem(item, index, items, collectMethod);
                 this.updateStatusBar(statusBar, statusMethod, counterProperty);
             }

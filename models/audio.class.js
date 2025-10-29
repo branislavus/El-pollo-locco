@@ -178,7 +178,7 @@ class AudioManager {
     this.playSound('chickenHit', 1.4);
   }
 
-  onChickeSmall1() {
+  onChickenSmall1() {
     this.playSound('chickenSmall1');
   }
 
