@@ -139,6 +139,8 @@ class Character extends MovableObject {
             if (this.isDead()) {
                 this.playSoundIfDoingSomething('onDie', 9000);
                 this.playDeadAnimationOnce();
+                this.stopAllMovement();
+                return;
             } else if (this.isHurt()) {
                 // Sound wird bereits in damageCharacter() abgespielt
                 this.playAnimation(this.IMAGES_HURT);
@@ -160,7 +162,7 @@ class Character extends MovableObject {
             this.playAnimation(this.IMAGES_LONG_IDLE);
             // Nur Sound abspielen wenn Movement enabled ist (Spiel läuft)
             if (this.movementEnabled) {
-                this.playSoundIfDoingSomething('onSleep', 3000);
+                this.playSoundIfDoingSomething('onSleep', 5000);
             }
         } else {
             this.playAnimation(this.IMAGES_IDLE);
@@ -196,7 +198,7 @@ class Character extends MovableObject {
     }
 
     canMoveLeft() {
-        return this.movementEnabled && this.world.keyboard.LEFT && this.x > this.world.level.level_end_y && !this.isDead();
+        return this.movementEnabled && this.world.keyboard.LEFT && this.x > this.world.level.level_start_x && !this.isDead();
     }
 
     canMove() {
@@ -220,7 +222,7 @@ class Character extends MovableObject {
         this.speedY = 0;
         this.speed = 0;
         this.disableMovement();
-        
+
         // Stoppe alle Character-Intervals
         if (this.movementInterval) {
             clearInterval(this.movementInterval);

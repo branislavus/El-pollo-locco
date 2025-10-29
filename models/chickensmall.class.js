@@ -73,11 +73,11 @@ class ChickenSmall extends MovableObject {
             // Direkter Audio-Aufruf basierend auf Random-Wert
             let randomSound = this.chickenRandomSound();
             if (randomSound === 0 && typeof audioManager !== 'undefined') {
-                audioManager.onChickeSmall1();
+                audioManager.onChickenSmall1();
             } else if (randomSound === 1 && typeof audioManager !== 'undefined') {
-                audioManager.onChickeSmall2();
+                audioManager.onChickenSmall2();
             } else if (randomSound === 2 && typeof audioManager !== 'undefined') {
-                audioManager.onChickeSmall3(); // Fallback zu onChicken1
+                audioManager.onChickenSmall3(); // Fallback zu onChicken1
             }
         }, Math.floor(Math.random() * 5000)); // 10 Sekunden für besseres Timing
     }

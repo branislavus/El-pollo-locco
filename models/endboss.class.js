@@ -55,8 +55,8 @@ class Endboss extends MovableObject {
     world;
     attackInProgress = false;
     attackPhase = 'idle';  // idle, moving_left, attacking, moving_right
-    attackDuration = 300; // Dauer der Attack-Animation
-    moveSpeed = 10;         // Bewegungsgeschwindigkeit
+    attackDuration = 1200; // Dauer der Attack-Animation
+    moveSpeed = 20;         // Bewegungsgeschwindigkeit
     shouldAttackAfterHurt = false; // Trigger für Angriff nach Schaden
     lastWalkSoundTime = 0; // Für Walk-Sound Throttling
     audio = new AudioManager(); // AudioManager für playSoundIfDoingSomething
@@ -160,7 +160,7 @@ class Endboss extends MovableObject {
 
         const attackInterval = setInterval(() => {
             this.playAnimation(this.IMAGES_ATTACK);
-        }, 200);
+        }, 1200);
 
         setTimeout(() => {
             clearInterval(attackInterval);
@@ -285,7 +285,7 @@ class Endboss extends MovableObject {
                 } else {
                     this.resetHurtAnimation(hurtInterval);
                 }
-            }, 150); // 150ms pro Frame für sichtbare Animation
+            }, 200); // 150ms pro Frame für sichtbare Animation
         }
     }
 
@@ -294,7 +294,7 @@ class Endboss extends MovableObject {
         if (!this.attackInProgress) {
             setTimeout(() => {
                 this.shouldAttackAfterHurt = true;
-            }, 500); // 500ms = ca. 3 Frames à 150ms der Hurt-Animation
+            }, 600); // 500ms = ca. 3 Frames à 150ms der Hurt-Animation
         }
     }
 

@@ -1,7 +1,0 @@
-Font: Chewy
-Licensed under the Apache License, Version 2.0
-Chewy-Regular.ttf: Copyright (c) 2010 by Font Diner, Inc DBA Sideshow. All rights reserved. 
-
-"Sounds by Contributors via Pixabay"
-
-Uicons by <a href="https://www.flaticon.com/uicons">Flaticon</a>

@@ -45,7 +45,7 @@ class World {
         this.runInterval = setInterval(() => {
             // Stoppe alle Verarbeitungen wenn Spiel vorbei ist
             if (this.gameOver || this.gameActive === false) return;
-            
+
             this.checkCollisions();
             this.handleThrowableObject();
             this.removeFinishedThrowableObjects();
@@ -321,8 +321,8 @@ class World {
             this.flipImage(mo);
         }
         mo.draw(this.ctx);
-        // mo.drawBorderFrames(this.ctx);
-        // mo.drawOffsetFrames(this.ctx);
+        mo.drawBorderFrames(this.ctx);
+        mo.drawOffsetFrames(this.ctx);
         if (mo.characterDirectionLeft) {
             this.flipImageBack(mo);
         }
@@ -344,6 +344,9 @@ class World {
         this.character.world = this;
         this.level.enemies.forEach(enemy => {
             enemy.world = this;
+        });
+        this.level.clouds.forEach(cloud => {
+            cloud.setWorld(this);
         });
     }
 

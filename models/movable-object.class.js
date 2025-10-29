@@ -8,6 +8,12 @@ class MovableObject extends DrawableObject {
     collectedBottles = 0;
     collectedCoins = 0;
     isEnemyDead = false;
+    offset = {
+        top: 0,
+        left: 0,
+        right: 0,
+        bottom: 0,
+    };
 
     applyGravity() {
         setInterval(() => {
@@ -46,23 +52,19 @@ class MovableObject extends DrawableObject {
         this.currentImage++;
     }
 
+
     playAnimationOnce(images) {
         let i = this.currentImage % images.length;
         let path = images[i];
         this.img = this.imagePool[path];
         if (this.currentImage < images.length - 1) {
-            this.currentImage++;
+            setTimeout(() => {
+                this.currentImage++;
+            }, 300);
         } else {
             this.movementEnabled = false;
         }
     }
-
-    offset = {
-        top: 0,
-        left: 0,
-        right: 0,
-        bottom: 0,
-    };
 
     hit() {
         this.energy -= 2;
