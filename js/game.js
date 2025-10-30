@@ -1,6 +1,8 @@
 let canvas;
 let world;
 let keyboard = new Keyboard();
+let fullscreenFlag = false;
+let soundFlag = false;
 
 function init() {
     canvas = document.getElementById('canvas');
@@ -28,10 +30,10 @@ window.addEventListener("keyup", (e) => {
 
 function addTouchButton(id, onPress, onRelease) {
     const btn = document.getElementById(id);
-      if (!btn) return;
+    if (!btn) return;
     btn.addEventListener('touchstart', (e) => {
         e.preventDefault();
-        onPress();        
+        onPress();
     }, { passive: false });
     btn.addEventListener('touchend', (e) => {
         e.preventDefault();
@@ -39,11 +41,11 @@ function addTouchButton(id, onPress, onRelease) {
     }, { passive: false });
 }
 
-function addTouchButtons(){
-addTouchButton('key-run-right', () => keyboard.RIGHT = true, () => keyboard.RIGHT = false);
-addTouchButton('key-run-left', () => keyboard.LEFT = true, () => keyboard.LEFT = false);
-addTouchButton('key-jump', () => keyboard.UP = true, () => keyboard.UP = false);
-addTouchButton('key-throw', () => keyboard.D = true, () => keyboard.D = false);
+function addTouchButtons() {
+    addTouchButton('key-run-right', () => keyboard.RIGHT = true, () => keyboard.RIGHT = false);
+    addTouchButton('key-run-left', () => keyboard.LEFT = true, () => keyboard.LEFT = false);
+    addTouchButton('key-jump', () => keyboard.UP = true, () => keyboard.UP = false);
+    addTouchButton('key-throw', () => keyboard.D = true, () => keyboard.D = false);
 }
 
 function fullscreen() {
@@ -56,9 +58,6 @@ function fullscreen() {
     }
 
 }
-
-
-let fullscreenFlag = false;
 
 /* View in fullscreen */
 function openFullscreen(fullscreen) {
@@ -85,5 +84,19 @@ function closeFullscreen() {
         } else if (document.msExitFullscreen) { /* IE11 */
             document.msExitFullscreen();
         }
+    }
+}
+
+function toggleAllSound() {
+    const soundIcon = document.getElementById('toggleAllSound');
+    soundFlag = !soundFlag;
+    if (soundFlag) {
+        audioManager.mute();
+        soundIcon.classList.add('toggleAllSoundDisabled');
+        soundIcon.classList.remove('toggleAllSoundEnabled');
+    } else {
+        audioManager.unmute();
+        soundIcon.classList.add('toggleAllSoundEnabled');
+        soundIcon.classList.remove('toggleAllSoundDisabled');
     }
 }

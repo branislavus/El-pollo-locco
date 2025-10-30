@@ -88,10 +88,10 @@ class Endboss extends MovableObject {
                 // Sound sofort abspielen (nur einmal)
                 if (typeof audioManager !== 'undefined') audioManager.bossOnDie();
                 this.deathSoundPlayed = true; // Flag setzen
-                
+
                 // Animation nach 2 Sekunden starten
                 setTimeout(() => {
-                     this.dead();
+                    this.dead();
                 }, 1000);
             }
             // Priorität 2: Hurt Animation (muss vor Attack kommen!)
@@ -151,7 +151,7 @@ class Endboss extends MovableObject {
             if (!this.movementEnabled) return; // Stoppe wenn Movement disabled
             this.x -= moveSpeed;
             this.playAnimation(this.IMAGES_WALKING);
-            this.playSoundIfDoingSomething('bossOnWalk', 800);
+            this.playBossWalkSound();
         }, 1000 / 10); // Langsamere Animation: 10 FPS statt 25 FPS
     }
 
@@ -179,7 +179,7 @@ class Endboss extends MovableObject {
             if (this.x < startX) {
                 this.x += moveSpeed;
                 this.playAnimation(this.IMAGES_WALKING);
-                this.playSoundIfDoingSomething('bossOnWalk', 800);
+                this.playBossWalkSound();
             } else {
                 clearInterval(moveRightInterval);
                 this.resetAttackState();
@@ -215,110 +215,116 @@ class Endboss extends MovableObject {
 
     walk() {
         this.playAnimation(this.IMAGES_WALKING);
-        this.playSoundIfDoingSomething('bossOnWalk', 800);
+        this.playBossWalkSound();
     }
 
-
-    isHurt() {
-        // Überschreibt die Methode aus MovableObject
-        return this.hurtImageIndex == 1;
-    }
-
-    isDead() {
-        // Überschreibt die Methode aus MovableObject - verwendet bossEnergy statt energy
-        return this.bossEnergy <= 0;
-    }
-
-    alert() {
-        this.playAnimation(this.IMAGES_ALERT);
-    }
-
-    dead() {
-        if (!this.deathAnimationStarted) {
-            this.stopAllMovements();
-            // Spiele Death-Animation komplett ab
-            let deathInterval = setInterval(() => {
-                if (this.currentImage < this.IMAGES_DEAD.length) {
-                    let path = this.IMAGES_DEAD[this.currentImage];
-                    this.img = this.imagePool[path];
-                    this.currentImage++;
-                } else {
-                    // Animation komplett - bleibt am letzten Bild
-                    clearInterval(deathInterval);
-                    this.isDeathAnimationComplete = true;
-
-                    // Zeige letztes Bild der Death-Animation
-                    let lastFrame = this.IMAGES_DEAD[this.IMAGES_DEAD.length - 1];
-                    this.img = this.imagePool[lastFrame];
-
-                    // Nach 2 Sekunden verschwinden
-                    setTimeout(() => {
-                        this.shouldBeRemoved = true;
-                    }, 2000);
-                }
-            }, 200); // 200ms pro Frame für deutlich sichtbare Death-Animation
+playBossWalkSound(){
+     if (!audioManager.isMuted) {
+            this.playSoundIfDoingSomething('bossOnWalk', 800);
         }
+}
+
+
+isHurt() {
+    // Überschreibt die Methode aus MovableObject
+    return this.hurtImageIndex == 1;
+}
+
+isDead() {
+    // Überschreibt die Methode aus MovableObject - verwendet bossEnergy statt energy
+    return this.bossEnergy <= 0;
+}
+
+alert() {
+    this.playAnimation(this.IMAGES_ALERT);
+}
+
+dead() {
+    if (!this.deathAnimationStarted) {
+        this.stopAllMovements();
+        // Spiele Death-Animation komplett ab
+        let deathInterval = setInterval(() => {
+            if (this.currentImage < this.IMAGES_DEAD.length) {
+                let path = this.IMAGES_DEAD[this.currentImage];
+                this.img = this.imagePool[path];
+                this.currentImage++;
+            } else {
+                // Animation komplett - bleibt am letzten Bild
+                clearInterval(deathInterval);
+                this.isDeathAnimationComplete = true;
+
+                // Zeige letztes Bild der Death-Animation
+                let lastFrame = this.IMAGES_DEAD[this.IMAGES_DEAD.length - 1];
+                this.img = this.imagePool[lastFrame];
+
+                // Nach 2 Sekunden verschwinden
+                setTimeout(() => {
+                    this.shouldBeRemoved = true;
+                }, 2000);
+            }
+        }, 200); // 200ms pro Frame für deutlich sichtbare Death-Animation
     }
+}
 
-    stopAllMovements() {
-        this.attackInProgress = false;
-        this.movementEnabled = false;
-        this.deathAnimationStarted = true;
-        this.currentImage = 0;
+stopAllMovements() {
+    this.attackInProgress = false;
+    this.movementEnabled = false;
+    this.deathAnimationStarted = true;
+    this.currentImage = 0;
+}
+
+hurt() {
+    if (!this.hurtAnimationStarted) {
+        this.hurtAnimationStarted = true;
+        this.currentImage = 0; // Reset für saubere Animation
+        if (typeof audioManager !== 'undefined') audioManager.onBossHurt();
+
+        // Triggere Angriff nach Schaden
+        this.takeDamage();
+
+        // Spiele Hurt-Animation komplett ab
+        let hurtInterval = setInterval(() => {
+            if (this.currentImage < this.IMAGES_HURT.length) {
+                let path = this.IMAGES_HURT[this.currentImage];
+                this.img = this.imagePool[path];
+                this.currentImage++;
+            } else {
+                this.resetHurtAnimation(hurtInterval);
+            }
+        }, 200); // 150ms pro Frame für sichtbare Animation
     }
+}
 
-    hurt() {
-        if (!this.hurtAnimationStarted) {
-            this.hurtAnimationStarted = true;
-            this.currentImage = 0; // Reset für saubere Animation
-            if (typeof audioManager !== 'undefined') audioManager.onBossHurt();
-
-            // Triggere Angriff nach Schaden
-            this.takeDamage();
-
-            // Spiele Hurt-Animation komplett ab
-            let hurtInterval = setInterval(() => {
-                if (this.currentImage < this.IMAGES_HURT.length) {
-                    let path = this.IMAGES_HURT[this.currentImage];
-                    this.img = this.imagePool[path];
-                    this.currentImage++;
-                } else {
-                    this.resetHurtAnimation(hurtInterval);
-                }
-            }, 200); // 150ms pro Frame für sichtbare Animation
-        }
+takeDamage() {
+    // Verzögere den Angriff bis nach der Hurt-Animation
+    if (!this.attackInProgress) {
+        setTimeout(() => {
+            this.shouldAttackAfterHurt = true;
+        }, 600); // 500ms = ca. 3 Frames à 150ms der Hurt-Animation
     }
+}
 
-    takeDamage() {
-        // Verzögere den Angriff bis nach der Hurt-Animation
-        if (!this.attackInProgress) {
-            setTimeout(() => {
-                this.shouldAttackAfterHurt = true;
-            }, 600); // 500ms = ca. 3 Frames à 150ms der Hurt-Animation
-        }
-    }
+resetHurtAnimation(hurtInterval) {
+    clearInterval(hurtInterval);
+    this.hurtAnimationStarted = false;
+    this.hurtImageIndex = 0;
+    this.currentImage = 0;
+    this.movementEnabled = true;
+}
 
-    resetHurtAnimation(hurtInterval) {
-        clearInterval(hurtInterval);
-        this.hurtAnimationStarted = false;
-        this.hurtImageIndex = 0;
-        this.currentImage = 0;
-        this.movementEnabled = true;
-    }
+stopAnimations() {
+    // Stoppe alle Bewegungen und Sounds
+    this.movementEnabled = false;
+    this.attackInProgress = false;
+    this.shouldAttackAfterHurt = false;
+    this.speed = 0;
 
-    stopAnimations() {
-        // Stoppe alle Bewegungen und Sounds
-        this.movementEnabled = false;
-        this.attackInProgress = false;
-        this.shouldAttackAfterHurt = false;
-        this.speed = 0;
-        
-        // Stoppe Animation-Interval
-        if (this.animationInterval) {
-            clearInterval(this.animationInterval);
-            this.animationInterval = null;
-        }
+    // Stoppe Animation-Interval
+    if (this.animationInterval) {
+        clearInterval(this.animationInterval);
+        this.animationInterval = null;
     }
+}
 
 
 }

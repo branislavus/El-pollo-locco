@@ -234,7 +234,7 @@ h1 {
     background-color: rgba(255, 255, 255, 0.1);
 }
 
-.fullscreenIcon:hover {
+.fullscreenIcon:hover, .toggleAllSound:hover, .toggleAllSoundDisabled:hover {
     background-color: rgba(255, 255, 255, 0.2);
 }
 
@@ -244,6 +244,46 @@ h1 {
     height: 30px;
     border: none;
     margin-right: 3px;
+}
+
+.toggleAllSoundEnabled{
+    position: absolute;
+    top: 20px;
+    right: 70px;
+    width: 40px;
+    height: 40px;
+    background-image: url(./img/volume.svg);
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    outline: none;
+    display: flex;
+    justify-content: end;
+    align-items: end;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    z-index: 2000;
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.toggleAllSoundDisabled{
+    position: absolute;
+    top: 20px;
+    right: 70px;
+    width: 40px;
+    height: 40px;
+    background-image: url(./img/volume-slash.svg);
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    outline: none;
+    display: flex;
+    justify-content: end;
+    align-items: end;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    z-index: 2000;
+    background-color: rgba(255, 255, 255, 0.1);
 }
 
 /* Tablet Landscape */

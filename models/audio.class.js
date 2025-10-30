@@ -97,10 +97,16 @@ class AudioManager {
 
   mute() {
     this.isMuted = true;
+    Object.values(this.sounds).forEach(audio => {
+      audio.volume = 0;
+    });
   }
 
   unmute() {
     this.isMuted = false;
+    Object.values(this.sounds).forEach(audio => {
+      audio.volume = 1;
+    });
   }
 
   toggleMute() {

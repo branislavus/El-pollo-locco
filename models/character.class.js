@@ -110,25 +110,19 @@ class Character extends MovableObject {
 
                 if (this.canMoveRight()) {
                     this.moveRight();
-                    if (!this.isAboveGround()) {
-                        isWalking = true;
-                    }
+                    if (!this.isAboveGround()) isWalking = true;
                 }
                 if (this.canMoveLeft()) {
                     this.moveLeft();
-                    if (!this.isAboveGround()) {
-                        isWalking = true;
-                    }
+                    if (!this.isAboveGround()) isWalking = true;
                 }
                 if (this.canJump()) {
                     this.jump();
-                    this.audio.onJump();
+                    this.playJumpSound();
                 }
 
                 // Walk-Sound mit einfachem Throttling
-                if (isWalking) {
-                    this.playSoundIfDoingSomething('onWalk', 300);
-                }
+                if (isWalking) this.playWalkingSound();
             }
             this.world.camera_x = -this.x + 100;
         }, 1000 / 60);
@@ -154,6 +148,17 @@ class Character extends MovableObject {
             }
 
         }, 1000 / 10);
+    }
+
+    playJumpSound() {
+        if (!audioManager.isMuted) {
+            this.audio.onJump();
+        }
+    }
+    playWalkingSound() {
+        if (!audioManager.isMuted) {
+            this.playSoundIfDoingSomething('onWalk', 300);
+        }
     }
 
     isBored() {
