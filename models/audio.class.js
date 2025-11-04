@@ -145,7 +145,7 @@ class AudioManager {
   }
 
   onHurt() {
-    this.playSound('hurt', 0.6);
+    this.playSound('hurt', 1.1);
   }
 
   onSleep() {

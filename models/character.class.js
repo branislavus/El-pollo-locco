@@ -108,15 +108,15 @@ class Character extends MovableObject {
             if (this.movementEnabled) {
                 let isWalking = false;
 
-                if (this.canMoveRight()) {
+                if (this.canMoveRight() && !this.isDead()) {
                     this.moveRight();
                     if (!this.isAboveGround()) isWalking = true;
                 }
-                if (this.canMoveLeft()) {
+                if (this.canMoveLeft() && !this.isDead()) {
                     this.moveLeft();
                     if (!this.isAboveGround()) isWalking = true;
                 }
-                if (this.canJump()) {
+                if (this.canJump() && !this.isDead()) {
                     this.jump();
                     this.playJumpSound();
                 }
@@ -131,29 +131,29 @@ class Character extends MovableObject {
             this.updateLastMove();
 
             if (this.isDead()) {
-                this.playSoundIfDoingSomething('onDie', 9000);
-                this.playDeadAnimationOnce();
-                this.stopAllMovement();
+                audioManager.onDie();
+                setTimeout(() => {
+                    this.stopAllMovement();
+                    this.playDeadAnimationOnce();
+                }, 4000);
                 return;
-            } else if (this.isHurt()) {
+            } else if (this.isHurt() && !this.isDead()) {
                 // Sound wird bereits in damageCharacter() abgespielt
                 this.playAnimation(this.IMAGES_HURT);
-            } else if (this.isIdle()) {
+            } else if (this.isIdle() && !this.isDead()) {
                 this.isBored();
-            } else if (this.isAboveGround()) {
+            } else if (this.isAboveGround() && !this.isDead()) {
                 this.playAnimation(this.IMAGES_JUMPING);
             } else {
-                if (this.canMove())
+                if (this.canMove() && !this.isDead())
                     this.playAnimation(this.IMAGES_WALKING);
             }
 
-        }, 1000 / 10);
+        }, 1000 / 20);
     }
 
     playJumpSound() {
-        if (!audioManager.isMuted) {
-            this.audio.onJump();
-        }
+        if (!audioManager.isMuted) this.audio.onJump();
     }
     playWalkingSound() {
         if (!audioManager.isMuted) {
@@ -162,12 +162,13 @@ class Character extends MovableObject {
     }
 
     isBored() {
-        let isSleeping = false;
-        if (this.lastMoveTime > 16000) {
+        if (this.lastMoveTime > 16000 && !this.isDead()) {
             this.playAnimation(this.IMAGES_LONG_IDLE);
             // Nur Sound abspielen wenn Movement enabled ist (Spiel läuft)
             if (this.movementEnabled) {
-                this.playSoundIfDoingSomething('onSleep', 5000);
+                if (!audioManager.isMuted) {
+                    this.playSoundIfDoingSomething('onSleep', 5000);
+                }
             }
         } else {
             this.playAnimation(this.IMAGES_IDLE);

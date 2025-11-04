@@ -5,13 +5,14 @@ let loseGame = false;
 function endGame() {
     stopGame();
     showEndAnimation();
-
+    
     // Nach 10 Sekunden: End-Screens verstecken, dann zum Start und Game State resetten
     setTimeout(() => {
         hideEndAnimation();
         showStartWallpaper();
         resetGameState();
-    }, 10000); // Zeige End-Animation 10 Sekunden lang
+    }, 10000); 
+    // Zeige End-Animation 10 Sekunden lang
 }
 
 

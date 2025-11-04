@@ -68,14 +68,14 @@ class World {
         loseGame = true;
         setTimeout(() => {
             endGame();
-        }, 1000); // 1 Sekunde Verzögerung für Death-Animation
+        }, 10000); // 1 Sekunde Verzögerung für Death-Animation
     }
 
     youWonTheGame() {
         winGame = true;
         setTimeout(() => {
             endGame();
-        }, 2000); // 2 Sekunden Verzögerung für Death-Animation
+        }, 4000); // 2 Sekunden Verzögerung für Death-Animation
     }
 
     removeFinishedThrowableObjects() {

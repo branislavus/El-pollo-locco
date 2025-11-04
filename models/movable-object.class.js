@@ -60,7 +60,7 @@ class MovableObject extends DrawableObject {
         if (this.currentImage < images.length - 1) {
             setTimeout(() => {
                 this.currentImage++;
-            }, 300);
+            }, 10);
         } else {
             this.movementEnabled = false;
         }
@@ -77,7 +77,7 @@ class MovableObject extends DrawableObject {
     }
 
     isDead() {
-        return this.energy == 0;
+        return this.energy <= 0;
     }
 
     isHurt() {
