@@ -1,133 +1,172 @@
-// Global Game State Variables
 let winGame = false;
 let loseGame = false;
 
+/**
+ * Ends the game, stops all animations and sounds, shows the end screen, and resets everything after a timeout.
+ */
 function endGame() {
     stopGame();
     showEndAnimation();
-    
-    // Nach 10 Sekunden: End-Screens verstecken, dann zum Start und Game State resetten
     setTimeout(() => {
         hideEndAnimation();
         showStartWallpaper();
         resetGameState();
-    }, 10000); 
-    // Zeige End-Animation 10 Sekunden lang
+    }, 10000);
 }
 
 
+/**
+ * Resets the global game state variables.
+ */
 function resetGameState() {
     winGame = false;
     loseGame = false;
 }
 
+/**
+ * Stops the game, animations, and sounds depending on the game state.
+ */
 function stopGame() {
-    if (winGame) {
-        // Stoppe alle Game-Animationen
+    if (winGame || loseGame) {
         stopAllGameAnimations();
-        // Stoppe alle Sounds
         stopAllSounds();
-        console.log("Game Won! 🎉");
-    }
-    if (loseGame) {
-        // Stoppe alle Game-Animationen  
-        stopAllGameAnimations();
-        // Stoppe alle Sounds
-        stopAllSounds();
-        console.log("Game Over! 💀");
     }
 }
 
+/**
+ * Stops all animations, movements, and intervals in the game.
+ */
 function stopAllGameAnimations() {
-    // Stoppe World-Game-Loop
-    if (typeof world !== 'undefined' && world) {
+    stopWorldGameLoop();
+    stopCharacterAnimations();
+    stopEnemyAnimations();
+    stopThrowableObjects();
+    stopCloudAnimations();
+    stopCollisionDetection();
+    stopWorldRunLoop();
+    setGameOverFlag();
+}
+
+/**
+ * Stops the world game loop.
+ */
+function stopWorldGameLoop() {
+    if (typeof world !== 'undefined' && world)
         world.gameActive = false;
+}
 
-        // Stoppe Character komplett
-        if (world.character) {
-            world.character.stopAllMovement();
-            world.character.disableMovement();
-            world.character.movementEnabled = false;
-
-            // Stoppe Character-spezifische Intervals
-            if (world.character.movementInterval) {
-                clearInterval(world.character.movementInterval);
-            }
-            if (world.character.animationInterval) {
-                clearInterval(world.character.animationInterval);
-            }
-        }
-
-        // Stoppe alle Enemies komplett
-        if (world.level && world.level.enemies) {
-            world.level.enemies.forEach(enemy => {
-                // Stoppe Bewegung
-                enemy.speed = 0;
-                enemy.movementEnabled = false;
-
-                // Stoppe Animationen (Chicken)
-                if (enemy.constructor && enemy.constructor.name === 'Chicken' && enemy.stopAnimations) {
-                    enemy.stopAnimations();
-                }
-
-                // Stoppe Animationen (andere Enemies, z.B. Endboss)
-                if (enemy.stopAnimations && enemy.constructor.name !== 'Chicken') {
-                    enemy.stopAnimations();
-                }
-
-                // Stoppe Endboss-spezifische Angriffe
-                if (enemy.constructor.name === 'Endboss') {
-                    enemy.attackInProgress = false;
-                    enemy.shouldAttackAfterHurt = false;
-                }
-            });
-        }
-
-        // Stoppe alle Throwable Objects
-        world.throwableObject = [];
-
-        // Stoppe alle Cloud-Animationen
-        if (world.level && world.level.clouds) {
-            world.level.clouds.forEach(cloud => {
-                if (cloud.stopAnimation) {
-                    cloud.stopAnimation();
-                }
-            });
-        }
-        
-        // Stoppe Kollisionserkennung - sehr wichtig!
-        if (world.collisionInterval) {
-            clearInterval(world.collisionInterval);
-        }
-        
-        // Stoppe World-Run-Loop (Kollisionen, etc.)
-        if (world.runInterval) {
-            clearInterval(world.runInterval);
-        }
-        
-        // Setze Flag für gestopptes Spiel
-        world.gameOver = true;
+/**
+ * Stops all character animations and movements.
+ */
+function stopCharacterAnimations() {
+    if (typeof world !== 'undefined' && world && world.character) {
+        world.character.stopAllMovement();
+        world.character.disableMovement();
+        world.character.movementEnabled = false;
+        if (world.character.movementInterval)
+            clearInterval(world.character.movementInterval);
+        if (world.character.animationInterval)
+            clearInterval(world.character.animationInterval);
     }
 }
 
+/**
+ * Stops all enemy animations and movements.
+ */
+function stopEnemyAnimations() {
+    if (typeof world !== 'undefined' && world && world.level && world.level.enemies) {
+        world.level.enemies.forEach(enemy => {
+            enemy.speed = 0;
+            enemy.movementEnabled = false;
+            stopAllEnemyAnimations();
+        });
+    }
+}
+
+/**
+ * Stops all enemy-specific animations and actions.
+ */
+function stopAllEnemyAnimations() {
+    if (enemy.constructor && enemy.constructor.name === 'Chicken' && enemy.stopAnimations)
+        enemy.stopAnimations();
+    if (enemy.stopAnimations && enemy.constructor.name !== 'Chicken')
+        enemy.stopAnimations();
+    if (enemy.constructor.name === 'Endboss') {
+        enemy.attackInProgress = false;
+        enemy.shouldAttackAfterHurt = false;
+    }
+}
+
+/**
+ * Removes all throwable objects from the game.
+ */
+function stopThrowableObjects() {
+    if (typeof world !== 'undefined' && world) {
+        world.throwableObject = [];
+    }
+}
+
+/**
+ * Stops all cloud animations and clears the cloud array.
+ */
+function stopCloudAnimations() {
+    if (typeof world !== 'undefined' && world && world.level && world.level.clouds) {
+        world.level.clouds.forEach(cloud => {
+            if (cloud.stopAnimation)
+                cloud.stopAnimation();
+        });
+        world.level.clouds = [];
+    }
+}
+
+/**
+ * Stops collision detection in the game.
+ */
+function stopCollisionDetection() {
+    if (typeof world !== 'undefined' && world && world.collisionInterval)
+        clearInterval(world.collisionInterval);
+}
+
+/**
+ * Stops the world run loop (e.g., for collisions).
+ */
+function stopWorldRunLoop() {
+    if (typeof world !== 'undefined' && world && world.runInterval)
+        clearInterval(world.runInterval);
+}
+
+/**
+ * Sets the flag that the game is over.
+ */
+function setGameOverFlag() {
+    if (typeof world !== 'undefined' && world)
+        world.gameOver = true;
+}
+
+/**
+ * Stops all sounds in the game (global, character, endboss, browser audio).
+ */
 function stopAllSounds() {
-    // 1. Stoppe globalen AudioManager
-    if (typeof audioManager !== 'undefined' && audioManager) {
-        Object.values(audioManager.sounds).forEach(audio => {
-            audio.pause();
-            audio.currentTime = 0;
-        });
-    }
+    stoppGlobalAudioManager();
+    stoppCharacterAudio();
+    stoppEndbossAudio();
+    stoppallAudioImBrowser();
+}
 
-    // 2. Stoppe Character Audio
-    if (typeof world !== 'undefined' && world && world.character && world.character.audio) {
-        Object.values(world.character.audio.sounds).forEach(audio => {
-            audio.pause();
-            audio.currentTime = 0;
-        });
-    }
+/**
+ * Stops all audio elements in the browser (fallback).
+ */
+function stoppallAudioImBrowser() {
+    document.querySelectorAll('audio').forEach(audio => {
+        audio.pause();
+        audio.currentTime = 0;
+    });
+}
 
-    // 3. Stoppe Endboss Audio
+/**
+ * Stops all endboss sounds.
+ */
+function stoppEndbossAudio() {
     if (typeof world !== 'undefined' && world && world.level && world.level.enemies) {
         world.level.enemies.forEach(enemy => {
             if (enemy.audio && enemy.audio.sounds) {
@@ -138,14 +177,35 @@ function stopAllSounds() {
             }
         });
     }
-
-    // 4. Stoppe alle Audio-Elemente im Browser (Fallback)
-    document.querySelectorAll('audio').forEach(audio => {
-        audio.pause();
-        audio.currentTime = 0;
-    });
 }
 
+/**
+ * Stops all character sounds.
+ */
+function stoppCharacterAudio() {
+    if (typeof world !== 'undefined' && world && world.character && world.character.audio) {
+        Object.values(world.character.audio.sounds).forEach(audio => {
+            audio.pause();
+            audio.currentTime = 0;
+        });
+    }
+}
+
+/**
+ * Stops all global sounds from the AudioManager.
+ */
+function stoppGlobalAudioManager() {
+    if (typeof audioManager !== 'undefined' && audioManager) {
+        Object.values(audioManager.sounds).forEach(audio => {
+            audio.pause();
+            audio.currentTime = 0;
+        });
+    }
+}
+
+/**
+ * Shows the end animation (win/lose screen).
+ */
 function showEndAnimation() {
     if (winGame) {
         showWinScreen();
@@ -154,37 +214,51 @@ function showEndAnimation() {
     }
 }
 
+/**
+ * Shows the win screen.
+ */
 function showWinScreen() {
-    // Nutze vorhandenes Win-Wallpaper Element als Overlay
     let winWallpaper = document.getElementById('endWinWallpaper');
     if (winWallpaper) {
         winWallpaper.classList.remove('d_none');
         winWallpaper.style.display = 'flex';
     }
-
-    console.log("🎉 YOU WIN! Endboss defeated!");
 }
 
+/**
+ * Shows the lose screen.
+ */
 function showLoseScreen() {
-    // Nutze vorhandenes Lose-Wallpaper Element als Overlay
     let loseWallpaper = document.getElementById('endLoseWallpaper');
     if (loseWallpaper) {
         loseWallpaper.classList.remove('d_none');
         loseWallpaper.style.display = 'flex';
     }
-
-    console.log("💀 GAME OVER! Character died!");
 }
 
+/**
+ * Hides the end animation (both screens).
+ */
 function hideEndAnimation() {
-    // Verstecke Win-Screen
+    hideWinScreen();
+    hideLoseScreen();
+}
+
+/**
+ * Hides the win screen.
+ */
+function hideWinScreen() {
     let winWallpaper = document.getElementById('endWinWallpaper');
     if (winWallpaper) {
         winWallpaper.classList.add('d_none');
         winWallpaper.style.display = 'none';
     }
+}
 
-    // Verstecke Lose-Screen
+/**
+ * Hides the lose screen.
+ */
+function hideLoseScreen() {
     let loseWallpaper = document.getElementById('endLoseWallpaper');
     if (loseWallpaper) {
         loseWallpaper.classList.add('d_none');
