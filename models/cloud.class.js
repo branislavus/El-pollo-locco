@@ -21,7 +21,7 @@ class Cloud extends MovableObject {
     }
 
     animate() {
-        setInterval(() => {
+       this.cloudInterval = setInterval(() => {
             this.returnCloudBack();
             this.moveLeft();
             this.playCoudSound();
@@ -37,4 +37,7 @@ class Cloud extends MovableObject {
             if (!audioManager.isMuted) audioManager.onWind();
     }
 
+    stopCloudAnimation(){
+clearInterval(this.cloudInterval);
+    }
 }

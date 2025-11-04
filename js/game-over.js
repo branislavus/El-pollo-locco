@@ -65,8 +65,13 @@ function stopAllGameAnimations() {
                 enemy.speed = 0;
                 enemy.movementEnabled = false;
 
-                // Stoppe Animationen
-                if (enemy.stopAnimations) {
+                // Stoppe Animationen (Chicken)
+                if (enemy.constructor && enemy.constructor.name === 'Chicken' && enemy.stopAnimations) {
+                    enemy.stopAnimations();
+                }
+
+                // Stoppe Animationen (andere Enemies, z.B. Endboss)
+                if (enemy.stopAnimations && enemy.constructor.name !== 'Chicken') {
                     enemy.stopAnimations();
                 }
 
@@ -80,6 +85,15 @@ function stopAllGameAnimations() {
 
         // Stoppe alle Throwable Objects
         world.throwableObject = [];
+
+        // Stoppe alle Cloud-Animationen
+        if (world.level && world.level.clouds) {
+            world.level.clouds.forEach(cloud => {
+                if (cloud.stopAnimation) {
+                    cloud.stopAnimation();
+                }
+            });
+        }
         
         // Stoppe Kollisionserkennung - sehr wichtig!
         if (world.collisionInterval) {

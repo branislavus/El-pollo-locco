@@ -149,7 +149,7 @@ class Character extends MovableObject {
                     this.playAnimation(this.IMAGES_WALKING);
             }
 
-        }, 1000 / 20);
+        }, 1000 / 14);
     }
 
     playJumpSound() {
