@@ -164,9 +164,10 @@ class World {
             this.killEnemyByBottle(enemy);
         }
         // Starte nur die Animation, Sound wird in startSplashAnimation() abgespielt
-        bottle.startSplashAnimation();
+        if (!bottle.shouldBeRemoved) {
+            bottle.startSplashAnimation();
+        }
     }
-
     isEndboss(enemy) {
         // Prüft ob Enemy ein Endboss ist
         return enemy.constructor.name === 'Endboss' || enemy.isEndboss === true;
