@@ -221,16 +221,24 @@ class World {
     }
 
     killEnemy(enemy, index) {
-        // Character springt nach oben
+        // Character jumps up
         this.character.speedY = 10;
 
-        // 1. Zeige Todes-Animation des Gegners
+        // 3. Stop enemy sounds immediately
+        if (enemy.audio && enemy.audio.sounds) {
+            Object.values(enemy.audio.sounds).forEach(audio => {
+                audio.pause();
+                audio.currentTime = 0;
+            });
+        }
+
+        // 1. Show enemy death animation
         if (enemy.showDeadChicken) enemy.showDeadChicken();
 
-        // 2. Audio für getöteten Gegner abspielen
+        // 2. Play sound for defeated enemy
         if (typeof audioManager !== 'undefined') audioManager.onChickenSquish();
 
-        // 3. Nach 2 Sekunden: Entferne Gegner aus dem Array
+        // 4. Remove enemy from array after 2 seconds
         setTimeout(() => {
             this.level.enemies.splice(index, 1);
         }, 2000);

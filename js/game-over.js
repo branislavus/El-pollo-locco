@@ -78,24 +78,10 @@ function stopEnemyAnimations() {
         world.level.enemies.forEach(enemy => {
             enemy.speed = 0;
             enemy.movementEnabled = false;
-            stopAllEnemyAnimations();
         });
     }
 }
 
-/**
- * Stops all enemy-specific animations and actions.
- */
-function stopAllEnemyAnimations() {
-    if (enemy.constructor && enemy.constructor.name === 'Chicken' && enemy.stopAnimations)
-        enemy.stopAnimations();
-    if (enemy.stopAnimations && enemy.constructor.name !== 'Chicken')
-        enemy.stopAnimations();
-    if (enemy.constructor.name === 'Endboss') {
-        enemy.attackInProgress = false;
-        enemy.shouldAttackAfterHurt = false;
-    }
-}
 
 /**
  * Removes all throwable objects from the game.
