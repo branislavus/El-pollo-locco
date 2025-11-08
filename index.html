@@ -34,12 +34,11 @@
     <script src="./levels/level1.js"></script>
     <script src="./js/game.js"></script>
     <script src="./js/start.js"></script>
-    <script src="./js/overlay.js"></script>
     <script src="./js/game-over.js"></script>
 </head>
 
 <body>
-    <h1>El Pollo Locco</h1>
+    <h1 id="title" class="title">El Pollo Locco</h1>
     <div id="fullscreen" class="fullscreen">
         <div id="toggleAllSound" class="toggleAllSoundEnabled" onclick="toggleAllSound()"></div>
         <div id="fullscreenIcon" class="fullscreenIcon" onclick="fullscreen()"></div>
@@ -61,54 +60,61 @@
             </div>
         </div>
     </div>
-    <h2>action keys</h2>
-    <div class="tables">
-        <table>
+    <div id="action-keys-legend-section" class="action-keys-legend-section">
+        <h2>action keys</h2>
+        <div class="tables">
+            <table>
 
-            <tr>
-                <td>left</td>
-                <td class="text-align-right">-- left arrow --</td>
-            </tr>
-            <tr>
-                <td>right</td>
-                <td class="text-align-right">-- right arrow --</td>
-            </tr>
-            <tr>
-                <td>jump</td>
-                <td class="text-align-right">-- spacebar --</td>
-            </tr>
-            <tr>
-                <td>throw bottle</td>
-                <td class="text-align-right">-- D --</td>
-            </tr>
-        </table>
+                <tr>
+                    <td>left</td>
+                    <td class="text-align-right">-- left arrow --</td>
+                </tr>
+                <tr>
+                    <td>right</td>
+                    <td class="text-align-right">-- right arrow --</td>
+                </tr>
+                <tr>
+                    <td>jump</td>
+                    <td class="text-align-right">-- spacebar --</td>
+                </tr>
+                <tr>
+                    <td>throw bottle</td>
+                    <td class="text-align-right">-- D --</td>
+                </tr>
+            </table>
 
 
 
-        <table class="tableButtonsLegend">
-            <tr class="legendButtons">
-                <td class="legendButtonsName">press start to play</td>
-                <td class="legendButtonsTd"><button type="button" class="startButton startButtonLegend">Start</button>
-                </td>
-            </tr>
-            <tr class="legendButtons">
-                <td class="legendButtonsName">toggle fullscreen</td>
-                <td class="legendButtonsTd"><button type="button" class="fullscreenIcon fullscreenIconLegend"></button>
-                </td>
-            </tr>
+            <table class="tableButtonsLegend">
+                <tr class="legendButtons">
+                    <td class="legendButtonsName">press start to play</td>
+                    <td class="legendButtonsTd"><button type="button"
+                            class="startButton startButtonLegend">Start</button>
+                    </td>
+                </tr>
+                <tr class="legendButtons">
+                    <td class="legendButtonsName">toggle fullscreen</td>
+                    <td class="legendButtonsTd"><button type="button"
+                            class="fullscreenIcon fullscreenIconLegend"></button>
+                    </td>
+                </tr>
 
-        </table>
+            </table>
+        </div>
     </div>
 
-    <div id="orientation-overlay" >
-        Turn your device<br>to landscape mode to continue.
+
+    <div id="warning" class="warning">
+        <p class="p-warning">Turn your device<br>to landscape mode<br>to continue.</p>
     </div>
 
 
-    <div class="impressum">
+    <div class="impressum" id="impressum">
         <a href="./impressum.html" target="_blank" rel="noopener noreferrer">impressum</a>
     </div>
-      <script src="./js/overlay.js"></script>
+
+    <script src="./js/overlay.js"></script>
+    <script src="./js/overlay.js"></script>
 </body>
 
 </html>

@@ -289,7 +289,12 @@ h1 {
 }
 
 /* Tablet Landscape */
-@media only screen and (max-width: 933px) {
+@media only screen and (max-width: 1280px) {
+    .tables {
+        display: flex;
+        flex-direction: column;
+    }
+
     canvas {
         position: absolute;
         top: 0;
@@ -302,9 +307,9 @@ h1 {
         margin-bottom: 20px;
     }
 
-        .touch-keys {
-        width: 100%;
-        height: 100%;
+    .touch-keys {
+        width: 100vw;
+        height: 100vh;
         left: 0;
         top: 0;
         position: fixed;
@@ -313,7 +318,7 @@ h1 {
         display: flex;
     }
 
-       .keys-doing{
+    .keys-doing {
         flex-direction: column-reverse;
     }
 
@@ -324,19 +329,77 @@ h1 {
         min-height: 32px;
         max-width: 80px;
         max-height: 80px;
-        font-size: 7vw;
+        font-size: 4vw;
     }
 
-}
+    .warning {
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0);
+        justify-content: center;
+        align-items: center;
+        font-size: 1.5rem;
+        text-align: center;
+        z-index: 9998;
 
-/* Mobile */
-@media only screen and (max-height: 480px) {
+    }
+
+    .p-warning {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        color: white;
+        font-size: 1.5rem;
+        text-align: center;
+        z-index: 9999;
+        background: rgba(0,0,0,0.95);
+        padding: 2rem;
+        border-radius: 12px;
+        max-width: 90vw;
+    }
+
     .startWallpaper {
         position: absolute;
         top: 0;
         width: 100vw;
         height: 100vh;
 
+    }
+
+}
+
+/* Mobile */
+
+@media only screen and (max-height: 480px) {
+    
+    .p-warning {
+        position: relative;
+        color: white;
+        font-size: 1.5rem;
+        text-align: center;
+        z-index: 9999;
+    }
+
+    .warning {
+        width: 100vw;
+        height: 100vh;
+        position: absolute;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.95);
+        display: none;
+        justify-content: center;
+        align-items: center;
+        font-size: 1.5rem;
+        text-align: center;
+        z-index: 9998;
+    }
+
+    .startWallpaper {
+        position: absolute;
+        top: 0;
+        width: 100vw;
+        height: 100vh;
     }
 
     .endWinWallpaper {
@@ -353,7 +416,7 @@ h1 {
         height: 100vh;
     }
 
-    .keys-doing{
+    .keys-doing {
         flex-direction: column-reverse;
     }
 
@@ -417,4 +480,14 @@ a:hover {
 
 .impressum {
     width: 100%;
+}
+
+@media (orientation: portrait) {
+    .orientation-warning {
+        display: flex;
+    }
+
+    .game {
+        display: none;
+    }
 }
