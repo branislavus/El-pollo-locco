@@ -1,5 +1,5 @@
 let level1;
-function initLevel() {
+ function initLevel() {
     level1 = new Level(
         [
             new Cloud(),

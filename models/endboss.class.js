@@ -147,7 +147,17 @@ class Endboss extends MovableObject {
      * @returns {boolean} True if should play attack animation.
      */
     shouldPlayAttackAnimation() {
-        return this.isAttacking() && !this.attackInProgress && !this.isDead() && !this.isHurt() && !this.isDeathAnimationComplete;
+        const shouldAttack = (this.isAttacking() || this.shouldAttackAfterHurt) && 
+                             !this.attackInProgress && 
+                             !this.isDead() && 
+                             !this.isHurt() && 
+                             !this.isDeathAnimationComplete;
+        
+        if (shouldAttack && this.shouldAttackAfterHurt) {
+            this.shouldAttackAfterHurt = false;
+        }
+        
+        return shouldAttack;
     }
 
 

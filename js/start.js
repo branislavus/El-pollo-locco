@@ -71,12 +71,15 @@ document.addEventListener('DOMContentLoaded', initializeScreens);
  * Starts the game by initializing level, music, and hiding start screen.
  */
 function StartGame() {
-    audioManager.startBackgroundMusic();
+   
     initLevel();
     init();
+    
     setTimeout(() => {
         hideStartWallpaper();
     }, 800);
+    
+     audioManager.startBackgroundMusic();
 }
 
 /**
