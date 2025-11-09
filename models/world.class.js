@@ -122,8 +122,7 @@ class World {
             if (enemy.isDead() || !this.character.isColliding(enemy)) continue;
 
             this.isJumpingOnEnemy(enemy) ? this.killEnemy(enemy, i) : this.damageCharacter();
-            // Setze Y-Position nur, wenn Charakter nicht springt
-            if (!this.character.isJumping()) {
+            if (!this.character.isAboveGround()) {
                 this.setRightCharecterYPosition();
             }
         }
@@ -219,8 +218,8 @@ class World {
         let enemyTop = enemy.y + (enemy.offset ? enemy.offset.top : 0);
 
         let isFalling = this.character.speedY <= 0;
-        let isLandingOnTop = Math.abs(characterBottom - enemyTop) <= 60;
-        let isAboveEnemy = characterBottom < enemyTop + 35;
+        let isLandingOnTop = Math.abs(characterBottom - enemyTop) <= 50;
+        let isAboveEnemy = characterBottom < enemyTop + 20;
         let isHorizontallyOverlapping = characterRight > enemyLeft && characterLeft < enemyRight;
 
         return isFalling && isLandingOnTop && isAboveEnemy && isHorizontallyOverlapping;
