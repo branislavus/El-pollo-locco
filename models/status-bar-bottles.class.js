@@ -11,6 +11,11 @@ class StatusBarBottles extends DrawableObject {
         'img/7_statusbars/1_statusbar/3_statusbar_bottle/blue/80.png',
         'img/7_statusbars/1_statusbar/3_statusbar_bottle/blue/100.png'
     ];
+
+
+    /**
+     * Creates a new StatusBarBottles instance and initializes position.
+     */
     constructor() {
         super();
         this.loadImages(this.IMAGES_BOTTLES_BLUE);
@@ -21,12 +26,16 @@ class StatusBarBottles extends DrawableObject {
         this.setBottlesAmount(0);
     }
 
+
+    /**
+     * Sets the bottle amount and updates the displayed image.
+     * @param {number} bottlesCollected - Number of bottles collected (0-5).
+     */
     setBottlesAmount(bottlesCollected) {
         bottlesCollected > 5 ? this.botCol = 5 : this.botCol = bottlesCollected;
         let path = this.IMAGES_BOTTLES_BLUE[this.botCol];
         this.img = this.imagePool[path];
     }
-
 
 
 }

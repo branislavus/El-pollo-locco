@@ -11,7 +11,7 @@ function endGame() {
         hideEndAnimation();
         showStartWallpaper();
         resetGameState();
-    }, 10000);
+    }, 8000);
 }
 
 
@@ -78,6 +78,7 @@ function stopEnemyAnimations() {
         world.level.enemies.forEach(enemy => {
             enemy.speed = 0;
             enemy.movementEnabled = false;
+            enemy.stopAnimations();
         });
     }
 }
@@ -135,7 +136,7 @@ function setGameOverFlag() {
 function stopAllSounds() {
     stoppGlobalAudioManager();
     stoppCharacterAudio();
-    stoppEndbossAudio();
+    stoppEnemiesAudio();
     stoppallAudioImBrowser();
 }
 
@@ -152,7 +153,7 @@ function stoppallAudioImBrowser() {
 /**
  * Stops all endboss sounds.
  */
-function stoppEndbossAudio() {
+function stoppEnemiesAudio() {
     if (typeof world !== 'undefined' && world && world.level && world.level.enemies) {
         world.level.enemies.forEach(enemy => {
             if (enemy.audio && enemy.audio.sounds) {

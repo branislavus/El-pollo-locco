@@ -7,11 +7,21 @@ class DrawableObject {
     height = 100;
     width = 100;
 
+
+    /**
+     * Loads a single image from the specified path.
+     * @param {string} path - The path to the image file.
+     */
     loadImage(path) {
         this.img = new Image();
         this.img.src = path;
     }
 
+
+    /**
+     * Loads multiple images from an array of paths into the image pool.
+     * @param {string[]} arr - Array of image paths.
+     */
     loadImages(arr) {
         arr.forEach(path => {
             let img = new Image();
@@ -20,6 +30,11 @@ class DrawableObject {
         });
     }
 
+
+    /**
+     * Draws the object on the canvas.
+     * @param {CanvasRenderingContext2D} ctx - The canvas rendering context.
+     */
     draw(ctx) {
         try {
             ctx.drawImage(this.img, this.x, this.y, this.width, this.height);
@@ -29,6 +44,12 @@ class DrawableObject {
         }
     }
 
+
+    /**
+     * Checks if this object is colliding with another movable object.
+     * @param {MovableObject} mo - The movable object to check collision with.
+     * @returns {boolean} True if colliding, else false.
+     */
     isColliding(mo) {
         return this.x + (this.width - 40) > mo.x &&
             (this.y + 40) + this.height > mo.y &&
@@ -36,6 +57,12 @@ class DrawableObject {
             this.y < mo.y + mo.height;
     }
 
+
+    /**
+     * Checks collision with offset boundaries for more precise detection.
+     * @param {MovableObject} mo - The movable object to check collision with.
+     * @returns {boolean} True if colliding with offset, else false.
+     */
     isCollidingOffset(mo) {
         return (
             this.x + this.offset.left < mo.x + mo.width &&
@@ -46,13 +73,16 @@ class DrawableObject {
     }
 
 
+    /**
+     * Draws red offset frames for debugging collision boundaries (Character only).
+     * @param {CanvasRenderingContext2D} ctx - The canvas rendering context.
+     */
     drawOffsetFrames(ctx) {
         if (this instanceof Character) {
             if (this.offset) {
                 ctx.beginPath();
-                ctx.lineWidth = '3'; // Etwas dicker für bessere Sichtbarkeit
+                ctx.lineWidth = '3';
                 ctx.strokeStyle = 'red';
-                // Zeichne die echte Kollisionsbox mit Offsets
                 let offsetX = this.x + this.offset.left;
                 let offsetY = this.y + this.offset.top;
                 let offsetWidth = this.width - this.offset.left - this.offset.right;
@@ -63,6 +93,11 @@ class DrawableObject {
         }
     }
 
+
+    /**
+     * Draws green offset line frames for debugging (Character only).
+     * @param {CanvasRenderingContext2D} ctx - The canvas rendering context.
+     */
     drawOffsetLineFrames(ctx) {
         if (this instanceof Character) {
             if (this.offsetLine) {
@@ -79,6 +114,11 @@ class DrawableObject {
         }
     }
 
+
+    /**
+     * Draws blue border frames for debugging object boundaries.
+     * @param {CanvasRenderingContext2D} ctx - The canvas rendering context.
+     */
     drawBorderFrames(ctx) {
         if (this instanceof Character || this instanceof Chicken || this instanceof ChickenSmall || this instanceof Endboss) {
             ctx.beginPath();

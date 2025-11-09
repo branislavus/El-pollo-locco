@@ -13,6 +13,7 @@ class World {
     lastThrow = 0;
     gameOver = false;
     gameActive = true;
+    drawBorderFramesYes = false;
 
     constructor(canvas, keyboard) {
         this.ctx = canvas.getContext("2d");
@@ -68,7 +69,7 @@ class World {
         loseGame = true;
         setTimeout(() => {
             endGame();
-        }, 10000); // 1 Sekunde Verzögerung für Death-Animation
+        }, 6000); // 1 Sekunde Verzögerung für Death-Animation
     }
 
     youWonTheGame() {
@@ -107,6 +108,8 @@ class World {
     }
 
     checkCollisions() {
+        // Stop enemy collisions if game is over
+        if (!this.gameActive || this.gameOver || loseGame || winGame) return;
         this.checkEnemyCollisions();
         this.checkBottleEnemyCollisions();
         this.checkBottlesCollisions();
@@ -119,7 +122,10 @@ class World {
             if (enemy.isDead() || !this.character.isColliding(enemy)) continue;
 
             this.isJumpingOnEnemy(enemy) ? this.killEnemy(enemy, i) : this.damageCharacter();
-            this.setRightCharecterYPosition();
+            // Setze Y-Position nur, wenn Charakter nicht springt
+            if (!this.character.isJumping()) {
+                this.setRightCharecterYPosition();
+            }
         }
     }
 
@@ -213,7 +219,7 @@ class World {
         let enemyTop = enemy.y + (enemy.offset ? enemy.offset.top : 0);
 
         let isFalling = this.character.speedY <= 0;
-        let isLandingOnTop = Math.abs(characterBottom - enemyTop) <= 55;
+        let isLandingOnTop = Math.abs(characterBottom - enemyTop) <= 60;
         let isAboveEnemy = characterBottom < enemyTop + 35;
         let isHorizontallyOverlapping = characterRight > enemyLeft && characterLeft < enemyRight;
 
@@ -330,10 +336,16 @@ class World {
             this.flipImage(mo);
         }
         mo.draw(this.ctx);
-        mo.drawBorderFrames(this.ctx);
-        mo.drawOffsetFrames(this.ctx);
+        this.drawBorderFramesStart();
         if (mo.characterDirectionLeft) {
             this.flipImageBack(mo);
+        }
+    }
+
+    drawBorderFramesStart() {
+        if (this.drawBorderFramesYes) {
+            mo.drawBorderFrames(this.ctx);
+            mo.drawOffsetFrames(this.ctx);
         }
     }
 

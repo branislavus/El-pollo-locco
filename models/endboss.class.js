@@ -54,15 +54,18 @@ class Endboss extends MovableObject {
     movementEnabled = true;
     world;
     attackInProgress = false;
-    attackPhase = 'idle';  // idle, moving_left, attacking, moving_right
-    attackDuration = 1200; // Dauer der Attack-Animation
-    moveSpeed = 20;         // Bewegungsgeschwindigkeit
-    shouldAttackAfterHurt = false; // Trigger für Angriff nach Schaden
-    lastWalkSoundTime = 0; // Für Walk-Sound Throttling
-    audio = new AudioManager(); // AudioManager für playSoundIfDoingSomething
-    deathSoundPlayed = false; // Flag um Death-Sound nur einmal abzuspielen
+    attackPhase = 'idle';
+    attackDuration = 1200;
+    moveSpeed = 20;
+    shouldAttackAfterHurt = false;
+    lastWalkSoundTime = 0;
+    audio = new AudioManager();
+    deathSoundPlayed = false;
 
 
+    /**
+     * Creates a new Endboss instance and initializes all animations.
+     */
     constructor() {
         super().loadImage(this.IMAGES_ALERT[0]);
         this.loadImages(this.IMAGES_WALKING);
@@ -71,170 +74,157 @@ class Endboss extends MovableObject {
         this.loadImages(this.IMAGES_HURT);
         this.loadImages(this.IMAGES_DEAD);
         this.x = 2000;
-        this.energy = 100; // Setze energy hoch, damit MovableObject-Methoden nicht interferieren
+        this.energy = 100;
         this.isDeathAnimationComplete = false;
         this.shouldBeRemoved = false;
         this.hurtAnimationStarted = false;
         this.deathAnimationStarted = false;
+        this.animationSequence = new EndbossAnimationSequence(this);
         this.animate();
     }
 
+
+    /**
+     * Starts the main animation interval for the endboss.
+     */
     animate() {
         this.animationInterval = setInterval(() => {
-            if (this.isDeathAnimationComplete || !this.movementEnabled) return;
-
-            // Priorität 1: Tod (höchste Priorität)
-            if (this.isDead() && !this.isDeathAnimationComplete && !this.deathSoundPlayed) {
-                // Sound sofort abspielen (nur einmal)
-                if (typeof audioManager !== 'undefined') audioManager.bossOnDie();
-                this.deathSoundPlayed = true; // Flag setzen
-
-                // Animation nach 2 Sekunden starten
-                setTimeout(() => {
-                    this.dead();
-                }, 1000);
-            }
-            // Priorität 2: Hurt Animation (muss vor Attack kommen!)
-            else if (this.isHurt() && !this.isDead() && !this.isDeathAnimationComplete) {
-                this.hurt();
-                setTimeout(() => {
-
-                }, 1000);
-            }
-            // Priorität 3: Angriff (nur wenn nicht hurt oder tot)
-            else if (this.isAttacking() && !this.attackInProgress && !this.isDead() && !this.isHurt() && !this.isDeathAnimationComplete) {
-                this.atackAnimation();
-            }
-            // Priorität 4: Normal Alert (niedrigste Priorität)
-            else if (!this.isDead() && !this.isHurt() && !this.attackInProgress && !this.isDeathAnimationComplete) {
-                this.alert();
-            }
+            this.handleAnimationState();
         }, 200);
     }
 
+
+    /**
+     * Handles the animation state based on priority.
+     */
+    handleAnimationState() {
+        if (this.isDeathAnimationComplete || !this.movementEnabled) return;
+
+        if (this.shouldPlayDeathAnimation()) {
+            this.playDeathAnimation();
+        } else if (this.shouldPlayHurtAnimation()) {
+            this.animationSequence.hurt();
+        } else if (this.shouldPlayAttackAnimation()) {
+            this.animationSequence.atackAnimation();
+        } else if (this.shouldPlayAlertAnimation()) {
+            this.alert();
+        }
+    }
+
+
+    /**
+     * Checks if death animation should play.
+     * @returns {boolean} True if should play death animation.
+     */
+    shouldPlayDeathAnimation() {
+        return this.isDead() && !this.isDeathAnimationComplete && !this.deathSoundPlayed;
+    }
+
+
+    /**
+     * Plays death sound and schedules death animation.
+     */
+    playDeathAnimation() {
+        if (typeof audioManager !== 'undefined') audioManager.bossOnDie();
+        this.deathSoundPlayed = true;
+        setTimeout(() => {
+            this.animationSequence.dead();
+        }, 1000);
+    }
+
+
+    /**
+     * Checks if hurt animation should play.
+     * @returns {boolean} True if should play hurt animation.
+     */
+    shouldPlayHurtAnimation() {
+        return this.isHurt() && !this.isDead() && !this.isDeathAnimationComplete;
+    }
+
+
+    /**
+     * Checks if attack animation should play.
+     * @returns {boolean} True if should play attack animation.
+     */
+    shouldPlayAttackAnimation() {
+        return this.isAttacking() && !this.attackInProgress && !this.isDead() && !this.isHurt() && !this.isDeathAnimationComplete;
+    }
+
+
+    /**
+     * Checks if alert animation should play.
+     * @returns {boolean} True if should play alert animation.
+     */
+    shouldPlayAlertAnimation() {
+        return !this.isDead() && !this.isHurt() && !this.attackInProgress && !this.isDeathAnimationComplete;
+    }
+
+
+    /**
+     * Generates a random attack interval.
+     * @returns {number} Random interval between 8 and 28.
+     */
     getRandomAtackInterval() {
         return Math.floor(Math.random() * 20) + 8;
     }
 
 
-    atackAnimation() {
-        if (this.attackInProgress) return;
-        this.world.character.energy -= 10;
-        this.attackInProgress = true;
-        this.attackPhase = 'moving_left';
-
-        const attackConfig = this.getRandomAttackSettings();
-        const startX = this.x;
-
-        this.executeAttackSequence(attackConfig, startX);
-    }
-
+    /**
+     * Generates random attack settings.
+     * @returns {Object} Attack configuration object.
+     */
     getRandomAttackSettings() {
         return {
-            moveDuration: Math.floor(Math.random() * 1500) + 1000,    // 500-2000ms
-            attackDuration: Math.floor(Math.random() * 400) + 200,   // 200-600ms
-            moveSpeed: Math.floor(Math.random() * 8) + 10             // 5-12 speed
+            moveDuration: Math.floor(Math.random() * 1500) + 1000,
+            attackDuration: Math.floor(Math.random() * 400) + 200,
+            moveSpeed: Math.floor(Math.random() * 8) + 10
         };
     }
 
-    checkHealthAndAtack() {
-        if (!this.world.character.isDead()) {
 
-        }
-    }
-
-
-    executeAttackSequence(config, startX) {
-        // Phase 1: Move Left
-        const moveLeftInterval = this.startMoveLeftPhase(config.moveSpeed);
-
-        setTimeout(() => {
-            clearInterval(moveLeftInterval);
-            this.startAttackPhase(config, startX);
-        }, config.moveDuration);
-    }
-
-    startMoveLeftPhase(moveSpeed) {
-        this.attackPhase = 'moving_left';
-        return setInterval(() => {
-            if (!this.movementEnabled) return; // Stoppe wenn Movement disabled
-            this.x -= moveSpeed;
-            this.playAnimation(this.IMAGES_WALKING);
-            this.playBossWalkSound();
-        }, 1000 / 10); // Langsamere Animation: 10 FPS statt 25 FPS
-    }
-
-    startAttackPhase(config, startX) {
-        this.attackPhase = 'attacking';
-
-        const attackInterval = setInterval(() => {
-            this.playAnimation(this.IMAGES_ATTACK);
-        }, 150);
-        setTimeout(() => {
-            if (typeof audioManager !== 'undefined') audioManager.bossOnBite();
-        }, 200);
-
-        setTimeout(() => {
-            clearInterval(attackInterval);
-        }, 1000);
-
-       setTimeout(() => {
-         setTimeout(() => {
-            this.startMoveRightPhase(config.moveSpeed, startX);
-        }, config.attackDuration);
-       }, 1200);
-    }
-
-    startMoveRightPhase(moveSpeed, startX) {
-        this.attackPhase = 'moving_right';
-
-        const moveRightInterval = setInterval(() => {
-            if (!this.movementEnabled) {
-                clearInterval(moveRightInterval);
-                return;
-            }
-            if (this.x < startX) {
-                this.x += moveSpeed;
-                this.playAnimation(this.IMAGES_WALKING);
-                this.playBossWalkSound();
-            } else {
-                clearInterval(moveRightInterval);
-                this.resetAttackState();
-            }
-        }, 1000 / 10); // Langsamere Animation: 10 FPS statt 25 FPS
-    }
-
+    /**
+     * Resets attack state to idle.
+     */
     resetAttackState() {
         this.attackInProgress = false;
         this.attackPhase = 'idle';
     }
 
+
+    /**
+     * Checks if boss should attack based on character distance.
+     * @returns {boolean} True if should attack.
+     */
     isAttacking() {
         if (this.world && this.world.character) {
             let characterX = this.world.character.x;
             let distanceToCharacter = Math.abs(this.x - characterX);
-
-            // Sofort angreifen wenn Schaden erhalten
-            if (this.shouldAttackAfterHurt && distanceToCharacter < 500) {
-                this.shouldAttackAfterHurt = false; // Reset Flag
-                return true;
-            }
-
-            // Normale Distanz-basierte Angriffe
             return distanceToCharacter < 300;
         }
-        return false; // Kein Character gefunden
+        return false;
     }
 
+
+    /**
+     * Plays attack animation.
+     */
     atack() {
         this.playAnimation(this.IMAGES_ATTACK);
     }
 
+
+    /**
+     * Plays walk animation and sound.
+     */
     walk() {
         this.playAnimation(this.IMAGES_WALKING);
         this.playBossWalkSound();
     }
 
+
+    /**
+     * Plays boss walk sound if not muted.
+     */
     playBossWalkSound() {
         if (!audioManager.isMuted) {
             this.playSoundIfDoingSomething('bossOnWalk', 800);
@@ -242,47 +232,45 @@ class Endboss extends MovableObject {
     }
 
 
+    /**
+     * Plays bite sound with delay.
+     */
+    playBiteSound() {
+        setTimeout(() => {
+            if (typeof audioManager !== 'undefined') audioManager.bossOnBite();
+        }, 200);
+    }
+
+
+    /**
+     * Checks if boss is hurt.
+     * @returns {boolean} True if hurt.
+     */
     isHurt() {
-        // Überschreibt die Methode aus MovableObject
         return this.hurtImageIndex == 1;
     }
 
+
+    /**
+     * Checks if boss is dead.
+     * @returns {boolean} True if dead.
+     */
     isDead() {
-        // Überschreibt die Methode aus MovableObject - verwendet bossEnergy statt energy
         return this.bossEnergy <= 0;
     }
 
+
+    /**
+     * Plays alert animation.
+     */
     alert() {
         this.playAnimation(this.IMAGES_ALERT);
     }
 
-    dead() {
-        if (!this.deathAnimationStarted) {
-            this.stopAllMovements();
-            // Spiele Death-Animation komplett ab
-            let deathInterval = setInterval(() => {
-                if (this.currentImage < this.IMAGES_DEAD.length) {
-                    let path = this.IMAGES_DEAD[this.currentImage];
-                    this.img = this.imagePool[path];
-                    this.currentImage++;
-                } else {
-                    // Animation komplett - bleibt am letzten Bild
-                    clearInterval(deathInterval);
-                    this.isDeathAnimationComplete = true;
 
-                    // Zeige letztes Bild der Death-Animation
-                    let lastFrame = this.IMAGES_DEAD[this.IMAGES_DEAD.length - 1];
-                    this.img = this.imagePool[lastFrame];
-
-                    // Nach 2 Sekunden verschwinden
-                    setTimeout(() => {
-                        this.shouldBeRemoved = true;
-                    }, 2000);
-                }
-            }, 200); // 200ms pro Frame für deutlich sichtbare Death-Animation
-        }
-    }
-
+    /**
+     * Stops all boss movements and sets death state.
+     */
     stopAllMovements() {
         this.attackInProgress = false;
         this.movementEnabled = false;
@@ -290,53 +278,16 @@ class Endboss extends MovableObject {
         this.currentImage = 0;
     }
 
-    hurt() {
-        if (!this.hurtAnimationStarted) {
-            this.hurtAnimationStarted = true;
-            this.currentImage = 0; // Reset für saubere Animation
-            if (typeof audioManager !== 'undefined') audioManager.onBossHurt();
 
-            // Triggere Angriff nach Schaden
-            this.takeDamage();
-
-            // Spiele Hurt-Animation komplett ab
-            let hurtInterval = setInterval(() => {
-                if (this.currentImage < this.IMAGES_HURT.length) {
-                    let path = this.IMAGES_HURT[this.currentImage];
-                    this.img = this.imagePool[path];
-                    this.currentImage++;
-                } else {
-                    this.resetHurtAnimation(hurtInterval);
-                }
-            }, 200); // 150ms pro Frame für sichtbare Animation
-        }
-    }
-
-    takeDamage() {
-        // Verzögere den Angriff bis nach der Hurt-Animation
-        if (!this.attackInProgress) {
-            setTimeout(() => {
-                this.shouldAttackAfterHurt = true;
-            }, 600); // 500ms = ca. 3 Frames à 150ms der Hurt-Animation
-        }
-    }
-
-    resetHurtAnimation(hurtInterval) {
-        clearInterval(hurtInterval);
-        this.hurtAnimationStarted = false;
-        this.hurtImageIndex = 0;
-        this.currentImage = 0;
-        this.movementEnabled = true;
-    }
-
+    /**
+     * Stops all animations and movements.
+     */
     stopAnimations() {
-        // Stoppe alle Bewegungen und Sounds
         this.movementEnabled = false;
         this.attackInProgress = false;
         this.shouldAttackAfterHurt = false;
         this.speed = 0;
 
-        // Stoppe Animation-Interval
         if (this.animationInterval) {
             clearInterval(this.animationInterval);
             this.animationInterval = null;

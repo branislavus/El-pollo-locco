@@ -13,7 +13,16 @@ class ChickenSmall extends MovableObject {
     y = 380;
     currentImage = 0;
     chickenSound = ['onChickeSmall1', 'onChickeSmall2', 'onChickeSmall3'];
+    offset = {
+        top: 0,
+        left: -10,
+        right: -10,
+        bottom: 0,
+    };
 
+    /**
+     * Creates a new ChickenSmall instance and initializes movement and animation.
+     */
     constructor() {
         super().loadImage('img/3_enemies_chicken/chicken_normal/1_walk/1_w.png');
         this.x = 120 + Math.random() * 1000;
@@ -24,6 +33,10 @@ class ChickenSmall extends MovableObject {
 
     }
 
+
+    /**
+     * Starts the movement, animation, and sound intervals for the small chicken.
+     */
     animate() {
         this.moveInterval = setInterval(() => {
             this.moveLeft();
@@ -38,47 +51,89 @@ class ChickenSmall extends MovableObject {
         }, 5000);
     }
 
+
+    /**
+     * Displays the dead chicken image and stops all animations.
+     */
     showDeadChicken() {
-        // Stoppe alle Bewegungen und Animationen
         this.speed = 0;
         this.isDead = () => true;
         this.stopAnimations();
-        // Lade das Todes-Bild
         this.loadImage(this.IMAGE_DEAD_SMALL_CHICKEN);
     }
 
+
+    /**
+     * Stops all animation, movement, and sound intervals.
+     */
     stopAnimations() {
-        if (this.moveInterval) {
-            clearInterval(this.moveInterval);
-            this.moveInterval = null;
-        }
-
-        if (this.animationInterval) {
-            clearInterval(this.animationInterval);
-            this.animationInterval = null;
-        }
-
-        if (this.soundInterval) {
-            clearInterval(this.soundInterval);
-            this.soundInterval = null;
-        }
+        if (this.moveInterval)
+            this.stopMoveInterval();
+        if (this.animationInterval)
+            this.stopAnimateInterval();
+        if (this.soundInterval)
+            this.stopSoundInterval();
     }
 
+
+    /**
+     * Stops the movement interval.
+     */
+    stopMoveInterval() {
+        clearInterval(this.moveInterval);
+        this.moveInterval = null;
+    }
+
+
+    /**
+     * Stops the animation interval.
+     */
+    stopAnimateInterval() {
+        clearInterval(this.animationInterval);
+        this.animationInterval = null;
+    }
+
+
+    /**
+     * Stops the sound interval.
+     */
+    stopSoundInterval() {
+        clearInterval(this.soundInterval);
+        this.soundInterval = null;
+    }
+
+
+    /**
+     * Generates a random number for sound selection.
+     * @returns {number} Random number between 0 and 2.
+     */
     chickenRandomSound() {
         return Math.floor(Math.random() * 3);
     }
 
+
+    /**
+     * Queues a random chicken sound with a delay.
+     */
     chickenSoundInCue() {
         setTimeout(() => {
-            // Direkter Audio-Aufruf basierend auf Random-Wert
             let randomSound = this.chickenRandomSound();
-            if (randomSound === 0 && typeof audioManager !== 'undefined') {
-                audioManager.onChickenSmall1();
-            } else if (randomSound === 1 && typeof audioManager !== 'undefined') {
-                audioManager.onChickenSmall2();
-            } else if (randomSound === 2 && typeof audioManager !== 'undefined') {
-                audioManager.onChickenSmall3(); // Fallback zu onChicken1
-            }
-        }, Math.floor(Math.random() * 5000)); // 10 Sekunden für besseres Timing
+            this.chooseSound(randomSound);
+        }, Math.floor(Math.random() * 5000));
+    }
+
+
+    /**
+     * Plays a small chicken sound based on the random number.
+     * @param {number} randomSound - The random sound index (0-2).
+     */
+    chooseSound(randomSound) {
+        if (randomSound === 0 && typeof audioManager !== 'undefined') {
+            audioManager.onChickenSmall1();
+        } else if (randomSound === 1 && typeof audioManager !== 'undefined') {
+            audioManager.onChickenSmall2();
+        } else if (randomSound === 2 && typeof audioManager !== 'undefined') {
+            audioManager.onChickenSmall3();
+        }
     }
 }

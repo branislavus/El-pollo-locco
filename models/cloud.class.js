@@ -6,6 +6,10 @@ class Cloud extends MovableObject {
     rightBorder;
     cloudSound = ['onWind'];
 
+
+    /**
+     * Creates a new Cloud instance with random position and speed.
+     */
     constructor() {
         super();
         this.loadImage('img/5_background/layers/4_clouds/1.png');
@@ -13,6 +17,12 @@ class Cloud extends MovableObject {
         this.y = Math.random() * 50;
         this.speed = 0.05 + Math.random() * 0.2;
     }
+
+
+    /**
+     * Sets the world reference and initializes cloud animation.
+     * @param {Object} world - The game world object.
+     */
     setWorld(world) {
         this.world = world;
         this.leftBorder = this.world.level.level_start_x;
@@ -20,6 +30,10 @@ class Cloud extends MovableObject {
         this.animate();
     }
 
+
+    /**
+     * Starts the cloud animation interval for movement and sound.
+     */
     animate() {
        this.cloudInterval = setInterval(() => {
             this.returnCloudBack();
@@ -28,16 +42,28 @@ class Cloud extends MovableObject {
         }, 1000 / 60);
     }
 
+
+    /**
+     * Returns the cloud to the right border when it reaches the left border.
+     */
     returnCloudBack() {
         if (this.x < this.leftBorder) this.x = this.rightBorder;
     }
 
+
+    /**
+     * Plays wind sound when the cloud is near the character.
+     */
     playCoudSound() {
         if (Math.abs(this.world.character.x - this.x) < 10)
             if (!audioManager.isMuted) audioManager.onWind();
     }
 
+
+    /**
+     * Stops the cloud animation interval.
+     */
     stopCloudAnimation(){
-clearInterval(this.cloudInterval);
+        clearInterval(this.cloudInterval);
     }
 }

@@ -17,7 +17,6 @@ function initLevel() {
             new Chicken(),
             new Chicken(),
             new Chicken(),
-
         ],
         [
             new BackgroundObject('img/5_background/layers/air.png', -719),

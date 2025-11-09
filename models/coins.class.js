@@ -7,6 +7,12 @@ class Coins extends MovableObject {
 
      currentImage = 0;
 
+
+    /**
+     * Creates a new Coin instance at the specified position.
+     * @param {number} x - The x-coordinate of the coin.
+     * @param {number} y - The y-coordinate of the coin.
+     */
     constructor(x, y) {
         super().loadImage('img/8_coin/coin_1.png');
         this.loadImages(this.IMAGES_COINS);
@@ -17,6 +23,10 @@ class Coins extends MovableObject {
         this.animate();
     }
 
+
+    /**
+     * Starts the coin animation interval.
+     */
     animate() {
         setInterval(() => {
             this.playAnimation(this.IMAGES_COINS);

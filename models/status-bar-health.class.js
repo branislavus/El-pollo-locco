@@ -11,7 +11,11 @@ class StatusBarHealth extends DrawableObject {
       'img/7_statusbars/1_statusbar/2_statusbar_health/blue/100.png'
    ];
 
-      constructor() {
+
+   /**
+    * Creates a new StatusBarHealth instance and initializes position.
+    */
+   constructor() {
       super();
       this.loadImages(this.IMAGES_HEALTH_BLUE);
       this.x = 25;
@@ -21,27 +25,37 @@ class StatusBarHealth extends DrawableObject {
       this.setPercentage(100);
    }
 
-      setPercentage(percentage) {
+
+   /**
+    * Sets the health percentage and updates the displayed image.
+    * @param {number} percentage - The health percentage (0-100).
+    */
+   setPercentage(percentage) {
       this.percentage = percentage;
       let path = this.IMAGES_HEALTH_BLUE[this.resolveImageIndex()];
       this.img = this.imagePool[path];
    }
 
+
+   /**
+    * Resolves the image index based on current health percentage.
+    * @returns {number} The image index (0-5).
+    */
    resolveImageIndex() {
       if (this.percentage == 100) {
          return 5;
-      } else if (this.percentage > 70) {
+      } else if (this.percentage > 85) {
          return 4;
-      } else if (this.percentage > 50) {
+      } else if (this.percentage > 54) {
          return 3;
-      } else if (this.percentage > 30) {
+      } else if (this.percentage > 27) {
          return 2;
-      } else if (this.percentage > 10) {
+      } else if (this.percentage > 1) {
          return 1;
       } else {
          return 0;
       }
+   }
 
-   }    
 
 }

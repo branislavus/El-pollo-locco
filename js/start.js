@@ -1,3 +1,6 @@
+/**
+ * Hides the start wallpaper and displays the game canvas.
+ */
 function hideStartWallpaper() {
     const startWallpaper = document.getElementById('startWallpaper');
     const canvas = document.getElementById('canvas');
@@ -8,13 +11,25 @@ function hideStartWallpaper() {
     }
 }
 
+/**
+ * Shows the start wallpaper and hides the canvas and end screens.
+ */
 function showStartWallpaper() {
     const startWallpaper = document.getElementById('startWallpaper');
     const canvas = document.getElementById('canvas');
     const endWinWallpaper = document.getElementById('endWinWallpaper');
     const endLoseWallpaper = document.getElementById('endLoseWallpaper');
 
-    // Verstecke End-Screens
+    hideEndScreens(endWinWallpaper, endLoseWallpaper);
+    displayStartScreen(startWallpaper, canvas);
+}
+
+/**
+ * Hides both end game screens.
+ * @param {HTMLElement} endWinWallpaper - Win screen element.
+ * @param {HTMLElement} endLoseWallpaper - Lose screen element.
+ */
+function hideEndScreens(endWinWallpaper, endLoseWallpaper) {
     if (endWinWallpaper) {
         endWinWallpaper.classList.add('d_none');
         endWinWallpaper.style.display = 'none';
@@ -23,47 +38,58 @@ function showStartWallpaper() {
         endLoseWallpaper.classList.add('d_none');
         endLoseWallpaper.style.display = 'none';
     }
+}
 
-    // Zeige Start-Wallpaper
+/**
+ * Displays the start screen and hides the canvas.
+ * @param {HTMLElement} startWallpaper - Start screen element.
+ * @param {HTMLElement} canvas - Game canvas element.
+ */
+function displayStartScreen(startWallpaper, canvas) {
     if (startWallpaper && canvas) {
         startWallpaper.style.display = 'flex';
         canvas.style.display = 'none';
     }
 }
 
-// Initialisiere beim Laden der Seite
+/**
+ * Initializes screen visibility on page load.
+ */
 function initializeScreens() {
     const endWinWallpaper = document.getElementById('endWinWallpaper');
     const endLoseWallpaper = document.getElementById('endLoseWallpaper');
 
-    // Stelle sicher, dass End-Screens versteckt sind
-    if (endWinWallpaper) {
+    if (endWinWallpaper)
         endWinWallpaper.style.display = 'none';
-    }
-    if (endLoseWallpaper) {
+    if (endLoseWallpaper)
         endLoseWallpaper.style.display = 'none';
-    }
 }
 
-// Führe Initialisierung aus sobald DOM geladen ist
 document.addEventListener('DOMContentLoaded', initializeScreens);
 
+/**
+ * Starts the game by initializing level, music, and hiding start screen.
+ */
 function StartGame() {
     audioManager.startBackgroundMusic();
-
     initLevel();
     init();
     setTimeout(() => {
         hideStartWallpaper();
-    }, 500);
+    }, 800);
 }
 
+/**
+ * Hides end game wallpapers (currently empty implementation).
+ */
 function hideEndgameWallpaper() {
     const endWinWallpaper = document.getElementById('endWinWallpaper');
     const endLoseWallpaper = document.getElementById('endLoseWallpaper');
-
 }
 
+/**
+ * Attaches click and touch event listeners to the start button.
+ */
 function touchStart() {
     const btn = document.getElementById("startButton");
     if (btn) {

@@ -60,7 +60,7 @@ class Character extends MovableObject {
     audio = new AudioManager();
     height = 200;
     width = 100;
-    speed = 3;
+    speed = 5;
     currentImage = 0;
     world;
     energy = 100;
@@ -71,16 +71,19 @@ class Character extends MovableObject {
         top: 70,
         left: 30,
         right: 40,
-        bottom: 10,
+        bottom: 20,
     };
     offsetLine = {
         top: 70,
         left: 49,
         right: 50,
-        bottom: 10,
+        bottom: 20,
     };
 
 
+    /**
+     * Creates a new Character instance and loads all images and sounds.
+     */
     constructor() {
         super().loadImage('img/2_character_pepe/2_walk/W-21.png');
         this.loadImages(this.IMAGES_WALKING);
@@ -89,95 +92,120 @@ class Character extends MovableObject {
         this.loadImages(this.IMAGES_HURT);
         this.loadImages(this.IMAGES_IDLE);
         this.loadImages(this.IMAGES_LONG_IDLE);
-        this.y = 226; // Standard Laufposition setzen
-        this.lastWalkSoundTime = 0; // Für Walk-Sound Throttling
+        this.y = 226; 
+        this.lastWalkSoundTime = 0; 
         this.animate();
         this.applyGravity();
     }
 
+    /**
+     * Checks if the character is above the ground.
+     * @returns {boolean} True if above ground, else false.
+     */
     isAboveGround() {
-        // Überschreibt MovableObject - Character soll immer bei y=221 landen
         return this.y < 226;
     }
 
+    /**
+     * Starts the animation and movement intervals for the character.
+     */
     animate() {
         this.movementEnabled = true;
-
-        // Speichere Interval-IDs um sie stoppen zu können
         this.movementInterval = setInterval(() => {
-            if (this.movementEnabled) {
-                let isWalking = false;
-
-                if (this.canMoveRight() && !this.isDead()) {
-                    this.moveRight();
-                    if (!this.isAboveGround()) isWalking = true;
-                }
-                if (this.canMoveLeft() && !this.isDead()) {
-                    this.moveLeft();
-                    if (!this.isAboveGround()) isWalking = true;
-                }
-                if (this.canJump() && !this.isDead()) {
-                    this.jump();
-                    this.playJumpSound();
-                }
-
-                // Walk-Sound mit einfachem Throttling
-                if (isWalking) this.playWalkingSound();
-            }
+            if (this.movementEnabled)
+                this.getMovingInterval();
             this.world.camera_x = -this.x + 100;
         }, 1000 / 60);
 
         this.animationInterval = setInterval(() => {
-            this.updateLastMove();
+            this.getLastMove();
+            this.getCharacterAnimation();
 
-            if (this.isDead()) {
-                audioManager.onDie();
-                setTimeout(() => {
-                    this.stopAllMovement();
-                    this.playDeadAnimationOnce();
-                }, 4000);
-                return;
-            } else if (this.isHurt() && !this.isDead()) {
-                // Sound wird bereits in damageCharacter() abgespielt
-                this.playAnimation(this.IMAGES_HURT);
-            } else if (this.isIdle() && !this.isDead()) {
-                this.isBored();
-            } else if (this.isAboveGround() && !this.isDead()) {
-                this.playAnimation(this.IMAGES_JUMPING);
-            } else {
-                if (this.canMove() && !this.isDead())
-                    this.playAnimation(this.IMAGES_WALKING);
-            }
-
-        }, 1000 / 14);
+        }, 1000 / 10);
     }
 
+    /**
+     * Handles character animation based on state (dead, hurt, idle, jumping, walking).
+     */
+    getCharacterAnimation() {
+        if (this.isDead()) {
+            this.deadInterval();
+        } else if (this.isHurt() && !this.isDead()) {
+            this.playAnimation(this.IMAGES_HURT);
+        } else if (this.isIdle() && !this.isDead()) {
+            this.isBored();
+        } else if (this.isAboveGround() && !this.isDead()) {
+            this.playAnimation(this.IMAGES_JUMPING);
+        } else {
+            if (this.canMove() && !this.isDead())
+                this.playAnimation(this.IMAGES_WALKING);
+        }
+    }
+
+    /**
+     * Executes the dead animation and stops all movement.
+     */
+    deadInterval() {
+        audioManager.onDie();
+        this.stopAllMovement();
+        this.playDeadAnimationOnce();
+        return;
+    }
+
+    /**
+     * Handles movement logic for walking and jumping.
+     */
+    getMovingInterval() {
+        let isWalking = false;
+        if (this.canMoveRight() && !this.isDead()) {
+            this.moveRight();
+            if (!this.isAboveGround()) isWalking = true;
+            if (this.canJump() && !this.isDead()) this.jumpAndShout();
+        }
+        if (this.canMoveLeft() && !this.isDead()) {
+            this.moveLeft();
+            if (!this.isAboveGround()) isWalking = true;
+            if (this.canJump() && !this.isDead()) this.jumpAndShout();
+        }
+        if (this.canJump() && !this.isDead()) this.jumpAndShout();
+        if (isWalking) this.playWalkingSound();
+    }
+
+    /**
+     * Plays the jump sound effect.
+     */
     playJumpSound() {
         if (!audioManager.isMuted) this.audio.onJump();
     }
+
+    /**
+     * Plays the walking sound effect if moving.
+     */
     playWalkingSound() {
         if (!audioManager.isMuted) {
             this.playSoundIfDoingSomething('onWalk', 300);
         }
     }
 
+    /**
+     * Plays idle or long idle animation and sleep sound if bored.
+     */
     isBored() {
-        if (this.lastMoveTime > 16000 && !this.isDead()) {
+        if (this.isDead()) return;
+        if (this.lastMoveTime > 16000) {
             this.playAnimation(this.IMAGES_LONG_IDLE);
-            // Nur Sound abspielen wenn Movement enabled ist (Spiel läuft)
             if (this.movementEnabled) {
-                if (!audioManager.isMuted) {
-                    this.playSoundIfDoingSomething('onSleep', 5000);
-                }
+                if (!audioManager.isMuted) this.playSoundIfDoingSomething('onSleep', 5000);
             }
         } else {
             this.playAnimation(this.IMAGES_IDLE);
         }
     }
 
-
-
-    updateLastMove() {
+    /**
+     * Updates last movement time for idle detection.
+     */
+    getLastMove() {
         let currentTime = new Date().getTime();
         if (this.lastCharacterX != this.x) {
             this.lastMove = currentTime;
@@ -186,50 +214,108 @@ class Character extends MovableObject {
         this.lastMoveTime = currentTime - (this.lastMove || currentTime);
     }
 
+    /**
+     * Checks if the character is idle.
+     * @returns {boolean} True if idle, else false.
+     */
     isIdle() {
         return this.lastMoveTime > 3000;
     }
 
+    /**
+     * Starts the dead animation sequence once.
+     */
     playDeadAnimationOnce() {
-        this.playAnimationOnce(this.IMAGES_DEAD);
+        let frame = 0;
+        if (this.deadAnimationInterval) {
+            clearInterval(this.deadAnimationInterval);
+        }
+        this.playDeadAnimation();
     }
 
+    /**
+     * Plays the dead animation frame by frame.
+     */
+    playDeadAnimation() {
+        this.deadAnimationInterval = setInterval(() => {
+            if (frame < this.IMAGES_DEAD.length) {
+                this.img = this.imagePool[this.IMAGES_DEAD[frame]];
+                frame++;
+            } else {
+                clearInterval(this.deadAnimationInterval);
+            }
+        }, 300);
+    }
+
+    /**
+     * Makes the character jump and plays the jump sound.
+     */
+    jumpAndShout() {
+        this.jump();
+        this.playJumpSound();
+    }
+
+    /**
+     * Sets jump speed and updates last movement time.
+     */
     jump() {
         this.speedY = 30;
         this.lastMove = new Date().getTime();
     }
 
+    /**
+     * Checks if the character can move right.
+     * @returns {boolean} True if can move right, else false.
+     */
     canMoveRight() {
         return this.movementEnabled && this.world.keyboard.RIGHT && this.x < this.world.level.level_end_x && !this.isDead();
     }
 
+    /**
+     * Checks if the character can move left.
+     * @returns {boolean} True if can move left, else false.
+     */
     canMoveLeft() {
         return this.movementEnabled && this.world.keyboard.LEFT && this.x > this.world.level.level_start_x && !this.isDead();
     }
 
+    /**
+     * Checks if the character can move.
+     * @returns {boolean} True if can move, else false.
+     */
     canMove() {
         return this.movementEnabled && (this.world.keyboard.RIGHT || this.world.keyboard.LEFT) && !this.isDead();
     }
 
+    /**
+     * Checks if the character can jump.
+     * @returns {boolean} True if can jump, else false.
+     */
     canJump() {
         return this.movementEnabled && (this.world.keyboard.UP && !this.isAboveGround() || this.world.keyboard.SPACE && !this.isAboveGround()) && !this.isDead();
     }
 
-
+    /**
+     * Disables character movement.
+     */
     disableMovement() {
         this.movementEnabled = false;
     }
 
+    /**
+     * Enables character movement.
+     */
     enableMovement() {
         this.movementEnabled = true;
     }
 
+    /**
+     * Stops all movement and animation intervals for the character.
+     */
     stopAllMovement() {
         this.speedY = 0;
         this.speed = 0;
         this.disableMovement();
-
-        // Stoppe alle Character-Intervals
         if (this.movementInterval) {
             clearInterval(this.movementInterval);
             this.movementInterval = null;
