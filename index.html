@@ -41,81 +41,88 @@
 </head>
 
 <body>
-    <h1 id="title" class="title">El Pollo Locco</h1>
-    <div id="fullscreen" class="fullscreen">
-        <div id="toggleAllSound" class="toggleAllSoundEnabled" onclick="toggleAllSound()"></div>
-        <div id="fullscreenIcon" class="fullscreenIcon" onclick="fullscreen()"></div>
-        <canvas id="canvas" width="720" height="480"></canvas>
-        <div id="startWallpaper" class="startWallpaper">
-            <button type="button" id="startButton" class="startButton">Start</button>
-        </div>
-        <div id="endWinWallpaper" class="endWinWallpaper d_none"></div>
-        <div id="endLoseWallpaper" class="endLoseWallpaper d_none"></div>
-        <div id="touch-keys" class="touch-keys">
-            <div id="keys-doing" class="keys-doing">
-                <button type="button" class="touch-key key-jump" id="key-jump">j</button>
-                <button type="button" class="touch-key key-throw" id="key-throw"><img class="buttonBottle"
-                        src="./img/6_salsa_bottle/bottle_rotation/1_bottle_rotation.png" alt=""></button>
+    <div class="main-container">
+        <div class="sub-container">
+            <h1 id="title" class="title">El Pollo Locco</h1>
+            <div id="fullscreen" class="fullscreen">
+                <div id="toggleAllSound" class="toggleAllSoundEnabled" onclick="toggleAllSound()"></div>
+                <div id="fullscreenIcon" class="fullscreenIcon" onclick="fullscreen()"></div>
+                <canvas id="canvas" width="720" height="480"></canvas>
+                <div id="startWallpaper" class="startWallpaper">
+                    <button type="button" id="startButton" class="startButton">Start</button>
+                </div>
+                <div id="endWinWallpaper" class="endWinWallpaper d_none"></div>
+                <div id="endLoseWallpaper" class="endLoseWallpaper d_none"></div>
+                <div id="touch-keys" class="touch-keys">
+                    <div id="keys-doing" class="keys-doing">
+                        <button type="button" class="touch-key key-jump" id="key-jump">j</button>
+                        <button type="button" class="touch-key key-throw" id="key-throw"><img class="buttonBottle"
+                                src="./img/6_salsa_bottle/bottle_rotation/1_bottle_rotation.png" alt=""></button>
+                    </div>
+                    <div id="keys-moving" class="keys-moving">
+                        <button type="button" class="touch-key key-run-left" id="key-run-left">L</button>
+                        <button type="button" class="touch-key key-run-right" id="key-run-right">R</button>
+                    </div>
+                </div>
             </div>
-            <div id="keys-moving" class="keys-moving">
-                <button type="button" class="touch-key key-run-left" id="key-run-left">L</button>
-                <button type="button" class="touch-key key-run-right" id="key-run-right">R</button>
+            <div id="action-keys-legend-section" class="action-keys-legend-section">
+                <h2>action keys</h2>
+                <div class="tables">
+                    <table>
+
+                        <tr>
+                            <td class="legendButtonsName">left</td>
+                            <td class="text-align-right">- left arrow</td>
+                        </tr>
+                        <tr>
+                            <td class="legendButtonsName">right</td>
+                            <td class="text-align-right">- right arrow</td>
+                        </tr>
+                        <tr>
+                            <td class="legendButtonsName">jump</td>
+                            <td class="text-align-right">- spacebar</td>
+                        </tr>
+                        <tr>
+                            <td class="legendButtonsName">throw bottle</td>
+                            <td class="text-align-right">- D</td>
+                        </tr>
+                    </table>
+
+
+
+                    <table class="tableButtonsLegend">
+                        <tr class="legendButtons">
+                            <td class="legendButtonsName">press start to play</td>
+                            <td class="legendButtonsTd">- <button type="button"
+                                    class="startButton startButtonLegend buttons">Start</button>
+                            </td>
+                        </tr>
+                        <tr class="legendButtons">
+                            <td class="legendButtonsName">toggle fullscreen</td>
+                            <td class="legendButtonsTd">- <button type="button"
+                                    class="fullscreenIcon fullscreenIconLegend buttons"></button>
+                            </td>
+                        </tr>
+
+                    </table>
+                </div>
+            </div>
+
+
+            <div id="warning" class="warning">
+                <p class="p-warning">Turn your device<br>to landscape mode<br>to continue.</p>
+            </div>
+
+
+            <div class="impressum" id="impressum">
+                <a class="impressum-text" href="./impressum.html" target="_blank"
+                    rel="noopener noreferrer">impressum</a><br>
+                <a class="impressum-text" href="./legal-policy.html" target="_blank"
+                    rel="noopener noreferrer">legal-policy</a>
             </div>
         </div>
     </div>
-    <div id="action-keys-legend-section" class="action-keys-legend-section">
-        <h2>action keys</h2>
-        <div class="tables">
-            <table>
 
-                <tr>
-                    <td>left</td>
-                    <td class="text-align-right">-- left arrow --</td>
-                </tr>
-                <tr>
-                    <td>right</td>
-                    <td class="text-align-right">-- right arrow --</td>
-                </tr>
-                <tr>
-                    <td>jump</td>
-                    <td class="text-align-right">-- spacebar --</td>
-                </tr>
-                <tr>
-                    <td>throw bottle</td>
-                    <td class="text-align-right">-- D --</td>
-                </tr>
-            </table>
-
-
-
-            <table class="tableButtonsLegend">
-                <tr class="legendButtons">
-                    <td class="legendButtonsName">press start to play</td>
-                    <td class="legendButtonsTd"><button type="button"
-                            class="startButton startButtonLegend">Start</button>
-                    </td>
-                </tr>
-                <tr class="legendButtons">
-                    <td class="legendButtonsName">toggle fullscreen</td>
-                    <td class="legendButtonsTd"><button type="button"
-                            class="fullscreenIcon fullscreenIconLegend"></button>
-                    </td>
-                </tr>
-
-            </table>
-        </div>
-    </div>
-
-
-    <div id="warning" class="warning">
-        <p class="p-warning">Turn your device<br>to landscape mode<br>to continue.</p>
-    </div>
-
-
-    <div class="impressum" id="impressum">
-        <a href="./impressum.html" target="_blank" rel="noopener noreferrer">impressum</a><br>
-         <a href="./legal-policy.html" target="_blank" rel="noopener noreferrer">legal-policy</a>
-    </div>
 
     <script src="./js/overlay.js"></script>
 </body>
