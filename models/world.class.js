@@ -124,6 +124,7 @@ class World {
             this.throwableObject.push(bottle);
             this.lastThrow = new Date().getTime();
             this.collectedBottlesCorrection();
+            this.character.lastMove = new Date().getTime();
         }
     }
 
