@@ -16,6 +16,7 @@ class WorldRenderer {
      */
     draw() {
         this.clearCanvas();
+        this.world.checkCollisions();
         this.drawGameWorld();
         this.drawUI();
         this.scheduleNextFrame();
@@ -55,12 +56,12 @@ class WorldRenderer {
      * Draws all UI elements (status bars) without camera offset.
      */
     drawUI() {
-        this.addToMap(this.world.statusBarHealth);
-        this.addToMap(this.world.statusBarCoins);
-        this.addToMap(this.world.statusBarBottles);
+        this.addToMapUI(this.world.statusBarHealth);
+        this.addToMapUI(this.world.statusBarCoins);
+        this.addToMapUI(this.world.statusBarBottles);
 
         if (this.world.statusBarEndboss && this.shouldShowEndbossStatusbar()) {
-            this.addToMap(this.world.statusBarEndboss);
+            this.addToMapUI(this.world.statusBarEndboss);
         }
     }
 
@@ -109,6 +110,20 @@ class WorldRenderer {
     }
 
     /**
+     * Adds UI element to canvas without off-screen culling.
+     * Used for status bars that should always be visible.
+     * @param {MovableObject} mo - UI object to add to map.
+     */
+    addToMapUI(mo) {
+        if (mo.characterDirectionLeft)
+            this.flipImage(mo);
+        mo.draw(this.ctx);
+        this.drawBorderFramesStart(mo);
+        if (mo.characterDirectionLeft)
+            this.flipImageBack(mo);
+    }
+
+    /**
      * Checks if object is outside visible camera area.
      * @param {MovableObject} mo - Object to check.
      * @returns {boolean} True if object is far off-screen.
@@ -127,8 +142,8 @@ class WorldRenderer {
      * @param {MovableObject} mo - Object to draw borders for.
      */
     drawBorderFramesStart(mo) {
-        // Only draw debug frames if explicitly enabled AND only for character (performance)
-        if (this.world.drawBorderFramesYes && mo === this.world.character) {
+        // Draw debug frames for all relevant objects if enabled
+        if (this.world.drawBorderFramesYes) {
             mo.drawBorderFrames(this.ctx);
             mo.drawOffsetFrames(this.ctx);
         }

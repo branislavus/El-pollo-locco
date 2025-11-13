@@ -25,7 +25,7 @@ class CollisionManager {
     checkEnemyCollisions() {
         for (let i = this.world.level.enemies.length - 1; i >= 0; i--) {
             let enemy = this.world.level.enemies[i];
-            if (enemy.isDead() || !this.world.character.isColliding(enemy)) continue;
+            if (enemy.isDead() || !this.world.character.isCollidingOffset(enemy)) continue;
 
             this.isJumpingOnEnemy(enemy) ? this.killEnemy(enemy, i) : this.damageCharacter();
             if (!this.world.character.isAboveGround())
@@ -245,8 +245,8 @@ class CollisionManager {
      */
     isValidJumpKill(characterBox, enemyBox) {
         const isFalling = this.world.character.speedY <= 0;
-        const isLandingOnTop = Math.abs(characterBox.bottom - enemyBox.top) <= 50;
-        const isAboveEnemy = characterBox.bottom < enemyBox.top + 20;
+        const isLandingOnTop = Math.abs(characterBox.bottom - enemyBox.top) <= 60;
+        const isAboveEnemy = characterBox.bottom < enemyBox.top + 0;
         const isHorizontallyOverlapping =
             characterBox.right > enemyBox.left &&
             characterBox.left < enemyBox.right;

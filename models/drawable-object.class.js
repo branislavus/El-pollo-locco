@@ -51,8 +51,8 @@ class DrawableObject {
      * @returns {boolean} True if colliding, else false.
      */
     isColliding(mo) {
-        return this.x + (this.width - 40) > mo.x &&
-            (this.y + 40) + this.height > mo.y &&
+        return this.x + this.width > mo.x &&
+            this.y  + this.height > mo.y &&
             this.x < mo.x + mo.width &&
             this.y < mo.y + mo.height;
     }
@@ -78,7 +78,7 @@ class DrawableObject {
      * @param {CanvasRenderingContext2D} ctx - The canvas rendering context.
      */
     drawOffsetFrames(ctx) {
-        if (this instanceof Character) {
+        if (this instanceof Character || this instanceof Chicken || this instanceof ChickenSmall) {
             if (this.offset) {
                 ctx.beginPath();
                 ctx.lineWidth = '3';
@@ -92,28 +92,6 @@ class DrawableObject {
             }
         }
     }
-
-
-    /**
-     * Draws green offset line frames for debugging (Character only).
-     * @param {CanvasRenderingContext2D} ctx - The canvas rendering context.
-     */
-    drawOffsetLineFrames(ctx) {
-        if (this instanceof Character) {
-            if (this.offsetLine) {
-                ctx.beginPath();
-                ctx.lineWidth = '3';
-                ctx.strokeStyle = 'green';
-                let offsetX = this.x + this.offsetLine.left;
-                let offsetY = this.y + this.offsetLine.top;
-                let offsetWidth = this.width - this.offsetLine.left - this.offsetLine.right;
-                let offsetHeight = this.height - this.offsetLine.top - this.offsetLine.bottom;
-                ctx.rect(offsetX, offsetY, offsetWidth, offsetHeight);
-                ctx.stroke();
-            }
-        }
-    }
-
 
     /**
      * Draws blue border frames for debugging object boundaries.

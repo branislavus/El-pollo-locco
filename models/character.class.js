@@ -70,16 +70,9 @@ class Character extends MovableObject {
     offset = {
         top: 70,
         left: 30,
-        right: 40,
-        bottom: 20,
+        right: 30,
+        bottom: 10,
     };
-    offsetLine = {
-        top: 70,
-        left: 49,
-        right: 50,
-        bottom: 20,
-    };
-
 
     /**
      * Creates a new Character instance and loads all images and sounds.

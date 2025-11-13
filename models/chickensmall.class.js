@@ -14,9 +14,9 @@ class ChickenSmall extends MovableObject {
     currentImage = 0;
     chickenSound = ['onChickeSmall1', 'onChickeSmall2', 'onChickeSmall3'];
     offset = {
-        top: 0,
-        left: -10,
-        right: -10,
+        top: 10,
+        left: 10,
+        right: 10,
         bottom: 0,
     };
 

@@ -70,7 +70,6 @@ class World {
         this.runInterval = setInterval(() => {
             if (this.gameOver || this.gameActive === false) return;
 
-            this.checkCollisions();
             this.handleThrowableObject();
             this.removeFinishedThrowableObjects();
             this.checkGameOverConditions();
