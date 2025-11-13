@@ -8,6 +8,8 @@ class MovableObject extends DrawableObject {
     collectedBottles = 0;
     collectedCoins = 0;
     isEnemyDead = false;
+    jumpAnimationIndex = 0;
+    isJumping = false;
     offset = {
         top: 0,
         left: 0,
@@ -72,6 +74,48 @@ class MovableObject extends DrawableObject {
         let path = images[i];
         this.img = this.imagePool[path];
         this.currentImage++;
+    }
+
+
+    /**
+     * Plays jump animation once without looping.
+     * @param {string[]} images - Array of jump image paths.
+     */
+    playJumpAnimationOnce(images) {
+        this.startPlayJumpAnimationOnce();
+        this.continuePlayJumpAnimationOnce(images);
+    }
+
+
+    /**
+    * Start animation on first call.
+    */
+    startPlayJumpAnimationOnce() {
+        if (!this.isJumping) {
+            this.isJumping = true;
+            this.jumpAnimationIndex = 0;
+        }
+    }
+
+
+    /**
+    * Play through frames once. Stay at last frame if still in air
+    */
+    continuePlayJumpAnimationOnce(images) {
+        if (this.jumpAnimationIndex < images.length) {
+            let path = images[this.jumpAnimationIndex];
+            this.img = this.imagePool[path];
+            this.jumpAnimationIndex++;
+        }
+    }
+
+
+    /**
+     * Resets jump animation state (call when landing).
+     */
+    resetJumpAnimation() {
+        this.isJumping = false;
+        this.jumpAnimationIndex = 0;
     }
 
 

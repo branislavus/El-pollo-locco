@@ -118,7 +118,7 @@ class Character extends MovableObject {
     }
 
     /**
-     * Handles character animation based on state (dead, hurt, idle, jumping, walking).
+     * Handles character animation based on state (dead, hurt, idle, jumping, reset when landing, walking).
      */
     getCharacterAnimation() {
         if (this.isDead()) {
@@ -128,12 +128,14 @@ class Character extends MovableObject {
         } else if (this.isIdle() && !this.isDead()) {
             this.isBored();
         } else if (this.isAboveGround() && !this.isDead()) {
-            this.playAnimation(this.IMAGES_JUMPING);
+            this.playJumpAnimationOnce(this.IMAGES_JUMPING);
         } else {
+            this.resetJumpAnimation();
             if (this.canMove() && !this.isDead())
                 this.playAnimation(this.IMAGES_WALKING);
         }
     }
+
 
     /**
      * Executes the dead animation and stops all movement.
