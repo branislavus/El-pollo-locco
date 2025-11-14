@@ -15,6 +15,10 @@
     box-sizing: border-box;
 }
 
+.title{
+    text-align: center;
+}
+
 .d_none {
     display: none !important;
 }

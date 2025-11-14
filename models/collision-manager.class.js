@@ -395,7 +395,7 @@ class CollisionManager {
     checkEggCollisions() {
         this.world.eggs.forEach((egg, index) => {
             if (!egg.isCracked && this.world.character.isCollidingOffset(egg)) {
-                this.handleEggHit(egg);
+                this.world.handleEggHit(egg);
             }
         });
     }

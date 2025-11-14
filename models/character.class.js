@@ -221,10 +221,10 @@ class Character extends MovableObject {
      * Starts the dead animation sequence once.
      */
     playDeadAnimationOnce() {
-        let frame = 0;
         if (this.deadAnimationInterval) {
             clearInterval(this.deadAnimationInterval);
         }
+        this.deadAnimationFrame = 0;
         this.playDeadAnimation();
     }
 
@@ -233,9 +233,9 @@ class Character extends MovableObject {
      */
     playDeadAnimation() {
         this.deadAnimationInterval = setInterval(() => {
-            if (frame < this.IMAGES_DEAD.length) {
-                this.img = this.imagePool[this.IMAGES_DEAD[frame]];
-                frame++;
+            if (this.deadAnimationFrame < this.IMAGES_DEAD.length) {
+                this.img = this.imagePool[this.IMAGES_DEAD[this.deadAnimationFrame]];
+                this.deadAnimationFrame++;
             } else {
                 clearInterval(this.deadAnimationInterval);
             }

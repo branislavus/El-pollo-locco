@@ -215,27 +215,65 @@ class World {
      */
     handleEggHit(egg) {
         egg.crackEgg();
-        this.damageCharacter();
-        this.ifIsDead();
+        this.reduceCharacterEnergy(10);
+        this.updateHealthBar();
+
+        if (this.checkCharacterDeath()) return;
+
+        this.playHurtSound();
         this.smoothKnockbackCharacter(-100);
     }
 
+
     /**
-     * Check if character died from egg hit
+     * Reduces character energy by specified amount.
+     * @param {number} damage - Amount of damage to apply.
      */
-    ifIsDead() {
-        if (this.world.character.isDead()) {
-            this.world.character.deadInterval();
-            return;
+    reduceCharacterEnergy(damage) {
+        this.character.energy -= damage;
+        if (this.character.energy < 0) {
+            this.character.energy = 0;
         }
     }
+
+
+    /**
+     * Updates the health status bar with current character energy.
+     */
+    updateHealthBar() {
+        this.statusBarHealth.setPercentage(this.character.energy);
+    }
+
+
+    /**
+     * Checks if character died and triggers death animation.
+     * @returns {boolean} True if character died, false otherwise.
+     */
+    checkCharacterDeath() {
+        if (this.character.isDead()) {
+            this.character.deadInterval();
+            return true;
+        }
+        return false;
+    }
+
+
+    /**
+     * Plays hurt sound effect if audio manager is available.
+     */
+    playHurtSound() {
+        if (typeof audioManager !== 'undefined') {
+            audioManager.onHurt();
+        }
+    }
+
 
     /**
      * Smoothly knocks character back with animation.
      * @param {number} distance - Distance to push character back.
      */
     smoothKnockbackCharacter(distance) {
-        const character = this.world.character;
+        const character = this.character;
         this.initializeKnockback(character);
         const knockbackData = this.calculateKnockbackParameters(character, distance);
         this.startKnockbackAnimation(character, knockbackData);
@@ -246,7 +284,6 @@ class World {
      * @param {Character} character - Character to initialize knockback for.
      */
     initializeKnockback(character) {
-        character.energy -= 10;
         character.isBeingKnockedBack = true;
         character.movementEnabled = false;
     }
@@ -274,10 +311,10 @@ class World {
     startKnockbackAnimation(character, knockbackData) {
         const knockbackInterval = setInterval(() => {
             const progress = this.calculateKnockbackProgress(knockbackData);
-            
+
             this.updateCharacterPosition(character, knockbackData, progress);
             this.ensureCharacterOnGround(character);
-            
+
             if (progress >= 1) {
                 this.finishKnockback(character, knockbackData.targetX, knockbackInterval);
             }
