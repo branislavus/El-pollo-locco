@@ -1,5 +1,8 @@
 class CollisionManager {
 
+    removalScheduled = false;
+    cleanupScheduled = false;
+
     /**
      * Creates a new CollisionManager instance.
      * @param {World} world - Reference to the world instance.
@@ -164,20 +167,29 @@ class CollisionManager {
     killEnemyByBottle(enemy) {
         this.animateDeadChicken(enemy);
         this.playSoundDeadChicken();
-        this.removeDeadEnemy(enemy);
+        // Mark enemy for removal instead of using index
+        enemy.shouldBeRemoved = true;
+        this.scheduleEnemyCleanup();
     }
 
     /**
-     * Removes dead enemy from enemies array after delay.
-     * @param {MovableObject|number} enemyOrIndex - Enemy object or index to remove.
+     * Schedules cleanup of all marked enemies.
      */
-    removeDeadEnemy(enemyOrIndex) {
+    scheduleEnemyCleanup() {
+        if (this.cleanupScheduled) return;
+
+        this.cleanupScheduled = true;
         setTimeout(() => {
-            let index = typeof enemyOrIndex === 'number'
-                ? enemyOrIndex
-                : this.world.level.enemies.indexOf(enemyOrIndex);
-            if (index > -1) this.world.level.enemies.splice(index, 1);
+            this.cleanupMarkedEnemies();
+            this.cleanupScheduled = false;
         }, 2000);
+    }
+
+    /**
+     * Removes all enemies marked with shouldBeRemoved flag.
+     */
+    cleanupMarkedEnemies() {
+        this.world.level.enemies = this.world.level.enemies.filter(enemy => !enemy.shouldBeRemoved);
     }
 
     /**
@@ -257,14 +269,16 @@ class CollisionManager {
     /**
      * Kills enemy when character jumps on it.
      * @param {MovableObject} enemy - Enemy to kill.
-     * @param {number} index - Enemy index in array.
+     * @param {number} index - Enemy index in array (not used, kept for compatibility).
+     * Mark enemy for removal instead of using index
      */
     killEnemy(enemy, index) {
         this.world.character.speedY = 10;
         this.turnOffEnemySound(enemy);
         this.animateDeadChicken(enemy);
         this.playSoundDeadChicken();
-        this.removeDeadEnemy(index);
+        enemy.shouldBeRemoved = true;
+        this.scheduleEnemyCleanup();
     }
 
     /**

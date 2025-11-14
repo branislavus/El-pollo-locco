@@ -42,6 +42,7 @@ function stopAllGameAnimations() {
     stopEnemyAnimations();
     stopThrowableObjects();
     stopCloudAnimations();
+    stopCoinAnimations();
     stopCollisionDetection();
     stopWorldRunLoop();
     setGameOverFlag();
@@ -103,6 +104,18 @@ function stopCloudAnimations() {
                 cloud.stopAnimation();
         });
         world.level.clouds = [];
+    }
+}
+
+/**
+ * Stops all coin shine animations.
+ */
+function stopCoinAnimations() {
+    if (typeof world !== 'undefined' && world && world.level && world.level.coins) {
+        world.level.coins.forEach(coin => {
+            if (coin.stopShineCoinsInterval)
+                coin.stopShineCoinsInterval();
+        });
     }
 }
 

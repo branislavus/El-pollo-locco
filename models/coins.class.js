@@ -28,8 +28,13 @@ class Coins extends MovableObject {
      * Starts the coin animation interval.
      */
     animate() {
-        setInterval(() => {
+        this.shineCoinsInterval = setInterval(() => {
             this.playAnimation(this.IMAGES_COINS);
         }, 500);
+    }
+
+    stopShineCoinsInterval(){
+         clearInterval(this.shineCoinsInterval);
+          this.shineCoinsInterval = null;
     }
 }

@@ -71,15 +71,15 @@ document.addEventListener('DOMContentLoaded', initializeScreens);
  * Starts the game by initializing level, music, and hiding start screen.
  */
 function StartGame() {
-   
+
     initLevel();
     init();
-    
+
     setTimeout(() => {
         hideStartWallpaper();
     }, 800);
-    
-     audioManager.startBackgroundMusic();
+
+    audioManager.startBackgroundMusic();
 }
 
 /**
@@ -100,7 +100,20 @@ function touchStart() {
         btn.addEventListener('touchstart', () => {
             StartGame();
         }, { passive: true });
+    } else if (this.world.keyboard.ENTER) {
+
     }
 }
 
 document.addEventListener('DOMContentLoaded', touchStart);
+
+
+/**
+ * Attaches click event listeners to the press enter key to restert. lets say its kind of easter egg for developers :-)
+ */
+document.addEventListener("keyup", function (event) {
+    if (event.key === "Enter") {
+        stopAllGameAnimations();
+        StartGame();
+    }
+});

@@ -111,6 +111,8 @@ class ThrowableObject extends MovableObject {
      * Starts the splash animation and sound.
      */
     startSplashAnimation() {
+        if (this.shouldBeRemoved) return;
+        this.shouldBeRemoved = true; 
         this.playBreakSound();
         this.animateSplash();
         this.scheduleRemoval();
