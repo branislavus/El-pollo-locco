@@ -61,6 +61,9 @@ class Endboss extends MovableObject {
     lastWalkSoundTime = 0;
     audio = new AudioManager();
     deathSoundPlayed = false;
+    eggThrowInterval = null;
+    lastEggThrowTime = 0;
+    hasGrowled = false; // Track if growl sound has been played
 
 
     /**
@@ -81,6 +84,7 @@ class Endboss extends MovableObject {
         this.deathAnimationStarted = false;
         this.animationSequence = new EndbossAnimationSequence(this);
         this.animate();
+        this.startEggThrowTimer();
     }
 
 
@@ -147,16 +151,16 @@ class Endboss extends MovableObject {
      * @returns {boolean} True if should play attack animation.
      */
     shouldPlayAttackAnimation() {
-        const shouldAttack = (this.isAttacking() || this.shouldAttackAfterHurt) && 
-                             !this.attackInProgress && 
-                             !this.isDead() && 
-                             !this.isHurt() && 
-                             !this.isDeathAnimationComplete;
-        
+        const shouldAttack = (this.isAttacking() || this.shouldAttackAfterHurt) &&
+            !this.attackInProgress &&
+            !this.isDead() &&
+            !this.isHurt() &&
+            !this.isDeathAnimationComplete;
+
         if (shouldAttack && this.shouldAttackAfterHurt) {
             this.shouldAttackAfterHurt = false;
         }
-        
+
         return shouldAttack;
     }
 
@@ -251,6 +255,15 @@ class Endboss extends MovableObject {
         }, 200);
     }
 
+    /**
+ * Plays growl sound with delay.
+ */
+    playGrowlSound() {
+        setTimeout(() => {
+            if (typeof audioManager !== 'undefined') audioManager.bossOnGrowl();
+        }, 200);
+    }
+
 
     /**
      * Checks if boss is hurt.
@@ -302,6 +315,81 @@ class Endboss extends MovableObject {
             clearInterval(this.animationInterval);
             this.animationInterval = null;
         }
+
+        if (this.eggThrowInterval) {
+            clearInterval(this.eggThrowInterval);
+            this.eggThrowInterval = null;
+        }
+    }
+
+
+    /**
+     * Starts interval to throw eggs at random times when not attacking.
+     */
+    startEggThrowTimer() {
+        this.eggThrowInterval = setInterval(() => {
+            this.tryThrowEgg();
+        }, 1000); // Check every second
+    }
+
+
+    /**
+     * Attempts to throw an egg if conditions are met.
+     */
+    tryThrowEgg() {
+        if (!this.world) return;
+        this.shoutScream();
+        const { currentTime, timeSinceLastEgg, randomThrowInterval } = this.loadParametersThrowEgg();
+        if (this.canThrowEgg(timeSinceLastEgg, randomThrowInterval)) {
+            this.throwEgg();
+            this.lastEggThrowTime = currentTime;
+        }
+    }
+
+
+    /**
+     * Creates and throws an egg from the endboss position.
+     */
+    throwEgg() {
+        if (this.world) {
+            const egg = new Egg(this.x + 100, this.y + 200); // Position at endboss feet
+            this.world.addEgg(egg);
+        }
+    }
+
+    /**
+     * Check if character entered boss arena and play growl sound once
+     */
+    shoutScream() {
+        if (this.world.character.x >= 1290 && !this.hasGrowled) {
+            this.audio.bossOnGrowl();
+            this.hasGrowled = true;
+        }
+    }
+
+    /**
+     * Checks if egg can be thrown based on all conditions.
+     * @param {number} timeSinceLastEgg - Time passed since last egg.
+     * @param {number} randomThrowInterval - Random interval for this check.
+     * @returns {boolean} True if egg can be thrown.
+     */
+    canThrowEgg(timeSinceLastEgg, randomThrowInterval) {
+        return this.world.character.x >= 1300 &&
+            !this.attackInProgress &&
+            !this.isDead() &&
+            timeSinceLastEgg > randomThrowInterval &&
+            this.attackPhase === 'idle';
+    }
+
+    /**
+     * Load parameters for egg throw.
+     * @returns {Object} Object containing timing parameters.
+     */
+    loadParametersThrowEgg() {     
+        const currentTime = Date.now();
+        const timeSinceLastEgg = currentTime - this.lastEggThrowTime;
+        const randomThrowInterval = Math.floor(Math.random() * 4000) + 3000;
+        return { currentTime, timeSinceLastEgg, randomThrowInterval };
     }
 
 

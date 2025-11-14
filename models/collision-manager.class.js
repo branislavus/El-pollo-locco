@@ -20,6 +20,7 @@ class CollisionManager {
         this.checkBottleEnemyCollisions();
         this.checkBottlesCollisions();
         this.checkCoinsCollisions();
+        this.checkEggCollisions();
     }
 
     /**
@@ -388,4 +389,14 @@ class CollisionManager {
         statusBar[statusMethod](this.world.character[counterProperty]);
     }
 
+    /**
+     * Checks collisions between character and eggs thrown by endboss.
+     */
+    checkEggCollisions() {
+        this.world.eggs.forEach((egg, index) => {
+            if (!egg.isCracked && this.world.character.isCollidingOffset(egg)) {
+                this.handleEggHit(egg);
+            }
+        });
+    }
 }

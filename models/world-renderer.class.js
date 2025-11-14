@@ -48,6 +48,7 @@ class WorldRenderer {
         this.addObjectsToMap(this.world.level.clouds);
         this.addObjectsToMap(this.world.level.bottles);
         this.addObjectsToMap(this.world.level.coins);
+        this.addObjectsToMap(this.world.eggs); // Add eggs from endboss
         this.addToMap(this.world.character);
         this.addObjectsToMap(this.world.throwableObject);
     }

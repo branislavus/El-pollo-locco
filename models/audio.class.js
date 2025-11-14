@@ -22,6 +22,7 @@ class AudioManager {
     bossBite: new Audio('audio/boss-bite.mp3'),
     bossDeathScream: new Audio('audio/boss-death-scream.mp3'),
     bossFootStep: new Audio('audio/boss-footstep.mp3'),
+    bossGrowl: new Audio('audio/endboss-growl.mp3'),
     coin: new Audio('audio/coin.mp3'),
     bottle: new Audio('audio/bottle.mp3'),
     bottleBreak: new Audio('audio/broken-bottle.mp3'),
@@ -30,7 +31,8 @@ class AudioManager {
     fire: new Audio('audio/burning-boss.mp3'),
     wind: new Audio('audio/wind.mp3'),
     windGust: new Audio('audio/wind-gust.mp3'),
-    backgroundMusic: new Audio('audio/wildwest-soundtrack.mp3')
+    backgroundMusic: new Audio('audio/wildwest-soundtrack.mp3'),
+    eggCracking: new Audio('audio/egg-cracking.mp3'),
   };
 
   /**
@@ -213,7 +215,14 @@ class AudioManager {
    * Plays boss bite/attack sound.
    */
   bossOnBite() {
-    this.playSound('bossBite');
+    this.playSound('bossBite', 2);
+  }
+
+    /**
+   * Plays boss bite/attack sound.
+   */
+  bossOnGrowl() {
+    this.playSound('bossGrowl');
   }
 
   /**
@@ -320,6 +329,14 @@ class AudioManager {
   onWindGust() {
     this.playSound('windGust', 1.1);
   }
+
+    /**
+   * Plays egg cracking sound.
+   */
+  onEggCracking() {
+    this.playSound('eggCracking', 1);
+  }
+
 
   /**
    * Starts playing background music.

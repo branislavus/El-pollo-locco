@@ -10,6 +10,7 @@ class World {
     statusBarBottles = new StatusBarBottles();
     statusBarEndboss = null;
     throwableObject = [];
+    eggs = []; // Array to store thrown eggs from endboss
     lastThrow = 0;
     gameOver = false;
     gameActive = true;
@@ -72,6 +73,7 @@ class World {
 
             this.handleThrowableObject();
             this.removeFinishedThrowableObjects();
+            this.removeFinishedEggs();
             this.checkGameOverConditions();
         }, 200);
     }
@@ -189,5 +191,149 @@ class World {
         this.level.clouds.forEach(cloud => {
             cloud.setWorld(this);
         });
+    }
+
+    /**
+     * Adds a new egg to the world eggs array.
+     * @param {Egg} egg - The egg object to add.
+     */
+    addEgg(egg) {
+        this.eggs.push(egg);
+    }
+
+
+    /**
+     * Removes eggs that are marked for removal.
+     */
+    removeFinishedEggs() {
+        this.eggs = this.eggs.filter(egg => !egg.shouldBeRemoved);
+    }
+
+    /**
+     * Handles egg hitting character - cracks egg, deals damage and knocks character back.
+     * @param {Egg} egg - The egg that hit the character.
+     */
+    handleEggHit(egg) {
+        egg.crackEgg();
+        this.damageCharacter();
+        this.ifIsDead();
+        this.smoothKnockbackCharacter(-100);
+    }
+
+    /**
+     * Check if character died from egg hit
+     */
+    ifIsDead() {
+        if (this.world.character.isDead()) {
+            this.world.character.deadInterval();
+            return;
+        }
+    }
+
+    /**
+     * Smoothly knocks character back with animation.
+     * @param {number} distance - Distance to push character back.
+     */
+    smoothKnockbackCharacter(distance) {
+        const character = this.world.character;
+        this.initializeKnockback(character);
+        const knockbackData = this.calculateKnockbackParameters(character, distance);
+        this.startKnockbackAnimation(character, knockbackData);
+    }
+
+    /**
+     * Initializes knockback state for character.
+     * @param {Character} character - Character to initialize knockback for.
+     */
+    initializeKnockback(character) {
+        character.energy -= 10;
+        character.isBeingKnockedBack = true;
+        character.movementEnabled = false;
+    }
+
+    /**
+     * Calculates knockback parameters including start, target positions and duration.
+     * @param {Character} character - Character being knocked back.
+     * @param {number} distance - Distance to push character back.
+     * @returns {Object} Object containing startX, targetX, duration, and startTime.
+     */
+    calculateKnockbackParameters(character, distance) {
+        return {
+            startX: character.x,
+            targetX: Math.min(character.x + distance, 2200),
+            duration: 400,
+            startTime: Date.now()
+        };
+    }
+
+    /**
+     * Starts the knockback animation interval.
+     * @param {Character} character - Character to animate.
+     * @param {Object} knockbackData - Object containing animation parameters.
+     */
+    startKnockbackAnimation(character, knockbackData) {
+        const knockbackInterval = setInterval(() => {
+            const progress = this.calculateKnockbackProgress(knockbackData);
+            
+            this.updateCharacterPosition(character, knockbackData, progress);
+            this.ensureCharacterOnGround(character);
+            
+            if (progress >= 1) {
+                this.finishKnockback(character, knockbackData.targetX, knockbackInterval);
+            }
+        }, 1000 / 60);
+    }
+
+    /**
+     * Calculates current progress of knockback animation.
+     * @param {Object} knockbackData - Object containing animation timing data.
+     * @returns {number} Progress value between 0 and 1.
+     */
+    calculateKnockbackProgress(knockbackData) {
+        const elapsed = Date.now() - knockbackData.startTime;
+        return Math.min(elapsed / knockbackData.duration, 1);
+    }
+
+    /**
+     * Updates character position based on animation progress.
+     * @param {Character} character - Character to update.
+     * @param {Object} knockbackData - Object containing position data.
+     * @param {number} progress - Current animation progress (0 to 1).
+     */
+    updateCharacterPosition(character, knockbackData, progress) {
+        const easeOut = this.applyEaseOutCubic(progress);
+        character.x = knockbackData.startX + (knockbackData.targetX - knockbackData.startX) * easeOut;
+    }
+
+    /**
+     * Applies ease-out cubic easing function for smooth deceleration.
+     * @param {number} progress - Linear progress value (0 to 1).
+     * @returns {number} Eased progress value.
+     */
+    applyEaseOutCubic(progress) {
+        return 1 - Math.pow(1 - progress, 3);
+    }
+
+    /**
+     * Ensures character stays on ground level during knockback.
+     * @param {Character} character - Character to check and correct.
+     */
+    ensureCharacterOnGround(character) {
+        if (character.y > 226) {
+            character.y = 226;
+        }
+    }
+
+    /**
+     * Finishes knockback animation and restores character control.
+     * @param {Character} character - Character to restore control to.
+     * @param {number} targetX - Final X position.
+     * @param {number} knockbackInterval - Interval ID to clear.
+     */
+    finishKnockback(character, targetX, knockbackInterval) {
+        clearInterval(knockbackInterval);
+        character.isBeingKnockedBack = false;
+        character.movementEnabled = true;
+        character.x = targetX;
     }
 }

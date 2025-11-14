@@ -41,6 +41,7 @@ function stopAllGameAnimations() {
     stopCharacterAnimations();
     stopEnemyAnimations();
     stopThrowableObjects();
+    stopEggAnimations();
     stopCloudAnimations();
     stopCoinAnimations();
     stopCollisionDetection();
@@ -91,6 +92,19 @@ function stopEnemyAnimations() {
 function stopThrowableObjects() {
     if (typeof world !== 'undefined' && world) {
         world.throwableObject = [];
+    }
+}
+
+/**
+ * Stops all egg animations and clears the egg array.
+ */
+function stopEggAnimations() {
+    if (typeof world !== 'undefined' && world && world.eggs) {
+        world.eggs.forEach(egg => {
+            if (egg.stopRolling)
+                egg.stopRolling();
+        });
+        world.eggs = [];
     }
 }
 
