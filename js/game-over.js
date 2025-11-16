@@ -207,6 +207,7 @@ function stoppCharacterAudio() {
 
 /**
  * Stops all global sounds from the AudioManager.
+ * This includes endboss, egg, and all other global game sounds.
  */
 function stoppGlobalAudioManager() {
     if (typeof audioManager !== 'undefined' && audioManager) {

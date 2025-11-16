@@ -76,12 +76,13 @@ class CollisionManager {
 
     /**
      * Checks if collision check should be skipped.
+     * Skips if enemy is dead or bottle has already hit an enemy.
      * @param {MovableObject} enemy - Enemy to check.
      * @param {ThrowableObject} bottle - Bottle to check.
-     * @returns {boolean} True if collision check should be skipped.
+     * @returns {boolean} True if enemy is dead or bottle has already collided.
      */
     shouldSkipCollisionCheck(enemy, bottle) {
-        return enemy.isDead() || bottle.shouldBeRemoved;
+        return enemy.isDead() || bottle.hasHitEnemy;
     }
 
     /**
@@ -143,6 +144,7 @@ class CollisionManager {
      * @param {ThrowableObject} bottle - Bottle that hit the enemy.
      */
     handleBottleHitEnemy(enemy, bottle) {
+        bottle.hasHitEnemy = true;
         this.applyDamageToEnemy(enemy);
         this.stopBottleMovement(bottle);
         this.triggerBottleSplash(bottle);
@@ -229,6 +231,8 @@ class CollisionManager {
      * @param {Endboss} endboss - Endboss to damage.
      */
     hurtEndboss(endboss) {
+        console.log(' endboss.bossEnergy', endboss.bossEnergy);
+        
         if (endboss.bossEnergy > 0) {
             endboss.bossEnergy -= 1;
             endboss.hurtImageIndex = 1;

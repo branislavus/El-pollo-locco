@@ -1,6 +1,7 @@
 let canvas;
 let world;
 let keyboard = new Keyboard();
+let audioManager;
 let fullscreenFlag = false;
 let soundFlag = false;
 

@@ -362,7 +362,7 @@ class Endboss extends MovableObject {
      */
     shoutScream() {
         if (this.world.character.x >= 1290 && !this.hasGrowled) {
-            this.audio.bossOnGrowl();
+            this.playGrowlSound();
             this.hasGrowled = true;
         }
     }

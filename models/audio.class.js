@@ -379,6 +379,3 @@ class AudioManager {
     });
   }
 }
-
-// Global instance for easy access
-const audioManager = new AudioManager();

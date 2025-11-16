@@ -78,7 +78,7 @@ function StartGame() {
     setTimeout(() => {
         hideStartWallpaper();
     }, 800);
-
+    audioManager = new AudioManager();
     audioManager.startBackgroundMusic();
 }
 

@@ -11,6 +11,7 @@ class ThrowableObject extends MovableObject {
 
     shouldBeRemoved = false;
     soundPlayed = false;
+    hasHitEnemy = false;
 
 
     /**

@@ -54,7 +54,7 @@ class Egg extends MovableObject {
         if (this.isCracked) return; // Prevent multiple cracks
         
         this.isCracked = true;
-        this.audio.onEggCracking();
+        this.playEggCrackingSound();
         this.stopRolling();
         
         // Remove egg after short delay to show crack moment
@@ -89,5 +89,13 @@ class Egg extends MovableObject {
             clearInterval(this.rollInterval);
             this.rollInterval = null;
         }
+    }
+
+        /**
+     * Plays onEggCracking sound.
+     */
+    playEggCrackingSound() {
+        if (typeof audioManager !== 'undefined')
+            audioManager.onEggCracking();
     }
 }
