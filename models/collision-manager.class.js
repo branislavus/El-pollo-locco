@@ -9,6 +9,7 @@ class CollisionManager {
      */
     constructor(world) {
         this.world = world;
+        this.jumpKillManager = new CollisionJumpKill(world);
     }
 
     /**
@@ -25,15 +26,31 @@ class CollisionManager {
 
     /**
      * Checks collisions between character and all enemies.
+     * Uses two-phase approach: collect jump-killable enemies first, then execute.
      */
     checkEnemyCollisions() {
-        for (let i = this.world.level.enemies.length - 1; i >= 0; i--) {
-            let enemy = this.world.level.enemies[i];
-            if (enemy.isDead() || !this.world.character.isCollidingOffset(enemy)) continue;
+        const enemiesToKill = this.jumpKillManager.collectJumpKillableEnemies();
+        
+        enemiesToKill.length > 0 ?
+        this.jumpKillManager.executeJumpKills(enemiesToKill, this):
+        this.checkEnemyDamage();
+        
+        if (!this.world.character.isAboveGround())
+            this.setRightCharacterYPosition();
+    }
 
-            this.isJumpingOnEnemy(enemy) ? this.killEnemy(enemy, i) : this.damageCharacter();
-            if (!this.world.character.isAboveGround())
-                this.setRightCharacterYPosition();
+
+    /**
+     * Checks if any enemy should damage the character.
+     * Only called when no jump-kill occurred.
+     */
+    checkEnemyDamage() {
+        for (let i = this.world.level.enemies.length - 1; i >= 0; i--) {
+            const enemy = this.world.level.enemies[i];
+            if (enemy.isDead() || !this.world.character.isCollidingOffset(enemy)) continue;
+            
+            this.damageCharacter();
+            break; // Only damage once per frame
         }
     }
 
@@ -215,58 +232,6 @@ class CollisionManager {
 
     /**
      * Checks if character is jumping on enemy.
-     * @param {MovableObject} enemy - Enemy to check collision with.
-     * @returns {boolean} True if character is landing on enemy from above.
-     */
-    isJumpingOnEnemy(enemy) {
-        const characterBox = this.getCharacterCollisionBox();
-        const enemyBox = this.getEnemyCollisionBox(enemy);
-
-        return this.isValidJumpKill(characterBox, enemyBox);
-    }
-
-    /**
-     * Gets character collision box with offset.
-     * @returns {Object} Character collision boundaries.
-     */
-    getCharacterCollisionBox() {
-        return {
-            left: this.world.character.x + this.world.character.offset.left,
-            right: this.world.character.x + this.world.character.width - this.world.character.offset.right,
-            bottom: this.world.character.y + this.world.character.height - this.world.character.offset.bottom
-        };
-    }
-
-    /**
-     * Gets enemy collision box with offset.
-     * @param {MovableObject} enemy - Enemy to get collision box for.
-     * @returns {Object} Enemy collision boundaries.
-     */
-    getEnemyCollisionBox(enemy) {
-        return {
-            left: enemy.x + (enemy.offset ? enemy.offset.left : 0),
-            right: enemy.x + enemy.width - (enemy.offset ? enemy.offset.right : 0),
-            top: enemy.y + (enemy.offset ? enemy.offset.top : 0)
-        };
-    }
-
-    /**
-     * Validates if jump kill conditions are met.
-     * @param {Object} characterBox - Character collision box.
-     * @param {Object} enemyBox - Enemy collision box.
-     * @returns {boolean} True if all jump kill conditions are satisfied.
-     */
-    isValidJumpKill(characterBox, enemyBox) {
-        const isFalling = this.world.character.speedY <= 0;
-        const isLandingOnTop = Math.abs(characterBox.bottom - enemyBox.top) <= 60;
-        const isAboveEnemy = characterBox.bottom < enemyBox.top + 0;
-        const isHorizontallyOverlapping =
-            characterBox.right > enemyBox.left &&
-            characterBox.left < enemyBox.right;
-
-        return isFalling && isLandingOnTop && isAboveEnemy && isHorizontallyOverlapping;
-    }
-
     /**
      * Kills enemy when character jumps on it.
      * @param {MovableObject} enemy - Enemy to kill.
