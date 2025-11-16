@@ -144,7 +144,21 @@ class CollisionManager {
      */
     handleBottleHitEnemy(enemy, bottle) {
         this.applyDamageToEnemy(enemy);
+        this.stopBottleMovement(bottle);
         this.triggerBottleSplash(bottle);
+    }
+
+    /**
+     * Stops bottle movement on collision.
+     * @param {ThrowableObject} bottle - Bottle to stop.
+     */
+    stopBottleMovement(bottle) {
+        if (bottle.throwInterval) {
+            clearInterval(bottle.throwInterval);
+            bottle.throwInterval = null;
+        }
+        bottle.speedY = 0;
+        bottle.acceleration = 0;
     }
 
     /**

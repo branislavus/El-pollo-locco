@@ -63,7 +63,7 @@ class Endboss extends MovableObject {
     deathSoundPlayed = false;
     eggThrowInterval = null;
     lastEggThrowTime = 0;
-    hasGrowled = false; // Track if growl sound has been played
+    hasGrowled = false;
 
 
     /**
