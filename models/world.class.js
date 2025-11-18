@@ -221,7 +221,7 @@ class World {
         if (this.checkCharacterDeath()) return;
 
         this.playHurtSound();
-        this.smoothKnockbackCharacter(-100);
+        this.smoothKnockbackCharacter(-40);
     }
 
 
