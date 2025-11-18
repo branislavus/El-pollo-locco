@@ -56,7 +56,7 @@ class Cloud extends MovableObject {
      */
     playCoudSound() {
         if (Math.abs(this.world.character.x - this.x) < 10)
-            if (!audioManager.isMuted) audioManager.onWind();
+            if (!audioManager.isMuted) audioManager.onWindGust();
     }
 
 

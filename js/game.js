@@ -68,11 +68,17 @@ function addTouchButtons() {
  */
 function fullscreen() {
     const fullscreen = document.getElementById('fullscreen');
+    const fullscreenIcon = document.getElementById('fullscreenIcon');
     if (!fullscreen) return;
     if (fullscreenFlag) {
         closeFullscreen();
+        fullscreenIcon.classList.add('fullscreenIcon');
+        fullscreenIcon.classList.remove('fullscreenIconDisabled');
+
     } else {
         openFullscreen(fullscreen);
+        fullscreenIcon.classList.add('fullscreenIconDisabled');
+        fullscreenIcon.classList.remove('fullscreenIcon');
     }
 }
 

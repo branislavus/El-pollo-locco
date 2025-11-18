@@ -231,7 +231,6 @@ class CollisionManager {
      * @param {Endboss} endboss - Endboss to damage.
      */
     hurtEndboss(endboss) {
-        console.log(' endboss.bossEnergy', endboss.bossEnergy);
         
         if (endboss.bossEnergy > 0) {
             endboss.bossEnergy -= 1;

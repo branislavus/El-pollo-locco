@@ -23,6 +23,8 @@
     display: none !important;
 }
 
+
+
 .main-container {
     display: flex;
     justify-content: center;
@@ -211,6 +213,12 @@ h1 {
 .buttonBottle {
     width: 50px;
     height: 50px;
+    background-image: 
+        url("./img/6_salsa_bottle/bottle_rotation/1_bottle_rotation.png"),
+        url("./img/duotone-redo-round-svgrepo-com.svg");
+    background-size: 48px 48px, cover;
+    background-position: center, center;
+    background-repeat: no-repeat, no-repeat;
 }
 
 .keys-doing {
@@ -263,7 +271,27 @@ h1 {
     right: 20px;
     width: 40px;
     height: 40px;
-    background-image: url(./img/fullscreen.svg);
+    background-image: url(./img/duotone-screen-svgrepo-com.svg);
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    outline: none;
+    display: flex;
+    justify-content: end;
+    align-items: end;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    z-index: 2000;
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.fullscreenIconDisabled {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    width: 40px;
+    height: 40px;
+    background-image: url(./img/duotone-screen-disabled-svgrepo-com.svg);
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center;
@@ -297,7 +325,7 @@ h1 {
     right: 70px;
     width: 40px;
     height: 40px;
-    background-image: url(./img/volume.svg);
+    background-image: url(./img/duotone-speaker-2-svgrepo-com.svg);
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center;
@@ -317,7 +345,7 @@ h1 {
     right: 70px;
     width: 40px;
     height: 40px;
-    background-image: url(./img/volume-slash.svg);
+    background-image: url(./img/duotone-speaker-0-svgrepo-com.svg);
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center;
@@ -329,4 +357,13 @@ h1 {
     transition: background-color 0.3s ease;
     z-index: 2000;
     background-color: rgba(255, 255, 255, 0.1);
+}
+
+.ButtonImage{
+    width: 70px;
+    height: 70px;
+}
+
+.buttonHide{
+    z-index: 2;
 }
