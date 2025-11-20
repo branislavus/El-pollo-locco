@@ -117,3 +117,10 @@ document.addEventListener("keyup", function (event) {
         StartGame();
     }
 });
+
+/**
+ * restart game after the press on button.
+ */
+function restartGame(){
+     StartGame();
+}

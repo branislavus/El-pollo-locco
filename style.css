@@ -116,7 +116,7 @@ h1 {
 }
 
 .legendButtons {
-    width: 180px;
+    width: 200px;
     height: 100%;
     display: flex;
     justify-content: space-between;
@@ -124,8 +124,9 @@ h1 {
 }
 
 .legendButtonsName {
-    width: 110px;
+    width: 140px;
     font-size: 24px;
+    padding-bottom: 6px;
 }
 
 .buttons {
@@ -166,6 +167,7 @@ h1 {
     font-size: 13px;
     border: 3px red ridge;
     margin-bottom: 20px;
+    cursor:auto;
 }
 
 .touch-key {
@@ -265,7 +267,7 @@ h1 {
 
 .fullscreenIcon {
     position: absolute;
-    top: 20px;
+    top: 120px;
     right: 20px;
     width: 40px;
     height: 40px;
@@ -285,7 +287,7 @@ h1 {
 
 .fullscreenIconDisabled {
     position: absolute;
-    top: 20px;
+    top: 120px;
     right: 20px;
     width: 40px;
     height: 40px;
@@ -309,18 +311,30 @@ h1 {
     background-color: rgba(255, 255, 255, 0.2);
 }
 
-.fullscreenIconLegend {
-    position: unset;
-    width: 30px;
-    height: 30px;
-    border: none;
-    margin-right: 3px;
+.restartGame {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    width: 40px;
+    height: 40px;
+    background-image: url(./img/duotone-rotate-right-svgrepo-com.svg);
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    outline: none;
+    display: flex;
+    justify-content: end;
+    align-items: end;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    z-index: 2000;
+    background-color: rgba(255, 255, 255, 0.1);
 }
 
 .toggleAllSoundEnabled {
     position: absolute;
-    top: 20px;
-    right: 70px;
+    top: 70px;
+    right: 20px;
     width: 40px;
     height: 40px;
     background-image: url(./img/duotone-speaker-2-svgrepo-com.svg);
@@ -339,8 +353,8 @@ h1 {
 
 .toggleAllSoundDisabled {
     position: absolute;
-    top: 20px;
-    right: 70px;
+    top: 70px;
+    right: 20px;
     width: 40px;
     height: 40px;
     background-image: url(./img/duotone-speaker-0-svgrepo-com.svg);
@@ -379,4 +393,13 @@ h1 {
 
 .buttonHide {
     z-index: 2;
+}
+
+.fullscreenIconLegend, .restartGameLegend {
+    position: unset;
+    width: 30px;
+    height: 30px;
+    border: none;
+    margin-right: 3px;
+    cursor:auto;
 }

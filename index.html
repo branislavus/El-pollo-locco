@@ -50,6 +50,7 @@
         <div class="sub-container">
             <h1 id="title" class="title">El Pollo Locco</h1>
             <div id="fullscreen" class="fullscreen">
+                <div id="restartGame" class="restartGame" onclick="restartGame()"></div>
                 <div id="toggleAllSound" class="toggleAllSoundEnabled" onclick="toggleAllSound()"></div>
                 <div id="fullscreenIcon" class="fullscreenIcon" onclick="fullscreen()"></div>
                 <canvas id="canvas" width="720" height="480"></canvas>
@@ -100,14 +101,18 @@
                         <tr class="legendButtons">
                             <td class="legendButtonsName">press start to play</td>
                             <td class="legendButtonsTd">- <button type="button"
-                                    class="startButton startButtonLegend buttons">Start</button>
+                                    class="startButton startButtonLegend buttons" disabled>Start</button>
                             </td>
                         </tr>
                         <tr class="legendButtons">
                             <td class="legendButtonsName">toggle fullscreen</td>
                             <td class="legendButtonsTd">- <button type="button"
-                                    class="fullscreenIcon fullscreenIconLegend buttons buttonHide"></button>
+                                    class="fullscreenIcon fullscreenIconLegend buttons buttonHide" disabled></button>
                             </td>
+                        </tr>
+                         <tr  class="legendButtons">
+                            <td class="legendButtonsName">restart game press <span style="color: red">Enter</span> or</td>
+                            <td class="legendButtonsTd">- <button type="button" class="buttons restartGame restartGameLegend" disabled></button></td>
                         </tr>
 
                     </table>
