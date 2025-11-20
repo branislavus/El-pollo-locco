@@ -371,7 +371,7 @@ h1 {
     font-size: 76px;
     text-align: center;
     z-index: 9999;
-    background: rgba(0, 0, 0, 0.95);
+    background: rgba(0, 0, 0);
     padding: 40px;
     border-radius: 12px;
     max-width: 90vw;
