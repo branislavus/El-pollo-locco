@@ -3,7 +3,7 @@ let world;
 let keyboard = new Keyboard();
 let audioManager;
 let fullscreenFlag = false;
-let soundFlag = false;
+let soundFlag;
 
 /**
  * Initializes the game canvas, world, and touch controls.
@@ -116,12 +116,31 @@ function closeFullscreen() {
 }
 
 /**
+ * Loads sound on/off on gamestart.
+ */
+async function checkSoundState() {
+    const soundIcon = document.getElementById('toggleAllSound');
+    soundFlag = await loadSoundState();
+    if (soundFlag) {
+        turnOnMusic(soundIcon);
+    } else {
+        turnOffMusic(soundIcon);
+    }
+}
+
+/**
  * Toggles sound on/off and updates UI icon.
  */
 function toggleAllSound() {
     const soundIcon = document.getElementById('toggleAllSound');
     soundFlag = !soundFlag;
-    soundFlag ? turnOffMusic(soundIcon) : turnOnMusic(soundIcon);
+    if (soundFlag) {
+        turnOnMusic(soundIcon);
+        saveSoundState(true);
+    } else {
+        turnOffMusic(soundIcon);
+        saveSoundState(false);
+    }
 }
 
 /**
@@ -130,8 +149,8 @@ function toggleAllSound() {
  */
 function turnOffMusic(soundIcon) {
     audioManager.mute();
-    soundIcon.classList.add('toggleAllSoundDisabled');
     soundIcon.classList.remove('toggleAllSoundEnabled');
+    soundIcon.classList.add('toggleAllSoundDisabled');
 }
 
 /**
@@ -140,6 +159,18 @@ function turnOffMusic(soundIcon) {
  */
 function turnOnMusic(soundIcon) {
     audioManager.unmute();
-    soundIcon.classList.add('toggleAllSoundEnabled');
     soundIcon.classList.remove('toggleAllSoundDisabled');
+    soundIcon.classList.add('toggleAllSoundEnabled');
+}
+
+/**
+ * Loads right sound-icon onload.
+ */
+async function changeClassAllSound() {
+    const soundIcon = document.getElementById('toggleAllSound');
+    soundFlag = await loadSoundState();
+    if (!soundFlag) {
+        soundIcon.classList.remove('toggleAllSoundEnabled');
+        soundIcon.classList.add('toggleAllSoundDisabled');
+    }
 }

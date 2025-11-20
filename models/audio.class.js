@@ -115,6 +115,7 @@ class AudioManager {
     this.isMuted = true;
     Object.values(this.sounds).forEach(audio => {
       audio.volume = 0;
+      saveSoundState(false)
     });
   }
 
@@ -125,6 +126,7 @@ class AudioManager {
     this.isMuted = false;
     Object.values(this.sounds).forEach(audio => {
       audio.volume = 1;
+      saveSoundState(true)
     });
   }
 

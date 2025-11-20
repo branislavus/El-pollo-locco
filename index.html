@@ -38,12 +38,14 @@
     <script src="./models/egg.class.js"></script>
     <script src="./models/audio.class.js"></script>
     <script src="./levels/level1.js"></script>
+    <script src="./js/local-storage.js"></script>
     <script src="./js/game.js"></script>
     <script src="./js/start.js"></script>
     <script src="./js/game-over.js"></script>
+
 </head>
 
-<body>
+<body onload="changeClassAllSound()">
     <div class="main-container">
         <div class="sub-container">
             <h1 id="title" class="title">El Pollo Locco</h1>
@@ -58,12 +60,16 @@
                 <div id="endLoseWallpaper" class="endLoseWallpaper d_none"></div>
                 <div id="touch-keys" class="touch-keys">
                     <div id="keys-doing" class="keys-doing">
-                        <button type="button" class="touch-key key-jump" id="key-jump"><img class="ButtonImage" src="./img/duotone-chevron-up-small-round-svgrepo-com.svg" alt="up"></button>
+                        <button type="button" class="touch-key key-jump" id="key-jump"><img class="ButtonImage"
+                                src="./img/duotone-chevron-up-small-round-svgrepo-com.svg" alt="up"></button>
                         <button type="button" class="touch-key key-throw buttonBottle" id="key-throw"></button>
                     </div>
                     <div id="keys-moving" class="keys-moving">
-                        <button type="button" class="touch-key key-run-left" id="key-run-left"><img class="ButtonImage" src="./img/duotone-chevron-left-small-round-svgrepo-com.svg" alt="left"></button>
-                        <button type="button" class="touch-key key-run-right" id="key-run-right"><img src="./img/duotone-chevron-right-small-round-svgrepo-com.svg" class="ButtonImage"  alt="right"></button>
+                        <button type="button" class="touch-key key-run-left" id="key-run-left"><img class="ButtonImage"
+                                src="./img/duotone-chevron-left-small-round-svgrepo-com.svg" alt="left"></button>
+                        <button type="button" class="touch-key key-run-right" id="key-run-right"><img
+                                src="./img/duotone-chevron-right-small-round-svgrepo-com.svg" class="ButtonImage"
+                                alt="right"></button>
                     </div>
                 </div>
             </div>
