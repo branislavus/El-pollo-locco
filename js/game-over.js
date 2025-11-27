@@ -46,7 +46,17 @@ function stopAllGameAnimations() {
     stopCoinAnimations();
     stopCollisionDetection();
     stopWorldRunLoop();
+    stopWorldIntervals();
     setGameOverFlag();
+}
+
+/**
+ * Stops all world intervals.
+ */
+function stopWorldIntervals() {
+    if (world) {
+        world.stopWorldIntervals();
+    }
 }
 
 /**

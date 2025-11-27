@@ -4,7 +4,6 @@ class Cloud extends MovableObject {
     world;
     leftBorder;
     rightBorder;
-    cloudSound = ['onWind'];
 
 
     /**

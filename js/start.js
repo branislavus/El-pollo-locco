@@ -1,3 +1,6 @@
+let lastRestartTime = 0;
+const RESTART_COOLDOWN = 3000;
+
 /**
  * Hides the start wallpaper and displays the game canvas.
  */
@@ -83,7 +86,7 @@ function StartGame() {
     setTimeout(() => {
         hideStartWallpaper();
     }, 800);
-    audioManager = new AudioManager();
+    loadAudiomanager();
     audioManager.startBackgroundMusic();
 }
 
@@ -141,7 +144,7 @@ function restartGame() {
     
     stopAllGameAnimations();
     stopAllSounds();
-     StartGame();
+    StartGame();
 }
 
 /**
@@ -150,14 +153,47 @@ function restartGame() {
  */
 function countRestart() {
     const currentTime = Date.now();
-    const timeSinceLastRestart = currentTime - lastRestartTime;
+    const timeSinceLastRestart = calculateTimeSinceLastRestart(currentTime);
     
-    if (timeSinceLastRestart < RESTART_COOLDOWN) {
-        const remainingSeconds = Math.ceil((RESTART_COOLDOWN - timeSinceLastRestart) / 1000);
-        console.log(`Please wait ${remainingSeconds} seconds before restarting.`);
-        return false; // Cooldown active
+    if (isRestartOnCooldown(timeSinceLastRestart)) {
+        logCooldownMessage(timeSinceLastRestart);
+        return false;
     }
     
-    lastRestartTime = currentTime; // Update timestamp
-    return true; // Restart allowed
+    updateLastRestartTime(currentTime);
+    return true;
+}
+
+/**
+ * Calculates time elapsed since last restart.
+ * @param {number} currentTime - Current timestamp.
+ * @returns {number} Milliseconds since last restart.
+ */
+function calculateTimeSinceLastRestart(currentTime) {
+    return currentTime - lastRestartTime;
+}
+
+/**
+ * Checks if restart is still on cooldown.
+ * @param {number} timeSinceLastRestart - Milliseconds since last restart.
+ * @returns {boolean} True if cooldown active.
+ */
+function isRestartOnCooldown(timeSinceLastRestart) {
+    return timeSinceLastRestart < RESTART_COOLDOWN;
+}
+
+/**
+ * Logs remaining cooldown time to console.
+ * @param {number} timeSinceLastRestart - Milliseconds since last restart.
+ */
+function logCooldownMessage(timeSinceLastRestart) {
+    const remainingSeconds = Math.ceil((RESTART_COOLDOWN - timeSinceLastRestart) / 1000);
+}
+
+/**
+ * Updates the last restart timestamp.
+ * @param {number} currentTime - Current timestamp.
+ */
+function updateLastRestartTime(currentTime) {
+    lastRestartTime = currentTime;
 }

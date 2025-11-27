@@ -49,7 +49,7 @@ class World {
      * Starts interval to track character movement and trigger bored animation.
      */
     showMyInterval() {
-        setInterval(() => {
+        this.showMyAnimationInterval = setInterval(() => {
             this.character.lastCharacterX = this.character.x;
             this.character.isBored();
         }, 1000);
@@ -76,6 +76,11 @@ class World {
             this.removeFinishedEggs();
             this.checkGameOverConditions();
         }, 200);
+    }
+
+    stopWorldIntervals(){
+        clearInterval(this.runInterval);
+        clearInterval(this.showMyAnimationInterval);
     }
 
     /**
