@@ -71,6 +71,11 @@ document.addEventListener('DOMContentLoaded', initializeScreens);
  * Starts the game by initializing level, music, and hiding start screen.
  */
 function StartGame() {
+    // Stop old audioManager if exists
+    if (audioManager) {
+        audioManager.stopBackgroundMusic();
+    }
+
     checkSoundState();
     initLevel();
     init();
@@ -80,6 +85,15 @@ function StartGame() {
     }, 800);
     audioManager = new AudioManager();
     audioManager.startBackgroundMusic();
+}
+
+/**
+ * Load audiomanager once
+ */
+function loadAudiomanager() {
+    if (!audioManager) {
+        audioManager = new AudioManager();
+    }
 }
 
 /**
@@ -113,6 +127,7 @@ document.addEventListener('DOMContentLoaded', touchStart);
  */
 document.addEventListener("keyup", function (event) {
     if (event.key === "Enter") {
+        if (!countRestart()) return; // Stop if cooldown active
         stopAllGameAnimations();
         StartGame();
     }
@@ -121,6 +136,28 @@ document.addEventListener("keyup", function (event) {
 /**
  * restart game after the press on button.
  */
-function restartGame(){
+function restartGame() {
+    if (!countRestart()) return; // Stop if cooldown active
+    
+    stopAllGameAnimations();
+    stopAllSounds();
      StartGame();
+}
+
+/**
+ * Checks if enough time has passed since last restart.
+ * @returns {boolean} True if restart allowed, false if still on cooldown.
+ */
+function countRestart() {
+    const currentTime = Date.now();
+    const timeSinceLastRestart = currentTime - lastRestartTime;
+    
+    if (timeSinceLastRestart < RESTART_COOLDOWN) {
+        const remainingSeconds = Math.ceil((RESTART_COOLDOWN - timeSinceLastRestart) / 1000);
+        console.log(`Please wait ${remainingSeconds} seconds before restarting.`);
+        return false; // Cooldown active
+    }
+    
+    lastRestartTime = currentTime; // Update timestamp
+    return true; // Restart allowed
 }
