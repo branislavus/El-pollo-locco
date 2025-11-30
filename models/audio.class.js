@@ -124,10 +124,8 @@ class AudioManager {
    */
   unmute() {
     this.isMuted = false;
-    Object.values(this.sounds).forEach(audio => {
-      audio.volume = 1;
-      saveSoundState(true)
-    });
+    this.updateAllVolumes();
+    saveSoundState(true);
   }
 
   /**
@@ -220,9 +218,9 @@ class AudioManager {
     this.playSound('bossBite', 2);
   }
 
-    /**
-   * Plays boss bite/attack sound.
-   */
+  /**
+ * Plays boss bite/attack sound.
+ */
   bossOnGrowl() {
     this.playSound('bossGrowl');
   }
@@ -332,9 +330,9 @@ class AudioManager {
     this.playSound('windGust', 1.1);
   }
 
-    /**
-   * Plays egg cracking sound.
-   */
+  /**
+ * Plays egg cracking sound.
+ */
   onEggCracking() {
     this.playSound('eggCracking', 1);
   }
@@ -344,10 +342,12 @@ class AudioManager {
    * Starts playing background music.
    */
   startBackgroundMusic() {
-    if (!this.isMuted)
+    if (!this.isMuted) {
+      this.sounds.backgroundMusic.volume = 0.2;
       this.sounds.backgroundMusic.play().catch(e => console.log('Music play failed:', e));
+    }
   }
-
+  
   /**
    * Stops background music and resets to start.
    */

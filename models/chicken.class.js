@@ -19,6 +19,7 @@ class Chicken extends MovableObject {
     };
     currentImage = 0;
     chickenSound = ['onChicken1', 'onChicken1', 'onChicken1'];
+    soundTimeout = null;
 
 
     /**
@@ -96,11 +97,15 @@ class Chicken extends MovableObject {
 
 
     /**
-     * Stops the sound interval.
+     * Stops the sound interval and pending sound timeout.
      */
     stopSounInterval() {
         clearInterval(this.soundInterval);
         this.soundInterval = null;
+        if (this.soundTimeout) {
+            clearTimeout(this.soundTimeout);
+            this.soundTimeout = null;
+        }
     }
 
 
@@ -117,7 +122,7 @@ class Chicken extends MovableObject {
      * Queues a random chicken sound with a delay.
      */
     chickenSoundInCue() {
-        setTimeout(() => {
+        this.soundTimeout = setTimeout(() => {
             let randomSound = this.chickenRandomSound();
             this.chooseSound(randomSound);
         }, Math.floor(Math.random() * 5000));

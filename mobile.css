@@ -1,6 +1,5 @@
 /* Tablet Landscape */
-@media (max-width: 1000px),
-(pointer: coarse) {
+@media (max-width: 1000px) {
 
     .tables {
         display: flex;
@@ -83,16 +82,35 @@
 
     }
 
-    .buttonHide{
-    z-index: -1;
-}
+    .endWinWallpaper {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        height: 100vh;
+        width: auto;
+        aspect-ratio: 3 / 2;
+    }
+
+    .endLoseWallpaper {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        height: 100vh;
+        width: auto;
+        aspect-ratio: 3 / 2;
+    }
+
+    .buttonHide {
+        z-index: -1;
+    }
 
 }
 
 /* Mobile */
 
-@media only screen and (max-height: 480px),
-(pointer: coarse) {
+@media only screen and (max-height: 480px) {
 
     .p-warning {
         position: absolute;
@@ -128,16 +146,22 @@
 
     .endWinWallpaper {
         position: absolute;
-        top: 0;
-        width: 100vw;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
         height: 100vh;
+        width: auto;
+        aspect-ratio: 3 / 2;
     }
 
     .endLoseWallpaper {
         position: absolute;
-        top: 0;
-        width: 100vw;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
         height: 100vh;
+        width: auto;
+        aspect-ratio: 3 / 2;
     }
 
     .keys-doing {
@@ -192,9 +216,9 @@
         display: none;
     }
 
-    .buttonHide{
-    z-index: -1;
-}
+    .buttonHide {
+        z-index: -1;
+    }
 
 }
 
