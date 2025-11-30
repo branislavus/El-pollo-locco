@@ -28,8 +28,8 @@ function resetGameState() {
  */
 function stopGame() {
     if (winGame || loseGame) {
-        stopAllGameAnimations();
         stopAllSounds();
+        stopAllGameAnimations();
     }
 }
 
@@ -37,6 +37,7 @@ function stopGame() {
  * Stops all animations, movements, and intervals in the game.
  */
 function stopAllGameAnimations() {
+    setGameOverFlag();
     stopWorldGameLoop();
     stopCharacterAnimations();
     stopEnemyAnimations();
@@ -47,7 +48,6 @@ function stopAllGameAnimations() {
     stopCollisionDetection();
     stopWorldRunLoop();
     stopWorldIntervals();
-    setGameOverFlag();
 }
 
 /**

@@ -35,6 +35,10 @@ class Cloud extends MovableObject {
      */
     animate() {
        this.cloudInterval = setInterval(() => {
+            if (this.world?.gameOver) {
+                clearInterval(this.cloudInterval);
+                return;
+            }
             this.returnCloudBack();
             this.moveLeft();
             this.playCoudSound();

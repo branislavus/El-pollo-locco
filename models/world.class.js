@@ -102,7 +102,7 @@ class World {
         loseGame = true;
         setTimeout(() => {
             endGame();
-        }, 6000);
+        }, 4000);
     }
 
     /**

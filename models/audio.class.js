@@ -42,7 +42,7 @@ class AudioManager {
     this.sounds = this.sounds;
     this.isMuted = false;
     this.masterVolume = 1.0;
-    this.musicVolume = 0.3;
+    this.musicVolume = 0.2;
     this.sfxVolume = 0.8;
     this.initializeSounds();
   }
@@ -343,7 +343,6 @@ class AudioManager {
    */
   startBackgroundMusic() {
     if (!this.isMuted) {
-      this.sounds.backgroundMusic.volume = 0.2;
       this.sounds.backgroundMusic.play().catch(e => console.log('Music play failed:', e));
     }
   }

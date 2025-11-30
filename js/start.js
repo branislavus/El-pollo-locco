@@ -50,8 +50,9 @@ function hideEndScreens(endWinWallpaper, endLoseWallpaper) {
  */
 function displayStartScreen(startWallpaper, canvas) {
     if (startWallpaper && canvas) {
-        startWallpaper.style.display = 'flex';
         canvas.style.display = 'none';
+        startWallpaper.style.display = 'flex';
+  
     }
 }
 

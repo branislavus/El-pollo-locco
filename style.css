@@ -167,7 +167,7 @@ h1 {
     font-size: 13px;
     border: 3px red ridge;
     margin-bottom: 20px;
-    cursor:auto;
+    cursor: auto;
 }
 
 .touch-key {
@@ -395,11 +395,17 @@ h1 {
     z-index: 2;
 }
 
-.fullscreenIconLegend, .restartGameLegend {
+.fullscreenIconLegend,
+.restartGameLegend {
     position: unset;
     width: 30px;
     height: 30px;
     border: none;
     margin-right: 3px;
-    cursor:auto;
+    cursor: auto;
+    z-index: 20;
+}
+
+.impressum-mobile {
+    display: none;
 }
