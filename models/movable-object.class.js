@@ -125,10 +125,9 @@ class MovableObject extends DrawableObject {
     hit() {
         this.energy -= 2;
         if (this.energy < 0) {
-            this.energy = 0
-        } else {
-            this.lastHit = new Date().getTime();
+            this.energy = 0;
         }
+        this.lastHit = new Date().getTime();
     }
 
 

@@ -208,7 +208,7 @@ class EndbossAnimationSequence {
     startHurtAnimation() {
         this.boss.hurtAnimationStarted = true;
         this.boss.currentImage = 0;
-        this.playHurtSound();
+        this.playHurtBossSound();
         this.takeDamage();
         this.startHurtAnimationInterval();
     }
@@ -217,7 +217,7 @@ class EndbossAnimationSequence {
     /**
      * Plays hurt sound.
      */
-    playHurtSound() {
+    playHurtBossSound() {
         if (typeof audioManager !== 'undefined')
             audioManager.onBossHurt();
     }

@@ -116,7 +116,7 @@ h1 {
 }
 
 .legendButtons {
-    width: 200px;
+    width: 300px;
     height: 100%;
     display: flex;
     justify-content: space-between;
