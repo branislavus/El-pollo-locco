@@ -61,9 +61,21 @@ class Endboss extends MovableObject {
     lastWalkSoundTime = 0;
     audio = new AudioManager();
     deathSoundPlayed = false;
+    deathAnimationTimeout = null;
+    attackSequenceTimeout = null;
+    moveRightPhaseTimeout1 = null;
+    moveRightPhaseTimeout2 = null;
+    attackStopTimeout = null;
+    hurtCounterTimeout = null;
+    removalTimeout = null;
     eggThrowInterval = null;
     lastEggThrowTime = 0;
     hasGrowled = false;
+    timeouts = [
+        'deathAnimationTimeout', 'attackSequenceTimeout', 'moveRightPhaseTimeout1',
+        'moveRightPhaseTimeout2', 'attackStopTimeout', 'hurtCounterTimeout', 'removalTimeout'
+    ];
+    static instanceCounter = 0;
 
 
     /**
@@ -71,6 +83,7 @@ class Endboss extends MovableObject {
      */
     constructor() {
         super().loadImage(this.IMAGES_ALERT[0]);
+        this.id = ++Endboss.instanceCounter;
         this.loadImages(this.IMAGES_WALKING);
         this.loadImages(this.IMAGES_ALERT);
         this.loadImages(this.IMAGES_ATTACK);
@@ -109,7 +122,8 @@ class Endboss extends MovableObject {
         } else if (this.shouldPlayHurtAnimation()) {
             this.animationSequence.hurt();
         } else if (this.shouldPlayAttackAnimation()) {
-            this.animationSequence.atackAnimation();
+
+            this.animationSequence.attackAnimation();
         } else if (this.shouldPlayAlertAnimation()) {
             this.alert();
         }
@@ -129,9 +143,10 @@ class Endboss extends MovableObject {
      * Plays death sound and schedules death animation.
      */
     playDeathAnimation() {
+        if (this.world?.gameOver) return;
         if (typeof audioManager !== 'undefined') audioManager.bossOnDie();
         this.deathSoundPlayed = true;
-        setTimeout(() => {
+        this.deathAnimationTimeout = setTimeout(() => {
             this.animationSequence.dead();
         }, 1000);
     }
@@ -175,15 +190,6 @@ class Endboss extends MovableObject {
 
 
     /**
-     * Generates a random attack interval.
-     * @returns {number} Random interval between 8 and 28.
-     */
-    getRandomAtackInterval() {
-        return Math.floor(Math.random() * 20) + 8;
-    }
-
-
-    /**
      * Generates random attack settings.
      * @returns {Object} Attack configuration object.
      */
@@ -220,14 +226,6 @@ class Endboss extends MovableObject {
 
 
     /**
-     * Plays attack animation.
-     */
-    atack() {
-        this.playAnimation(this.IMAGES_ATTACK);
-    }
-
-
-    /**
      * Plays walk animation and sound.
      */
     walk() {
@@ -240,7 +238,8 @@ class Endboss extends MovableObject {
      * Plays boss walk sound if not muted.
      */
     playBossWalkSound() {
-        if (!audioManager.isMuted) {
+        if (this.world?.gameOver) return;
+        if (typeof audioManager !== 'undefined') {
             this.playSoundIfDoingSomething('bossOnWalk', 800);
         }
     }
@@ -250,18 +249,16 @@ class Endboss extends MovableObject {
      * Plays bite sound with delay.
      */
     playBiteSound() {
-        setTimeout(() => {
-            if (typeof audioManager !== 'undefined') audioManager.bossOnBite();
-        }, 200);
+        if (this.world?.gameOver) return;
+        if (typeof audioManager !== 'undefined') audioManager.bossOnBite();
     }
 
     /**
- * Plays growl sound with delay.
- */
+     * Plays growl sound with delay.
+     */
     playGrowlSound() {
-        setTimeout(() => {
-            if (typeof audioManager !== 'undefined') audioManager.bossOnGrowl();
-        }, 200);
+        if (this.world?.gameOver) return;
+        if (typeof audioManager !== 'undefined') audioManager.bossOnGrowl();
     }
 
 
@@ -310,7 +307,15 @@ class Endboss extends MovableObject {
         this.attackInProgress = false;
         this.shouldAttackAfterHurt = false;
         this.speed = 0;
+        this.launchClearIntervals();
+        this.launchClearTimeouts();
+    }
 
+
+    /**
+     * Clears all active intervals.
+     */
+    launchClearIntervals() {
         if (this.animationInterval) {
             clearInterval(this.animationInterval);
             this.animationInterval = null;
@@ -322,6 +327,18 @@ class Endboss extends MovableObject {
         }
     }
 
+
+    /**
+     * Clears all active timeouts.
+     */
+    launchClearTimeouts() {
+        this.timeouts.forEach(timeout => {
+            if (this[timeout]) {
+                clearTimeout(this[timeout]);
+                this[timeout] = null;
+            }
+        });
+    }
 
     /**
      * Starts interval to throw eggs at random times when not attacking.
@@ -361,7 +378,7 @@ class Endboss extends MovableObject {
      * Check if character entered boss arena and play growl sound once
      */
     shoutScream() {
-        if (this.world.character.x >= 1290 && !this.hasGrowled) {
+        if (this.world?.character && this.world.character.x >= 1290 && !this.hasGrowled) {
             this.playGrowlSound();
             this.hasGrowled = true;
         }
@@ -385,7 +402,7 @@ class Endboss extends MovableObject {
      * Load parameters for egg throw.
      * @returns {Object} Object containing timing parameters.
      */
-    loadParametersThrowEgg() {     
+    loadParametersThrowEgg() {
         const currentTime = Date.now();
         const timeSinceLastEgg = currentTime - this.lastEggThrowTime;
         const randomThrowInterval = Math.floor(Math.random() * 4000) + 3000;

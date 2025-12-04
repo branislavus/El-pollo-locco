@@ -4,6 +4,8 @@ class Cloud extends MovableObject {
     world;
     leftBorder;
     rightBorder;
+    cloudPlayingSound = false;
+    cloudTimeout = null;
 
 
     /**
@@ -34,7 +36,7 @@ class Cloud extends MovableObject {
      * Starts the cloud animation interval for movement and sound.
      */
     animate() {
-       this.cloudInterval = setInterval(() => {
+        this.cloudInterval = setInterval(() => {
             if (this.world?.gameOver) {
                 clearInterval(this.cloudInterval);
                 return;
@@ -58,15 +60,38 @@ class Cloud extends MovableObject {
      * Plays wind sound when the cloud is near the character.
      */
     playCoudSound() {
-        if (Math.abs(this.world.character.x - this.x) < 10)
-            if (!audioManager.isMuted) audioManager.onWindGust();
+        if (this.world?.gameOver) return;
+
+        const isNearCharacter = Math.abs(this.world.character.x - this.x) < 10;
+
+        if (isNearCharacter && !this.cloudPlayingSound && !audioManager.isMuted) {
+            audioManager.onWindGust();
+            this.cloudPlayingSound = true;
+            this.turnToFalse();
+        }
+    }
+
+    /**
+    * Stops the cloud sound under 5sec.
+    */
+    turnToFalse() {
+        if (this.cloudTimeout) {
+            clearTimeout(this.cloudTimeout);
+        }
+        this.cloudTimeout = setTimeout(() => {
+            this.cloudPlayingSound = false;
+        }, 5000);
     }
 
 
     /**
      * Stops the cloud animation interval.
      */
-    stopCloudAnimation(){
+    stopCloudAnimation() {
         clearInterval(this.cloudInterval);
+        if (this.cloudTimeout) {
+            clearTimeout(this.cloudTimeout);
+            this.cloudTimeout = null;
+        }
     }
 }

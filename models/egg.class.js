@@ -48,19 +48,16 @@ class Egg extends MovableObject {
     }
 
     /**
+     * Prevent multiple cracks 
      * Cracks the egg - plays sound and marks for removal.
+     * and then Remove egg
      */
     crackEgg() {
-        if (this.isCracked) return; // Prevent multiple cracks
-        
+        if (this.isCracked) return;
         this.isCracked = true;
         this.playEggCrackingSound();
         this.stopRolling();
-        
-        // Remove egg after short delay to show crack moment
-        setTimeout(() => {
-            this.shouldBeRemoved = true;
-        }, 100);
+        this.shouldBeRemoved = true;
     }
 
     /**

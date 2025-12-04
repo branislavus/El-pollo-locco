@@ -100,6 +100,7 @@ class World {
      */
     youLoseTheGame() {
         loseGame = true;
+        this.gameOver = true;
         setTimeout(() => {
             endGame();
         }, 4000);
@@ -110,6 +111,7 @@ class World {
      */
     youWonTheGame() {
         winGame = true;
+        this.gameOver = true;
         setTimeout(() => {
             endGame();
         }, 4000);

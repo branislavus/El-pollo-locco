@@ -12,6 +12,7 @@ class ThrowableObject extends MovableObject {
     shouldBeRemoved = false;
     soundPlayed = false;
     hasHitEnemy = false;
+    splashInterval = null;
 
 
     /**
@@ -113,8 +114,7 @@ class ThrowableObject extends MovableObject {
      */
     startSplashAnimation() {
         this.playBreakSound();
-        this.animateSplash();
-        this.scheduleRemoval();
+        this.animateSplash()
     }
 
 
@@ -134,12 +134,12 @@ class ThrowableObject extends MovableObject {
      */
     animateSplash() {
         let splashIndex = 0;
-        let splashInterval = setInterval(() => {
+        this.splashInterval = setInterval(() => {
             if (this.hasMoreSplashFrames(splashIndex)) {
                 this.showSplashFrame(splashIndex);
                 splashIndex++;
             } else {
-                clearInterval(splashInterval);
+                this.splashRemoval();
             }
         }, 80);
     }
@@ -165,12 +165,14 @@ class ThrowableObject extends MovableObject {
 
 
     /**
-     * Schedules bottle removal after animation.
+     * bottle removal after animation.
      */
-    scheduleRemoval() {
-        setTimeout(() => {
-            this.shouldBeRemoved = true;
-        }, 600);
+    splashRemoval() {
+        if (this.splashInterval) {
+            clearInterval(this.splashInterval);
+            this.splashInterval = null;
+        }
+        this.shouldBeRemoved = true;
     }
 
 

@@ -268,6 +268,7 @@ class CollisionManager {
      * Plays chicken death sound.
      */
     playSoundDeadChicken() {
+        if (this.world?.gameOver) return;
         if (typeof audioManager !== 'undefined') audioManager.onChickenSquish();
     }
 

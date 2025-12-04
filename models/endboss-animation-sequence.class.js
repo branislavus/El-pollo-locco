@@ -12,7 +12,7 @@ class EndbossAnimationSequence {
     /**
      * Starts the attack animation sequence.
      */
-    atackAnimation() {
+    attackAnimation() {
         if (this.boss.attackInProgress) return;
         this.damageCharacter();
         this.initializeAttack();
@@ -46,7 +46,8 @@ class EndbossAnimationSequence {
      */
     executeAttackSequence(config, startX) {
         const moveLeftInterval = this.startMoveLeftPhase(config.moveSpeed);
-        setTimeout(() => {
+        this.boss.attackSequenceTimeout = setTimeout(() => {
+            if (this.boss.world?.gameOver) return;
             clearInterval(moveLeftInterval);
             this.startAttackPhase(config, startX);
         }, config.moveDuration);
@@ -108,7 +109,8 @@ class EndbossAnimationSequence {
      * @param {number} attackInterval - Interval ID to stop.
      */
     scheduleAttackIntervalStop(attackInterval) {
-        setTimeout(() => {
+        this.boss.attackStopTimeout = setTimeout(() => {
+            if (this.boss.world?.gameOver) return;
             clearInterval(attackInterval);
         }, 1000);
     }
@@ -120,8 +122,10 @@ class EndbossAnimationSequence {
      * @param {number} startX - Starting X position.
      */
     scheduleMoveRightPhase(config, startX) {
-        setTimeout(() => {
-            setTimeout(() => {
+        this.boss.moveRightPhaseTimeout1 = setTimeout(() => {
+            if (this.boss.world?.gameOver) return;
+            this.boss.moveRightPhaseTimeout2 = setTimeout(() => {
+                if (this.boss.world?.gameOver) return;
                 this.startMoveRightPhase(config.moveSpeed, startX);
             }, config.attackDuration);
         }, 1200);
@@ -218,8 +222,8 @@ class EndbossAnimationSequence {
      * Plays hurt sound.
      */
     playHurtBossSound() {
-        if (typeof audioManager !== 'undefined')
-            audioManager.onBossHurt();
+        if (this.world?.gameOver) return;
+        if (typeof audioManager !== 'undefined') audioManager.onBossHurt();
     }
 
 
@@ -270,7 +274,8 @@ class EndbossAnimationSequence {
      */
     takeDamage() {
         if (!this.boss.attackInProgress) {
-            setTimeout(() => {
+            this.boss.hurtCounterTimeout = setTimeout(() => {
+                if (this.boss.world?.gameOver) return;
                 this.boss.shouldAttackAfterHurt = true;
             }, 600);
         }
@@ -359,7 +364,8 @@ class EndbossAnimationSequence {
      * Schedules boss removal after delay.
      */
     scheduleRemoval() {
-        setTimeout(() => {
+        this.boss.removalTimeout = setTimeout(() => {
+            if (this.boss.world?.gameOver) return;
             this.boss.shouldBeRemoved = true;
         }, 2000);
     }

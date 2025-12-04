@@ -79,6 +79,8 @@ function stopCharacterAnimations() {
             clearInterval(world.character.movementInterval);
         if (world.character.animationInterval)
             clearInterval(world.character.animationInterval);
+        if (world.character.stopGravity)
+            world.character.stopGravity();
     }
 }
 
@@ -124,8 +126,8 @@ function stopEggAnimations() {
 function stopCloudAnimations() {
     if (typeof world !== 'undefined' && world && world.level && world.level.clouds) {
         world.level.clouds.forEach(cloud => {
-            if (cloud.stopAnimation)
-                cloud.stopAnimation();
+            if (cloud.stopCloudAnimation)
+                cloud.stopCloudAnimation();
         });
         world.level.clouds = [];
     }

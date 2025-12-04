@@ -81,6 +81,7 @@ function StartGame() {
     }
 
     checkSoundState();
+    
     initLevel();
     init();
 

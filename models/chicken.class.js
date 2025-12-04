@@ -1,5 +1,7 @@
 class Chicken extends MovableObject {
 
+    static instanceCounter = 0;
+
     IMAGES_WALKING = [
         'img/3_enemies_chicken/chicken_normal/1_walk/1_w.png',
         'img/3_enemies_chicken/chicken_normal/1_walk/2_w.png',
@@ -18,7 +20,6 @@ class Chicken extends MovableObject {
         bottom: 0,
     };
     currentImage = 0;
-    chickenSound = ['onChicken1', 'onChicken1', 'onChicken1'];
     soundTimeout = null;
 
 
@@ -27,6 +28,7 @@ class Chicken extends MovableObject {
      */
     constructor() {
         super().loadImage('img/3_enemies_chicken/chicken_normal/1_walk/1_w.png');
+        this.id = ++Chicken.instanceCounter;
         this.x = 350 + Math.random() * 1500;
         this.loadImages(this.IMAGES_WALKING);
         this.loadImage(this.IMAGE_DEAD);
@@ -59,8 +61,8 @@ class Chicken extends MovableObject {
      */
     showDeadChicken() {
         this.speed = 0;
+        this.stopAnimations(); // Stop intervals FIRST before setting isDead
         this.isDead = () => true;
-        this.stopAnimations();
         this.loadImage(this.IMAGE_DEAD);
     }
 
@@ -74,7 +76,7 @@ class Chicken extends MovableObject {
         if (this.animationInterval)
             this.stopAnimateInterval();
         if (this.soundInterval)
-            this.stopSounInterval();
+            this.stopSoundInterval();
     }
 
 
@@ -99,7 +101,7 @@ class Chicken extends MovableObject {
     /**
      * Stops the sound interval and pending sound timeout.
      */
-    stopSounInterval() {
+    stopSoundInterval() {
         clearInterval(this.soundInterval);
         this.soundInterval = null;
         if (this.soundTimeout) {
@@ -134,12 +136,10 @@ class Chicken extends MovableObject {
      * @param {number} randomSound - The random sound index (0-2).
      */
     chooseSound(randomSound) {
-        if (randomSound === 0 && typeof audioManager !== 'undefined') {
-            audioManager.onChicken1();
-        } else if (randomSound === 1 && typeof audioManager !== 'undefined') {
-            audioManager.onChicken2();
-        } else if (randomSound === 2 && typeof audioManager !== 'undefined') {
-            audioManager.onChicken1();
-        }
+        if (world?.gameOver || this.isDead()) return;
+        if (typeof audioManager === 'undefined') return;
+
+        const sounds = [audioManager.onChicken1, audioManager.onChicken2, audioManager.onChicken1];
+        sounds[randomSound]?.call(audioManager);
     }
 }

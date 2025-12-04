@@ -7,7 +7,6 @@ class MovableObject extends DrawableObject {
     lastHit = 0;
     collectedBottles = 0;
     collectedCoins = 0;
-    isEnemyDead = false;
     jumpAnimationIndex = 0;
     isJumping = false;
     offset = {
@@ -22,7 +21,7 @@ class MovableObject extends DrawableObject {
      * Applies gravity to the object, making it fall down.
      */
     applyGravity() {
-        setInterval(() => {
+        this.gravityInterval = setInterval(() => {
             if (this.isAboveGround() || this.speedY > 0) {
                 this.y -= this.speedY;
                 this.speedY -= this.acceleration;
@@ -174,21 +173,6 @@ class MovableObject extends DrawableObject {
 
 
     /**
-     * Handles death of the object, playing animation and removing from world.
-     */
-    die() {
-        this.isDead = true;
-        this.speed = 0;
-        this.playDeathAnimation && this.playDeathAnimation();
-
-        setTimeout(() => {
-            let index = world.level.enemies.indexOf(this);
-            if (index > -1) world.level.enemies.splice(index, 1);
-        }, 800);
-    }
-
-
-    /**
      * Plays a sound if enough time has passed since the last sound.
      * @param {string} sound - The sound method name to call.
      * @param {number} time - Minimum time in milliseconds between sounds.
@@ -198,6 +182,17 @@ class MovableObject extends DrawableObject {
         if (currentTime - this.lastWalkSoundTime > time) {
             this.audio[sound]();
             this.lastWalkSoundTime = currentTime;
+        }
+    }
+
+
+    /**
+     * Stops the gravity interval.
+     */
+    stopGravity() {
+        if (this.gravityInterval) {
+            clearInterval(this.gravityInterval);
+            this.gravityInterval = null;
         }
     }
 

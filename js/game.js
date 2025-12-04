@@ -9,6 +9,11 @@ let soundFlag;
  * Initializes the game canvas, world, and touch controls.
  */
 function init() {
+    // Stop old world if exists to prevent memory leaks
+    if (world) {
+        world.stopWorldIntervals();
+    }
+
     canvas = document.getElementById('canvas');
     world = new World(canvas, keyboard);
     addTouchButtons();
@@ -36,6 +41,7 @@ window.addEventListener("keyup", (e) => {
 
 /**
  * Adds touch event listeners to a button element.
+ * Handles touchstart, touchend, and touchcancel events.
  * @param {string} id - Button element ID.
  * @param {Function} onPress - Callback when button is pressed.
  * @param {Function} onRelease - Callback when button is released.
@@ -43,13 +49,21 @@ window.addEventListener("keyup", (e) => {
 function addTouchButton(id, onPress, onRelease) {
     const btn = document.getElementById(id);
     if (!btn) return;
+    const release = () => onRelease();
+
     btn.addEventListener('touchstart', (e) => {
         e.preventDefault();
         onPress();
     }, { passive: false });
+
     btn.addEventListener('touchend', (e) => {
         e.preventDefault();
-        onRelease();
+        release();
+    }, { passive: false });
+
+    btn.addEventListener('touchcancel', (e) => {
+        e.preventDefault();
+        release();
     }, { passive: false });
 }
 
