@@ -115,8 +115,7 @@ function hideEndgameWallpaper() {
 function touchStart() {
     const btn = document.getElementById("startButton");
     if (btn) {
-        btn.addEventListener('click', StartGame);
-        btn.addEventListener('touchstart', () => {
+        btn.addEventListener('click', () => {
             StartGame();
         }, { passive: true });
     } else if (this.world.keyboard.ENTER) {
