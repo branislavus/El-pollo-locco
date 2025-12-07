@@ -245,8 +245,8 @@ h1 {
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
-    width: 720px;
-    height: 480px;
+    width: 420px;
+    height: 400px;
     justify-content: center;
     align-items: start;
     z-index: 100;
