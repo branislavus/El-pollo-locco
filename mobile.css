@@ -93,7 +93,7 @@
         top: 50%;
         left: 50%;
         transform: translate(-50%, -50%);
-        height: 100vh;
+        height: 60vh;
         width: auto;
         aspect-ratio: 3 / 2;
     }
@@ -162,7 +162,7 @@
         top: 50%;
         left: 50%;
         transform: translate(-50%, -50%);
-        height: 100vh;
+        height: 60vh;
         width: auto;
         aspect-ratio: 3 / 2;
     }
