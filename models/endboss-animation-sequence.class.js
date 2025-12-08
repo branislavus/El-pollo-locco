@@ -26,7 +26,7 @@ class EndbossAnimationSequence {
      * Damages the character.
      */
     damageCharacter() {
-        this.boss.world.character.energy -= 10;
+        this.boss.world.character.energy -= 20;
     }
 
 
