@@ -4,19 +4,27 @@ let keyboard = new Keyboard();
 let audioManager;
 let fullscreenFlag = false;
 let soundFlag;
+const touchButtonRegistry = [];
 
 /**
  * Initializes the game canvas, world, and touch controls.
  */
 function init() {
-    // Stop old world if exists to prevent memory leaks
-    if (world) {
-        world.stopWorldIntervals();
-    }
-
+    endProceses();
     canvas = document.getElementById('canvas');
     world = new World(canvas, keyboard);
     addTouchButtons();
+}
+
+/**
+ * Stop old world if exists to prevent memory leaks
+ * Remove old touch buttons to prevent duplicates
+ */
+function endProceses() {
+    if (world) {
+        world.stopWorldIntervals();
+    }
+    removeTouchButtons();
 }
 
 window.addEventListener("keydown", (e) => {
@@ -45,26 +53,70 @@ window.addEventListener("keyup", (e) => {
  * @param {string} id - Button element ID.
  * @param {Function} onPress - Callback when button is pressed.
  * @param {Function} onRelease - Callback when button is released.
+ * @param {Function} onCancel - Callback when touch is cancelled (defaults to onRelease).
  */
-function addTouchButton(id, onPress, onRelease) {
+function addTouchButton(id, onPress, onRelease, onCancel = onRelease) {
     const btn = document.getElementById(id);
     if (!btn) return;
-    const release = () => onRelease();
 
-    btn.addEventListener('touchstart', (e) => {
+    const handleStart = (e) => {
         e.preventDefault();
         onPress();
-    }, { passive: false });
+    };
 
-    btn.addEventListener('touchend', (e) => {
+    const handleEnd = (e) => {
         e.preventDefault();
-        release();
-    }, { passive: false });
+        onRelease();
+    };
 
-    btn.addEventListener('touchcancel', (e) => {
+    const handleCancel = (e) => {
         e.preventDefault();
-        release();
-    }, { passive: false });
+        onCancel();
+    };
+
+    btn.addEventListener('touchstart', handleStart, { passive: false });
+    btn.addEventListener('touchend', handleEnd, { passive: false });
+    btn.addEventListener('touchcancel', handleCancel, { passive: false });
+
+    // Store in registry for later removal
+    touchButtonRegistry.push({
+        id,
+        btn,
+        handleStart,
+        handleEnd,
+        handleCancel
+    });
+}
+
+/**
+ * Removes a specific touch button by ID.
+ * @param {string} id - Button element ID to remove.
+ */
+function removeTouchButton(id) {
+    const index = touchButtonRegistry.findIndex(entry => entry.id === id);
+    if (index === -1) return;
+
+    const { btn, handleStart, handleEnd, handleCancel } = touchButtonRegistry[index];
+
+    btn.removeEventListener('touchstart', handleStart);
+    btn.removeEventListener('touchend', handleEnd);
+    btn.removeEventListener('touchcancel', handleCancel);
+
+    touchButtonRegistry.splice(index, 1);
+}
+
+/**
+ * Removes all touch buttons and clears the registry.
+ * Prevents memory leaks and duplicate event listeners.
+ */
+function removeTouchButtons() {
+    touchButtonRegistry.forEach(({ btn, handleStart, handleEnd, handleCancel }) => {
+        btn.removeEventListener('touchstart', handleStart);
+        btn.removeEventListener('touchend', handleEnd);
+        btn.removeEventListener('touchcancel', handleCancel);
+    });
+
+    touchButtonRegistry.length = 0;
 }
 
 /**
@@ -135,8 +187,8 @@ function closeFullscreen() {
 async function checkSoundState() {
     const soundIcon = document.getElementById('toggleAllSound');
     soundFlag = await loadSoundState();
-    if (soundFlag) {
-        turnOnMusic(soundIcon);
+    if (soundFlag || soundFlag == null) {
+        toggleAllSound();
     } else {
         turnOffMusic(soundIcon);
     }

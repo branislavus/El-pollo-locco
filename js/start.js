@@ -69,17 +69,11 @@ function initializeScreens() {
         endLoseWallpaper.style.display = 'none';
 }
 
-document.addEventListener('DOMContentLoaded', initializeScreens);
-
 /**
  * Starts the game by initializing level, music, and hiding start screen.
  */
 function StartGame() {
-    // Stop old audioManager if exists
-    if (audioManager) {
-        audioManager.stopBackgroundMusic();
-    }
-
+    ifAudioManager();
     checkSoundState();
     
     initLevel();
@@ -90,6 +84,15 @@ function StartGame() {
     }, 800);
     loadAudiomanager();
     audioManager.startBackgroundMusic();
+}
+
+/**
+ * Stop old audioManager if exists
+ */
+function ifAudioManager(){
+    if (audioManager) {
+        audioManager.stopBackgroundMusic();
+    }
 }
 
 /**
@@ -110,7 +113,9 @@ function hideEndgameWallpaper() {
 }
 
 /**
- * Attaches click and touch event listeners to the start button.
+ * Attaches click event listener to the start button.
+ * Prevents duplicate StartGame() calls by using only one event type.
+ * (Previously had both 'click' and 'touchstart' listeners causing double execution)
  */
 function touchStart() {
     const btn = document.getElementById("startButton");
@@ -118,8 +123,6 @@ function touchStart() {
         btn.addEventListener('click', () => {
             StartGame();
         }, { passive: true });
-    } else if (this.world.keyboard.ENTER) {
-
     }
 }
 
@@ -198,3 +201,5 @@ function logCooldownMessage(timeSinceLastRestart) {
 function updateLastRestartTime(currentTime) {
     lastRestartTime = currentTime;
 }
+
+document.addEventListener('DOMContentLoaded', initializeScreens);
