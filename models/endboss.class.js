@@ -236,11 +236,18 @@ class Endboss extends MovableObject {
 
     /**
      * Plays boss walk sound if not muted.
+     * Throttled to play only every 800ms to avoid sound spam.
      */
     playBossWalkSound() {
         if (this.world?.gameOver) return;
         if (typeof audioManager !== 'undefined') {
-            this.playSoundIfDoingSomething('bossOnWalk', 800);
+            const currentTime = Date.now();
+            const timeSinceLastSound = currentTime - this.lastWalkSoundTime;
+            
+            if (timeSinceLastSound > 800) {
+                audioManager.bossOnWalk();
+                this.lastWalkSoundTime = currentTime;
+            }
         }
     }
 
