@@ -173,20 +173,6 @@ class MovableObject extends DrawableObject {
 
 
     /**
-     * Plays a sound if enough time has passed since the last sound.
-     * @param {string} sound - The sound method name to call.
-     * @param {number} time - Minimum time in milliseconds between sounds.
-     */
-    playSoundIfDoingSomething(sound, time) {
-        const currentTime = new Date().getTime();
-        if (currentTime - this.lastWalkSoundTime > time) {
-            this.audio[sound]();
-            this.lastWalkSoundTime = currentTime;
-        }
-    }
-
-
-    /**
      * Stops the gravity interval.
      */
     stopGravity() {

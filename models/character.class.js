@@ -86,7 +86,8 @@ class Character extends MovableObject {
         this.loadImages(this.IMAGES_IDLE);
         this.loadImages(this.IMAGES_LONG_IDLE);
         this.y = 226; 
-        this.lastWalkSoundTime = 0; 
+        this.lastWalkSoundTime = 0;
+        this.lastSleepSoundTime = 0;
         this.animate();
         this.applyGravity();
     }
@@ -174,26 +175,47 @@ class Character extends MovableObject {
     }
 
     /**
-     * Plays the walking sound effect if moving.
+     * Plays the walking sound effect if moving every 300ms.
+     * Throttled to prevent sound spam.
      */
     playWalkingSound() {
         if (!audioManager.isMuted) {
-            this.playSoundIfDoingSomething('onWalk', 300);
+            const currentTime = Date.now();
+            const timeSinceLastSound = currentTime - this.lastWalkSoundTime;
+            
+            if (timeSinceLastSound > 300) {
+                this.audio.onWalk();
+                this.lastWalkSoundTime = currentTime;
+            }
         }
     }
 
     /**
-     * Plays idle or long idle animation and sleep sound if bored.
+     * Plays idle or long idle animation if bored.
      */
     isBored() {
         if (this.isDead()) return;
         if (this.lastMoveTime > 16000) {
             this.playAnimation(this.IMAGES_LONG_IDLE);
-            if (this.movementEnabled) {
-                if (!audioManager.isMuted) this.playSoundIfDoingSomething('onSleep', 5000);
+            if (this.movementEnabled && !audioManager.isMuted) {
+               this.playSleepSound();
             }
         } else {
             this.playAnimation(this.IMAGES_IDLE);
+        }
+    }
+
+
+    /**
+     * Plays sleep sound if bored.
+     */
+    playSleepSound(){
+        const currentTime = Date.now();
+            const timeSinceLastSound = currentTime - this.lastSleepSoundTime;
+                
+            if (timeSinceLastSound > 5000) {
+                this.audio.onSleep();
+                this.lastSleepSoundTime = currentTime;
         }
     }
 
