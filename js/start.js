@@ -1,5 +1,8 @@
 let lastRestartTime = 0;
 const RESTART_COOLDOWN = 3000;
+let lastStartTime = 0;
+const START_COOLDOWN = 1000;
+let startButtonListenerAttached = false;
 
 /**
  * Hides the start wallpaper and displays the game canvas.
@@ -52,7 +55,7 @@ function displayStartScreen(startWallpaper, canvas) {
     if (startWallpaper && canvas) {
         canvas.style.display = 'none';
         startWallpaper.style.display = 'flex';
-  
+
     }
 }
 
@@ -73,23 +76,23 @@ function initializeScreens() {
  * Starts the game by initializing level, music, and hiding start screen.
  */
 function StartGame() {
-    ifAudioManager();
+    ifAudioManagerStopBackgroundMusic();
+    loadAudiomanager();
     checkSoundState();
-    
+
     initLevel();
     init();
 
     setTimeout(() => {
         hideStartWallpaper();
     }, 800);
-    loadAudiomanager();
     audioManager.startBackgroundMusic();
 }
 
 /**
  * Stop old audioManager if exists
  */
-function ifAudioManager(){
+function ifAudioManagerStopBackgroundMusic() {
     if (audioManager) {
         audioManager.stopBackgroundMusic();
     }
@@ -113,16 +116,35 @@ function hideEndgameWallpaper() {
 }
 
 /**
+ * Checks if start button cooldown is active.
+ * @returns {boolean} True if cooldown expired, false if still active.
+ */
+function canStartGame() {
+    const currentTime = Date.now();
+    const timeSinceLastStart = currentTime - lastStartTime;
+
+    if (timeSinceLastStart < START_COOLDOWN)
+        return false;
+
+    lastStartTime = currentTime;
+    return true;
+}
+
+/**
  * Attaches click event listener to the start button.
  * Prevents duplicate StartGame() calls by using only one event type.
- * (Previously had both 'click' and 'touchstart' listeners causing double execution)
  */
 function touchStart() {
     const btn = document.getElementById("startButton");
-    if (btn) {
-        btn.addEventListener('click', () => {
+    if (btn && !startButtonListenerAttached) {
+        btn.addEventListener('click', (e) => {
+            e.preventDefault();
+
+            if (!canStartGame()) return;
             StartGame();
-        }, { passive: true });
+        }, { passive: false });
+
+        startButtonListenerAttached = true;
     }
 }
 
@@ -130,22 +152,22 @@ document.addEventListener('DOMContentLoaded', touchStart);
 
 
 /**
- * Attaches click event listeners to the press enter key to restert. lets say its kind of easter egg for developers :-)
+ * Attaches click event listeners to the press enter key to restart and Stop if cooldown is active.
+ * lets say its kind of easter egg for developers :-)
  */
 document.addEventListener("keyup", function (event) {
     if (event.key === "Enter") {
-        if (!countRestart()) return; // Stop if cooldown active
+        if (!countRestart()) return;
         stopAllGameAnimations();
         StartGame();
     }
 });
 
 /**
- * restart game after the press on button.
+ * restart game after the press on button and Stops if cooldown is active.
  */
 function restartGame() {
-    if (!countRestart()) return; // Stop if cooldown active
-    
+    if (!countRestart()) return;
     stopAllGameAnimations();
     stopAllSounds();
     StartGame();
@@ -158,12 +180,12 @@ function restartGame() {
 function countRestart() {
     const currentTime = Date.now();
     const timeSinceLastRestart = calculateTimeSinceLastRestart(currentTime);
-    
+
     if (isRestartOnCooldown(timeSinceLastRestart)) {
         logCooldownMessage(timeSinceLastRestart);
         return false;
     }
-    
+
     updateLastRestartTime(currentTime);
     return true;
 }

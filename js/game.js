@@ -3,8 +3,8 @@ let world;
 let keyboard = new Keyboard();
 let audioManager;
 let fullscreenFlag = false;
-let soundFlag;
 const touchButtonRegistry = [];
+let soundFlag;
 
 /**
  * Initializes the game canvas, world, and touch controls.
@@ -182,19 +182,6 @@ function closeFullscreen() {
 }
 
 /**
- * Loads sound on/off on gamestart.
- */
-async function checkSoundState() {
-    const soundIcon = document.getElementById('toggleAllSound');
-    soundFlag = await loadSoundState();
-    if (soundFlag || soundFlag == null) {
-        toggleAllSound();
-    } else {
-        turnOffMusic(soundIcon);
-    }
-}
-
-/**
  * Toggles sound on/off and updates UI icon.
  */
 function toggleAllSound() {
@@ -227,16 +214,4 @@ function turnOnMusic(soundIcon) {
     audioManager.unmute();
     soundIcon.classList.remove('toggleAllSoundDisabled');
     soundIcon.classList.add('toggleAllSoundEnabled');
-}
-
-/**
- * Loads right sound-icon onload.
- */
-async function changeClassAllSound() {
-    const soundIcon = document.getElementById('toggleAllSound');
-    soundFlag = await loadSoundState();
-    if (!soundFlag) {
-        soundIcon.classList.remove('toggleAllSoundEnabled');
-        soundIcon.classList.add('toggleAllSoundDisabled');
-    }
 }
