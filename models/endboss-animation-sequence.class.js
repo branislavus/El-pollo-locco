@@ -14,7 +14,6 @@ class EndbossAnimationSequence {
      */
     attackAnimation() {
         if (this.boss.attackInProgress) return;
-        this.damageCharacter();
         this.initializeAttack();
         const attackConfig = this.boss.getRandomAttackSettings();
         const startX = this.boss.x;
@@ -26,7 +25,12 @@ class EndbossAnimationSequence {
      * Damages the character.
      */
     damageCharacter() {
-        this.boss.world.character.energy -= 20;
+        if (!this.boss.world.character.isHurt()) {
+            this.boss.world.character.hit();
+            this.boss.world.character.energy -= 20;
+            if (typeof audioManager !== 'undefined') audioManager.onHurt();
+            this.boss.world.statusBarHealth.setPercentage(this.boss.world.character.energy);
+        }
     }
 
 
