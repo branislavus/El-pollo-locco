@@ -30,28 +30,33 @@ class CollisionManager {
      */
     checkEnemyCollisions() {
         const enemiesToKill = this.jumpKillManager.collectJumpKillableEnemies();
-        
-        enemiesToKill.length > 0 ?
-        this.jumpKillManager.executeJumpKills(enemiesToKill, this):
-        this.checkEnemyDamage();
-        
+
+        enemiesToKill.length > 0
+            ? this.jumpKillManager.executeJumpKills(enemiesToKill, this)
+            : this.checkEnemyDamageIfdontHurt();
+
         if (!this.world.character.isAboveGround())
             this.setRightCharacterYPosition();
     }
 
+    /**
+    * Checks if any enemy should damage the character.
+    */
+    checkEnemyDamageIfdontHurt() {
+        if (!this.world.character.isHurt())
+            this.checkEnemyDamage();
+    }
 
     /**
-     * Checks if any enemy should damage the character.
+     * second Check of enemy damage once per frame
      * Only called when no jump-kill occurred.
      */
     checkEnemyDamage() {
         for (let i = this.world.level.enemies.length - 1; i >= 0; i--) {
             const enemy = this.world.level.enemies[i];
             if (enemy.isDead() || !this.world.character.isCollidingOffset(enemy)) continue;
-            
             this.damageCharacter(enemy);
-            console.log("enemy", this.world.character.energy);
-            break; // Only damage once per frame
+            break;
         }
     }
 
@@ -232,7 +237,7 @@ class CollisionManager {
      * @param {Endboss} endboss - Endboss to damage.
      */
     hurtEndboss(endboss) {
-        
+
         if (endboss.bossEnergy > 0) {
             endboss.bossEnergy -= 1;
             endboss.hurtImageIndex = 1;
@@ -299,11 +304,9 @@ class CollisionManager {
      * Updates health status bar and plays hurt sound.
      */
     damageCharacter(enemy) {
-        if (!this.world.character.isHurt()) {
-            this.world.character.hit(enemy);
-            if (typeof audioManager !== 'undefined') audioManager.onHurt();
-            this.world.statusBarHealth.setPercentage(this.world.character.energy);
-        }
+        this.world.character.hit(enemy);
+        if (typeof audioManager !== 'undefined') audioManager.onHurt();
+        this.world.statusBarHealth.setPercentage(this.world.character.energy);
     }
 
     /**
