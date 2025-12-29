@@ -40,7 +40,7 @@ class AudioManager {
    */
   constructor() {
     this.sounds = this.sounds;
-    this.isMuted = false;
+    this.isMuted = !soundFlag;
     this.masterVolume = 1.0;
     this.musicVolume = 0.2;
     this.sfxVolume = 0.8;

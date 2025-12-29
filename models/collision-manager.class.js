@@ -49,7 +49,8 @@ class CollisionManager {
             const enemy = this.world.level.enemies[i];
             if (enemy.isDead() || !this.world.character.isCollidingOffset(enemy)) continue;
             
-            this.damageCharacter();
+            this.damageCharacter(enemy);
+            console.log("enemy", this.world.character.energy);
             break; // Only damage once per frame
         }
     }
@@ -297,9 +298,9 @@ class CollisionManager {
      * Applies damage to character when hit by enemy.
      * Updates health status bar and plays hurt sound.
      */
-    damageCharacter() {
+    damageCharacter(enemy) {
         if (!this.world.character.isHurt()) {
-            this.world.character.hit();
+            this.world.character.hit(enemy);
             if (typeof audioManager !== 'undefined') audioManager.onHurt();
             this.world.statusBarHealth.setPercentage(this.world.character.energy);
         }

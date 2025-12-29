@@ -121,8 +121,12 @@ class MovableObject extends DrawableObject {
     /**
      * Reduces energy when hit and records the time.
      */
-    hit() {
-        this.energy -= 5;
+    hit(enemy) {
+        if (enemy instanceof Endboss) {
+            this.energy -= 20;
+        } else {
+            this.energy -= 5;
+        }
         if (this.energy < 0) {
             this.energy = 0;
         }

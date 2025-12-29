@@ -22,19 +22,6 @@ class EndbossAnimationSequence {
 
 
     /**
-     * Damages the character.
-     */
-    damageCharacter() {
-        if (!this.boss.world.character.isHurt()) {
-            this.boss.world.character.hit();
-            this.boss.world.character.energy -= 20;
-            if (typeof audioManager !== 'undefined') audioManager.onHurt();
-            this.boss.world.statusBarHealth.setPercentage(this.boss.world.character.energy);
-        }
-    }
-
-
-    /**
      * Initializes attack state.
      */
     initializeAttack() {
