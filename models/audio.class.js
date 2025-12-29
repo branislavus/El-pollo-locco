@@ -77,8 +77,7 @@ class AudioManager {
 
     if (volume !== null)
       sound.volume = volume * this.masterVolume;
-
-    sound.play().catch(e => console.log('Audio play failed:', e));
+    sound.play();
   }
 
   /**
@@ -343,10 +342,10 @@ class AudioManager {
    */
   startBackgroundMusic() {
     if (!this.isMuted) {
-      this.sounds.backgroundMusic.play().catch(e => console.log('Music play failed:', e));
+      this.sounds.backgroundMusic.play();
     }
   }
-  
+
   /**
    * Stops background music and resets to start.
    */
@@ -367,7 +366,7 @@ class AudioManager {
    */
   resumeBackgroundMusic() {
     if (!this.isMuted)
-      this.sounds.backgroundMusic.play().catch(e => console.log('Music play failed:', e));
+      this.sounds.backgroundMusic.play();
   }
 
   /**

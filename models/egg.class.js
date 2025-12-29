@@ -61,20 +61,15 @@ class Egg extends MovableObject {
     }
 
     /**
-     * Custom draw method with rotation for rolling effect.
+     * Custom draw method with rotation for rolling effect and don't draw cracked egg.
      * @param {CanvasRenderingContext2D} ctx - The canvas rendering context.
      */
     draw(ctx) {
-        if (this.isCracked) return; // Don't draw cracked egg
-        
+        if (this.isCracked) return;     
         ctx.save();
         ctx.translate(this.x + this.width / 2, this.y + this.height / 2);
         ctx.rotate((this.rotationAngle || 0) * Math.PI / 180);
-        try {
-            ctx.drawImage(this.img, -this.width / 2, -this.height / 2, this.width, this.height);
-        } catch (error) {
-            console.warn('Error loading egg image:', error);
-        }
+        ctx.drawImage(this.img, -this.width / 2, -this.height / 2, this.width, this.height);
         ctx.restore();
     }
 
