@@ -57,7 +57,6 @@ class Character extends MovableObject {
         'img/2_character_pepe/5_dead/D-57.png'
     ];
 
-    audio = new AudioManager();
     height = 200;
     width = 100;
     speed = 5;
@@ -171,7 +170,7 @@ class Character extends MovableObject {
      * Plays the jump sound effect.
      */
     playJumpSound() {
-        if (!audioManager.isMuted) this.audio.onJump();
+        if (!audioManager.isMuted) audioManager.onJump();
     }
 
     /**
@@ -184,7 +183,7 @@ class Character extends MovableObject {
             const timeSinceLastSound = currentTime - this.lastWalkSoundTime;
             
             if (timeSinceLastSound > 300) {
-                this.audio.onWalk();
+                audioManager.onWalk();
                 this.lastWalkSoundTime = currentTime;
             }
         }
@@ -214,7 +213,7 @@ class Character extends MovableObject {
             const timeSinceLastSound = currentTime - this.lastSleepSoundTime;
                 
             if (timeSinceLastSound > 5000) {
-                this.audio.onSleep();
+                audioManager.onSleep();
                 this.lastSleepSoundTime = currentTime;
         }
     }

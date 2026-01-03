@@ -11,7 +11,6 @@ class Egg extends MovableObject {
         this.shouldBeRemoved = false;
         this.isCracked = false;
         this.startX = x; // Store start position to track distance
-        this.audio = new AudioManager();
         
         // Set offset for collision detection
         this.offset = {

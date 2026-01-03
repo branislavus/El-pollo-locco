@@ -59,7 +59,6 @@ class Endboss extends MovableObject {
     moveSpeed = 20;
     shouldAttackAfterHurt = false;
     lastWalkSoundTime = 0;
-    audio = new AudioManager();
     deathSoundPlayed = false;
     deathAnimationTimeout = null;
     attackSequenceTimeout = null;

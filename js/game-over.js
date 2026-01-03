@@ -181,16 +181,20 @@ function stopAllSounds() {
 
 /**
  * Stops all audio elements in the browser (fallback).
+ * Removes src to free up WebMediaPlayer resources.
  */
 function stoppallAudioImBrowser() {
     document.querySelectorAll('audio').forEach(audio => {
         audio.pause();
         audio.currentTime = 0;
+        audio.src = '';
+        audio.load();
     });
 }
 
 /**
  * Stops all endboss sounds.
+ * Removes src to free up WebMediaPlayer resources.
  */
 function stoppEnemiesAudio() {
     if (typeof world !== 'undefined' && world && world.level && world.level.enemies) {
@@ -199,6 +203,8 @@ function stoppEnemiesAudio() {
                 Object.values(enemy.audio.sounds).forEach(audio => {
                     audio.pause();
                     audio.currentTime = 0;
+                    audio.src = '';
+                    audio.load();
                 });
             }
         });
@@ -207,12 +213,15 @@ function stoppEnemiesAudio() {
 
 /**
  * Stops all character sounds.
+ * Removes src to free up WebMediaPlayer resources.
  */
 function stoppCharacterAudio() {
     if (typeof world !== 'undefined' && world && world.character && world.character.audio) {
         Object.values(world.character.audio.sounds).forEach(audio => {
             audio.pause();
             audio.currentTime = 0;
+            audio.src = '';
+            audio.load();
         });
     }
 }
@@ -220,12 +229,15 @@ function stoppCharacterAudio() {
 /**
  * Stops all global sounds from the AudioManager.
  * This includes endboss, egg, and all other global game sounds.
+ * Removes src to free up WebMediaPlayer resources.
  */
 function stoppGlobalAudioManager() {
     if (typeof audioManager !== 'undefined' && audioManager) {
         Object.values(audioManager.sounds).forEach(audio => {
             audio.pause();
             audio.currentTime = 0;
+            audio.src = '';
+            audio.load();
         });
     }
 }
