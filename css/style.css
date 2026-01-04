@@ -5,7 +5,7 @@
     font-family: 'Chewy';
     font-style: normal;
     font-weight: 400;
-    src: url('./fonts/chewy-v18-latin-regular.woff2') format('woff2');
+    src: url('../fonts/chewy-v18-latin-regular.woff2') format('woff2');
     /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
 }
 
@@ -26,6 +26,7 @@
 .main-container {
     display: flex;
     justify-content: center;
+    flex-direction: column;
     width: 100%;
     height: 100%;
     max-width: 1440px;
@@ -78,7 +79,7 @@ body {
     align-items: center;
     font-family: 'Chewy', Arial, Helvetica, sans-serif;
     text-shadow: 5px 5px 10px rgb(230, 92, 0);
-    background-image: url(./img/wallpaper/desert3.png);
+    background-image: url(../img/wallpaper/desert3.png);
     background-repeat: no-repeat;
     background-size: cover;
     overflow: hidden;
@@ -103,7 +104,7 @@ h1 {
 
 .startWallpaper {
     display: flex;
-    background-image: url(./img/9_intro_outro_screens/start/startscreen_1.png);
+    background-image: url(../img/9_intro_outro_screens/start/startscreen_1.png);
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
@@ -254,7 +255,7 @@ h1 {
 
 .endLoseWallpaper {
     position: absolute;
-    background-image: url(./img/9_intro_outro_screens/game_over/oh\ no\ you\ lost!.png);
+    background-image: url(../img/9_intro_outro_screens/game_over/oh\ no\ you\ lost!.png);
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
@@ -263,112 +264,6 @@ h1 {
     justify-content: center;
     align-items: start;
     z-index: 100;
-}
-
-.fullscreenIcon {
-    position: absolute;
-    top: 120px;
-    right: 20px;
-    width: 40px;
-    height: 40px;
-    background-image: url(./img/duotone-screen-svgrepo-com.svg);
-    background-size: cover;
-    background-repeat: no-repeat;
-    background-position: center;
-    outline: none;
-    display: flex;
-    justify-content: end;
-    align-items: end;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-    z-index: 2000;
-    background-color: rgba(255, 255, 255, 0.1);
-}
-
-.fullscreenIconDisabled {
-    position: absolute;
-    top: 120px;
-    right: 20px;
-    width: 40px;
-    height: 40px;
-    background-image: url(./img/duotone-screen-disabled-svgrepo-com.svg);
-    background-size: cover;
-    background-repeat: no-repeat;
-    background-position: center;
-    outline: none;
-    display: flex;
-    justify-content: end;
-    align-items: end;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-    z-index: 2000;
-    background-color: rgba(255, 255, 255, 0.1);
-}
-
-.fullscreenIcon:hover,
-.toggleAllSound:hover,
-.toggleAllSoundDisabled:hover {
-    background-color: rgba(255, 255, 255, 0.2);
-}
-
-.restartGame {
-    position: absolute;
-    top: 20px;
-    right: 20px;
-    width: 40px;
-    height: 40px;
-    background-image: url(./img/duotone-rotate-right-svgrepo-com.svg);
-    background-size: cover;
-    background-repeat: no-repeat;
-    background-position: center;
-    outline: none;
-    display: flex;
-    justify-content: end;
-    align-items: end;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-    z-index: 2000;
-    background-color: rgba(255, 255, 255, 0.1);
-}
-
-.toggleAllSoundEnabled {
-    position: absolute;
-    top: 70px;
-    right: 20px;
-    width: 40px;
-    height: 40px;
-    background-image: url(./img/duotone-speaker-2-svgrepo-com.svg);
-    background-size: cover;
-    background-repeat: no-repeat;
-    background-position: center;
-    outline: none;
-    display: flex;
-    justify-content: end;
-    align-items: end;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-    z-index: 2000;
-    background-color: rgba(255, 255, 255, 0.1);
-}
-
-.toggleAllSoundDisabled {
-    position: absolute;
-    top: 70px;
-    right: 20px;
-    width: 40px;
-    height: 40px;
-    background-image: url(./img/duotone-speaker-0-svgrepo-com.svg);
-    background-size: cover;
-    background-repeat: no-repeat;
-    background-position: center;
-    outline: none;
-    display: flex;
-    justify-content: end;
-    align-items: end;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-    z-index: 2000;
-    background-color: rgba(255, 255, 255, 0.1);
 }
 
 .ButtonImage {
@@ -397,7 +292,7 @@ h1 {
 
 .fullscreenIconLegend,
 .restartGameLegend {
-    position: unset;
+    display: flex;
     width: 30px;
     height: 30px;
     border: none;

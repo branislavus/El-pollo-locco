@@ -1,0 +1,129 @@
+.burger-menu {
+    width: 100%;
+    display: flex;
+    justify-content: end;
+    flex-direction: column;
+    align-items: flex-end;
+    margin-top: 10px;
+}
+
+.burger-menu-on-off {
+    display: flex;
+}
+
+.burger-menu-buttons {
+    display: none;
+    flex-direction: column;
+}
+
+.burger-menu.menu-open .burger-menu-buttons {
+    display: flex !important;
+}
+
+.burger-menu-button-on,
+.burger-menu-button-off {
+    display: flex;
+    justify-content: end;
+    align-items: end;
+    width: 40px;
+    height: 40px;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    outline: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    z-index: 2000;
+    background-color: rgba(255, 255, 255, 0.1);
+    margin: 8px;
+}
+
+.burger-menu-button-on {
+    display: none !important;
+}
+
+.burger-menu.menu-open .burger-menu-button-on {
+    display: flex !important;
+}
+
+.burger-menu-button-off {
+    display: flex !important;
+}
+
+.burger-menu.menu-open .burger-menu-button-off {
+    display: none !important;
+}
+
+.fullscreenIcon:hover,
+.toggleAllSoundEnabled:hover,
+.toggleAllSoundDisabled:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+}
+
+.burger-menu-button,
+.restartGame,
+.toggleAllSoundEnabled,
+.toggleAllSoundDisabled,
+.fullscreenIcon,
+.fullscreenIconDisabled {
+    display: flex;
+    justify-content: end;
+    align-items: end;
+    width: 40px;
+    height: 40px;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    outline: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    z-index: 2000;
+    background-color: rgba(255, 255, 255, 0.1);
+    margin: 8px;
+}
+
+.burger-menu-button-on {
+    background-image: url(../img/burger-menu-cancel.svg);
+}
+
+.burger-menu-button-off {
+    background-image: url(../img/burger-menu.svg);
+}
+
+.restartGame {
+    background-image: url(../img/duotone-rotate-right-svgrepo-com.svg);
+}
+
+.toggleAllSoundEnabled {
+    background-image: url(../img/duotone-speaker-2-svgrepo-com.svg);
+}
+
+.toggleAllSoundDisabled {
+    background-image: url(../img/duotone-speaker-0-svgrepo-com.svg);
+}
+
+.fullscreenIcon {
+    background-image: url(../img/duotone-screen-svgrepo-com.svg);
+}
+
+.fullscreenIconDisabled {
+    background-image: url(../img/duotone-screen-disabled-svgrepo-com.svg);
+}
+
+.positionAbsoluteFullscreenIcon {
+    position: absolute;
+    top: 120px;
+    right: 20px;
+}
+
+.positionAbsolutetoggleAllSound {
+    position: absolute;
+    top: 70px;
+    right: 20px;
+}
+
+.positionAbsoluteRestartGame {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+}
