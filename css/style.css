@@ -215,8 +215,8 @@ h1 {
     width: 50px;
     height: 50px;
     background-image:
-        url("./img/6_salsa_bottle/bottle_rotation/1_bottle_rotation.png"),
-        url("./img/duotone-redo-round-svgrepo-com.svg");
+        url("../img/6_salsa_bottle/bottle_rotation/1_bottle_rotation.png"),
+        url("../img/duotone-redo-round-svgrepo-com.svg");
     background-size: 48px 48px, cover;
     background-position: calc(50% - 11px) center, center;
     background-repeat: no-repeat, no-repeat;
@@ -242,7 +242,7 @@ h1 {
 
 .endWinWallpaper {
     position: absolute;
-    background-image: url("./img/You won, you lost/You Win A.png");
+    background-image: url("../img/You won, you lost/You Win A.png");
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;

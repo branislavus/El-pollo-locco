@@ -5,34 +5,34 @@
 class AudioManager {
 
   sounds = {
-    click: new Audio('audio/button.mp3'),
-    jump: new Audio('audio/jumping.mp3'),
-    land: new Audio('audio/land.mp3'),
-    walk: new Audio('audio/walking-in-sand.mp3'),
-    hurt: new Audio('audio/yelp-in-pain.mp3'),
-    snoring: new Audio('audio/snoring.mp3'),
-    dieScream: new Audio('audio/die-scream.mp3'),
-    chicken1: new Audio('audio/chicken-noise1.mp3'),
-    chicken2: new Audio('audio/chicken-noise2.mp3'),
-    chicken3: new Audio('audio/chicken-noise3.mp3'),
-    chickenSmall1: new Audio('audio/chicen-small1.mp3'),
-    chickenSmall2: new Audio('audio/chicen-small2.mp3'),
-    chickenSmall3: new Audio('audio/chicen-small3.mp3'),
-    chickenSquish: new Audio('audio/chicken-squish.mp3'),
-    bossBite: new Audio('audio/boss-bite.mp3'),
-    bossDeathScream: new Audio('audio/boss-death-scream.mp3'),
-    bossFootStep: new Audio('audio/boss-footstep.mp3'),
-    bossGrowl: new Audio('audio/endboss-growl.mp3'),
-    coin: new Audio('audio/coin.mp3'),
-    bottle: new Audio('audio/bottle.mp3'),
-    bottleBreak: new Audio('audio/broken-bottle.mp3'),
-    bottleWhoosh: new Audio('audio/whoosh-bottle.mp3'),
-    throw: new Audio('audio/swing-whoosh.mp3'),
-    fire: new Audio('audio/burning-boss.mp3'),
-    wind: new Audio('audio/wind.mp3'),
-    windGust: new Audio('audio/wind-gust.mp3'),
-    backgroundMusic: new Audio('audio/wildwest-soundtrack.mp3'),
-    eggCracking: new Audio('audio/egg-cracking.mp3'),
+    click: new Audio('./audio/button.mp3'),
+    jump: new Audio('./audio/jumping.mp3'),
+    land: new Audio('./audio/land.mp3'),
+    walk: new Audio('./audio/walking-in-sand.mp3'),
+    hurt: new Audio('./audio/yelp-in-pain.mp3'),
+    snoring: new Audio('./audio/snoring.mp3'),
+    dieScream: new Audio('./audio/die-scream.mp3'),
+    chicken1: new Audio('./audio/chicken-noise1.mp3'),
+    chicken2: new Audio('./audio/chicken-noise2.mp3'),
+    chicken3: new Audio('./audio/chicken-noise3.mp3'),
+    chickenSmall1: new Audio('./audio/chicen-small1.mp3'),
+    chickenSmall2: new Audio('./audio/chicen-small2.mp3'),
+    chickenSmall3: new Audio('./audio/chicen-small3.mp3'),
+    chickenSquish: new Audio('./audio/chicken-squish.mp3'),
+    bossBite: new Audio('./audio/boss-bite.mp3'),
+    bossDeathScream: new Audio('./audio/boss-death-scream.mp3'),
+    bossFootStep: new Audio('./audio/boss-footstep.mp3'),
+    bossGrowl: new Audio('./audio/endboss-growl.mp3'),
+    coin: new Audio('./audio/coin.mp3'),
+    bottle: new Audio('./audio/bottle.mp3'),
+    bottleBreak: new Audio('./audio/broken-bottle.mp3'),
+    bottleWhoosh: new Audio('./audio/whoosh-bottle.mp3'),
+    throw: new Audio('./audio/swing-whoosh.mp3'),
+    fire: new Audio('./audio/burning-boss.mp3'),
+    wind: new Audio('./audio/wind.mp3'),
+    windGust: new Audio('./audio/wind-gust.mp3'),
+    backgroundMusic: new Audio('./audio/wildwest-soundtrack.mp3'),
+    eggCracking: new Audio('./audio/egg-cracking.mp3'),
   };
 
   /**
@@ -342,7 +342,10 @@ class AudioManager {
    */
   startBackgroundMusic() {
     if (!this.isMuted) {
-      this.sounds.backgroundMusic.play();
+      const bgMusic = this.sounds.backgroundMusic;
+      bgMusic.play().catch(error => {
+        console.error('Background music playback failed:', error);
+      });
     }
   }
 
