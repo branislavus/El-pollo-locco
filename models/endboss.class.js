@@ -67,9 +67,8 @@ class Endboss extends MovableObject {
     attackStopTimeout = null;
     hurtCounterTimeout = null;
     removalTimeout = null;
-    eggThrowInterval = null;
-    lastEggThrowTime = 0;
     hasGrowled = false;
+    eggHandler;
     timeouts = [
         'deathAnimationTimeout', 'attackSequenceTimeout', 'moveRightPhaseTimeout1',
         'moveRightPhaseTimeout2', 'attackStopTimeout', 'hurtCounterTimeout', 'removalTimeout'
@@ -95,8 +94,9 @@ class Endboss extends MovableObject {
         this.hurtAnimationStarted = false;
         this.deathAnimationStarted = false;
         this.animationSequence = new EndbossAnimationSequence(this);
+        this.eggHandler = new EndbossHandleEggs(this);
         this.animate();
-        this.startEggThrowTimer();
+        this.eggHandler.startEggThrowTimer();
     }
 
 
@@ -327,9 +327,8 @@ class Endboss extends MovableObject {
             this.animationInterval = null;
         }
 
-        if (this.eggThrowInterval) {
-            clearInterval(this.eggThrowInterval);
-            this.eggThrowInterval = null;
+        if (this.eggHandler) {
+            this.eggHandler.stopEggThrowTimer();
         }
     }
 
@@ -346,74 +345,7 @@ class Endboss extends MovableObject {
         });
     }
 
-    /**
-     * Starts interval to throw eggs at random times when not attacking.
-     */
-    startEggThrowTimer() {
-        this.eggThrowInterval = setInterval(() => {
-            this.tryThrowEgg();
-        }, 1000); // Check every second
-    }
 
-
-    /**
-     * Attempts to throw an egg if conditions are met.
-     */
-    tryThrowEgg() {
-        if (!this.world) return;
-        this.shoutScream();
-        const { currentTime, timeSinceLastEgg, randomThrowInterval } = this.loadParametersThrowEgg();
-        if (this.canThrowEgg(timeSinceLastEgg, randomThrowInterval)) {
-            this.throwEgg();
-            this.lastEggThrowTime = currentTime;
-        }
-    }
-
-
-    /**
-     * Creates and throws an egg from the endboss position.
-     */
-    throwEgg() {
-        if (this.world) {
-            const egg = new Egg(this.x + 100, this.y + 200); // Position at endboss feet
-            this.world.addEgg(egg);
-        }
-    }
-
-    /**
-     * Check if character entered boss arena and play growl sound once
-     */
-    shoutScream() {
-        if (this.world?.character && this.world.character.x >= 1290 && !this.hasGrowled) {
-            this.playGrowlSound();
-            this.hasGrowled = true;
-        }
-    }
-
-    /**
-     * Checks if egg can be thrown based on all conditions.
-     * @param {number} timeSinceLastEgg - Time passed since last egg.
-     * @param {number} randomThrowInterval - Random interval for this check.
-     * @returns {boolean} True if egg can be thrown.
-     */
-    canThrowEgg(timeSinceLastEgg, randomThrowInterval) {
-        return this.world.character.x >= 1300 &&
-            !this.attackInProgress &&
-            !this.isDead() &&
-            timeSinceLastEgg > randomThrowInterval &&
-            this.attackPhase === 'idle';
-    }
-
-    /**
-     * Load parameters for egg throw.
-     * @returns {Object} Object containing timing parameters.
-     */
-    loadParametersThrowEgg() {
-        const currentTime = Date.now();
-        const timeSinceLastEgg = currentTime - this.lastEggThrowTime;
-        const randomThrowInterval = Math.floor(Math.random() * 4000) + 3000;
-        return { currentTime, timeSinceLastEgg, randomThrowInterval };
-    }
 
 
 }

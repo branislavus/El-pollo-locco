@@ -49,7 +49,7 @@ window.addEventListener("keyup", (e) => {
 
 /**
  * Adds touch event listeners to a button element.
- * Handles touchstart, touchend, and touchcancel events.
+ * Handles touchstart, touchend, touchcancel and store events to Registry.
  * @param {string} id - Button element ID.
  * @param {Function} onPress - Callback when button is pressed.
  * @param {Function} onRelease - Callback when button is released.
@@ -78,7 +78,6 @@ function addTouchButton(id, onPress, onRelease, onCancel = onRelease) {
     btn.addEventListener('touchend', handleEnd, { passive: false });
     btn.addEventListener('touchcancel', handleCancel, { passive: false });
 
-    // Store in registry for later removal
     touchButtonRegistry.push({
         id,
         btn,
@@ -140,7 +139,6 @@ function fullscreen() {
         closeFullscreen();
         fullscreenIcon.classList.add('fullscreenIcon');
         fullscreenIcon.classList.remove('fullscreenIconDisabled');
-
     } else {
         openFullscreen(fullscreen);
         fullscreenIcon.classList.add('fullscreenIconDisabled');

@@ -1,16 +1,14 @@
 /**
- * Loads the sound state from localStorage.
+ * Loads the sound state from localStorage. If nothing stored set to true.
  * @returns {boolean} True if sound is enabled, false otherwise.
  */
 function loadSoundState() {
     const stored = localStorage.getItem("soundFlag");
     
-    // Default to true if nothing stored
     if (stored === null) {
         return true;
     }
     
-    // Parse stored value ("true"/"false" strings to boolean)
     return JSON.parse(stored);
 }
 

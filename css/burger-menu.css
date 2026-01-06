@@ -56,7 +56,9 @@
 
 .fullscreenIcon:hover,
 .toggleAllSoundEnabled:hover,
-.toggleAllSoundDisabled:hover {
+.toggleAllSoundDisabled:hover,
+.burger-menu-button-on:hover,
+.burger-menu-button-off:hover {
     background-color: rgba(255, 255, 255, 0.2);
 }
 

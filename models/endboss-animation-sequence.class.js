@@ -183,7 +183,7 @@ class EndbossAnimationSequence {
     finishMoveRight(moveRightInterval) {
         clearInterval(moveRightInterval);
         this.boss.resetAttackState();
-        this.boss.throwEgg(); // Call throwEgg on boss instance
+        this.boss.eggHandler.throwEgg(); // Call throwEgg through egg handler
     }
 
 

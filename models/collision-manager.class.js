@@ -186,9 +186,8 @@ class CollisionManager {
      * @param {ThrowableObject} bottle - Bottle to trigger splash for.
      */
     triggerBottleSplash(bottle) {
-        if (!bottle.shouldBeRemoved) {
+        if (!bottle.shouldBeRemoved)
             bottle.startSplashAnimation();
-        }
     }
 
     /**
@@ -207,7 +206,6 @@ class CollisionManager {
     killEnemyByBottle(enemy) {
         this.animateDeadChicken(enemy);
         this.playSoundDeadChicken();
-        // Mark enemy for removal instead of using index
         enemy.shouldBeRemoved = true;
         this.scheduleEnemyCleanup();
     }

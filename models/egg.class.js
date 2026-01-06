@@ -1,18 +1,17 @@
 class Egg extends MovableObject {
     IMAGE_EGG = 'img/egg.svg';
-    
+
     constructor(x, y) {
         super().loadImage(this.IMAGE_EGG);
         this.x = x;
         this.y = y;
         this.height = 80;
         this.width = 60;
-        this.speed = 8; // Roll speed to the left
+        this.speed = 8;
         this.shouldBeRemoved = false;
         this.isCracked = false;
-        this.startX = x; // Store start position to track distance
-        
-        // Set offset for collision detection
+        this.startX = x;
+
         this.offset = {
             top: 15,
             bottom: 15,
@@ -24,19 +23,16 @@ class Egg extends MovableObject {
 
     /**
      * Throws egg - starts rolling animation and movement.
+     * Crack egg after 1000px distance or if off screen
      */
     throwEgg() {
         this.rollInterval = setInterval(() => {
-            this.x -= this.speed; // Move left
-            this.rotate(); // Rotate egg while rolling
-            
+            this.x -= this.speed;
+            this.rotate();
             const distanceTraveled = this.startX - this.x;
-            
-            // Crack egg after 1000px distance or if off screen
-            if (distanceTraveled >= 600 || this.x < -200) {
+            if (distanceTraveled >= 600 || this.x < -200)
                 this.crackEgg();
-            }
-        }, 1000 / 60); // 60 FPS
+        }, 1000 / 60);
     }
 
     /**
@@ -64,7 +60,7 @@ class Egg extends MovableObject {
      * @param {CanvasRenderingContext2D} ctx - The canvas rendering context.
      */
     draw(ctx) {
-        if (this.isCracked) return;     
+        if (this.isCracked) return;
         ctx.save();
         ctx.translate(this.x + this.width / 2, this.y + this.height / 2);
         ctx.rotate((this.rotationAngle || 0) * Math.PI / 180);
@@ -82,9 +78,9 @@ class Egg extends MovableObject {
         }
     }
 
-        /**
-     * Plays onEggCracking sound.
-     */
+    /**
+ * Plays onEggCracking sound.
+ */
     playEggCrackingSound() {
         if (typeof audioManager !== 'undefined')
             audioManager.onEggCracking();

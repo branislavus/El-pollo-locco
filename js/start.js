@@ -55,7 +55,6 @@ function displayStartScreen(startWallpaper, canvas) {
     if (startWallpaper && canvas) {
         canvas.style.display = 'none';
         startWallpaper.style.display = 'flex';
-
     }
 }
 
@@ -76,10 +75,9 @@ function initializeScreens() {
  * Starts the game by initializing level, music, and hiding start screen.
  */
 function StartGame() {
-    ifAudioManagerStopBackgroundMusic();
+    ifAudioManagerThenStopBackgroundMusic();
     loadAudiomanager();
     checkSoundState();
-
     initLevel();
     init();
 
@@ -92,7 +90,7 @@ function StartGame() {
 /**
  * Stop old audioManager if exists
  */
-function ifAudioManagerStopBackgroundMusic() {
+function ifAudioManagerThenStopBackgroundMusic() {
     if (audioManager) {
         audioManager.stopBackgroundMusic();
     }
@@ -150,10 +148,8 @@ function touchStart() {
 
 document.addEventListener('DOMContentLoaded', touchStart);
 
-
 /**
  * Attaches click event listeners to the press enter key to restart and Stop if cooldown is active.
- * lets say its kind of easter egg for developers :-)
  */
 document.addEventListener("keyup", function (event) {
     if (event.key === "Enter") {

@@ -238,9 +238,8 @@ class World {
      */
     reduceCharacterEnergy(damage) {
         this.character.energy -= damage;
-        if (this.character.energy < 0) {
+        if (this.character.energy < 0)
             this.character.energy = 0;
-        }
     }
 
 
@@ -269,9 +268,8 @@ class World {
      * Plays hurt sound effect if audio manager is available.
      */
     playHurtSound() {
-        if (typeof audioManager !== 'undefined') {
+        if (typeof audioManager !== 'undefined')
             audioManager.onHurt();
-        }
     }
 
 
@@ -363,9 +361,8 @@ class World {
      * @param {Character} character - Character to check and correct.
      */
     ensureCharacterOnGround(character) {
-        if (character.y > 226) {
+        if (character.y > 226)
             character.y = 226;
-        }
     }
 
     /**
