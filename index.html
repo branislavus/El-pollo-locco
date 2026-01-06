@@ -68,7 +68,7 @@
 
                 <canvas id="canvas" width="720" height="480"></canvas>
                 <div id="startWallpaper" class="startWallpaper">
-                    <button type="button" id="startButton" class="startButton">Start</button>
+                    <button type="button" id="startButton" class="startButton mar-top-20">Start</button>
                     <div class="impressum-mobile" id="impressum-mobile">
                         <a class="impressum-text" href="./impressum.html" target="_blank"
                             rel="noopener noreferrer">impressum</a><br>
@@ -96,7 +96,7 @@
             <div id="action-keys-legend-section" class="action-keys-legend-section">
                 <h2>action keys</h2>
                 <div class="tables">
-                    <table>
+                    <table  class="tableButtonsLegend">
 
                         <tr>
                             <td class="legendButtonsName">left</td>
@@ -120,20 +120,26 @@
                         <tr class="legendButtons">
                             <td class="legendButtonsName">press start to play</td>
                             <td class="legendButtonsTd">- <button type="button"
-                                    class="startButton startButtonLegend buttons" disabled>Start</button>
-                            </td>
-                        </tr>
-                        <tr class="legendButtons">
-                            <td class="legendButtonsName">toggle fullscreen</td>
-                            <td class="legendButtonsTd">- <button type="button"
-                                    class="fullscreenIcon fullscreenIconLegend buttons buttonHide" disabled></button>
+                                    class="startButton start-button-legend" disabled>Start</button>
                             </td>
                         </tr>
                         <tr class="legendButtons">
                             <td class="legendButtonsName">restart game press <span style="color: red">Enter</span> or
                             </td>
                             <td class="legendButtonsTd">- <button type="button"
-                                    class="buttons restartGame restartGameLegend" disabled></button></td>
+                                    class="restartGame legend-menu-button restartGameLegend" disabled></button></td>
+                        </tr>
+                         <tr class="legendButtons">
+                            <td class="legendButtonsName">toggle sound on/off</td>
+                            <td class="legendButtonsTd">- <button type="button"
+                                    class="toggleAllSoundEnabled legend-menu-button fullscreenIconLegend buttonHide" disabled></button>
+                            </td>
+                        </tr>
+                         <tr class="legendButtons">
+                            <td class="legendButtonsName">toggle fullscreen</td>
+                            <td class="legendButtonsTd">- <button type="button"
+                                    class="fullscreenIcon legend-menu-button fullscreenIconLegend buttonHide" disabled></button>
+                            </td>
                         </tr>
 
                     </table>

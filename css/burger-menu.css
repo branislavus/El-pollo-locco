@@ -60,12 +60,7 @@
     background-color: rgba(255, 255, 255, 0.2);
 }
 
-.burger-menu-button,
-.restartGame,
-.toggleAllSoundEnabled,
-.toggleAllSoundDisabled,
-.fullscreenIcon,
-.fullscreenIconDisabled {
+.burger-menu-button {
     display: flex;
     justify-content: end;
     align-items: end;
@@ -80,6 +75,17 @@
     z-index: 2000;
     background-color: rgba(255, 255, 255, 0.1);
     margin: 8px;
+}
+
+.legend-menu-button {
+    display: flex;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    outline: none;
+    transition: background-color 0.3s ease;
+    z-index: 2;
+    background-color: rgba(255, 255, 255, 0.1);
 }
 
 .burger-menu-button-on {
