@@ -1,6 +1,14 @@
 /* Tablet Landscape */
 @media (max-width: 1000px) {
 
+    .burger-menu {
+        position: fixed;
+        z-index: 9999;
+        top: 20px;
+        right: 20px;
+        margin-top: 0;
+    }
+
     .tables {
         display: flex;
         flex-direction: column;
@@ -117,6 +125,14 @@
 /* Mobile */
 
 @media only screen and (max-height: 480px) {
+
+    .burger-menu {
+        position: fixed;
+        z-index: 9999;
+        top: 20px;
+        right: 20px;
+        margin-top: 0;
+    }
 
     .p-warning {
         position: absolute;

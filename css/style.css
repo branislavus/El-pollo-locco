@@ -23,8 +23,8 @@
     display: none !important;
 }
 
-.mar-top-20{
-margin-top: 20px;
+.mar-top-20 {
+    margin-top: 20px;
 }
 
 .main-container {
@@ -48,11 +48,13 @@ margin-top: 20px;
     width: 100%;
     height: 10%;
     display: flex;
+    justify-content: center;
     align-items: end;
 }
 
 .impressum-text {
     font-size: 22px;
+    padding: 8px;
 }
 
 .text-align-right {
@@ -302,13 +304,13 @@ h1 {
     display: none;
 }
 
-.action-keys-legend-section{
+.action-keys-legend-section {
     display: flex;
     flex-direction: column;
     margin-top: 10px;
 }
 
-.tableButtonsLegend{
+.tableButtonsLegend {
     width: 30%;
     min-width: 200px;
     padding: 10px;
