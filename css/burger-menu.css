@@ -135,3 +135,30 @@
     top: 20px;
     right: 20px;
 }
+
+.desktop-action-buttons {
+    display: none;
+    justify-content: flex-end;
+    margin-top: 8px;
+    gap: 8px;
+    z-index: 1000;
+}
+
+
+@media (min-width: 1000px) {
+    .burger-menu {
+        display: none !important;
+    }
+    .desktop-action-buttons {
+        display: flex !important;
+    }
+}
+
+@media (max-width: 999px) {
+    .desktop-action-buttons {
+        display: none !important;
+    }
+    .burger-menu {
+        display: flex !important;
+    }
+}
