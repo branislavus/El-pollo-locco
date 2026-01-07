@@ -184,12 +184,15 @@ function closeFullscreen() {
  */
 function toggleAllSound() {
     const soundIcon = document.getElementById('toggleAllSound');
+    const soundIconDesktop = document.getElementById('toggleAllSoundDesktop');
     soundFlag = !soundFlag;
     if (soundFlag) {
         turnOnMusic(soundIcon);
+        turnOnMusic(soundIconDesktop);
         saveSoundState(true);
     } else {
         turnOffMusic(soundIcon);
+        turnOffMusic(soundIconDesktop);
         saveSoundState(false);
     }
 }
@@ -199,6 +202,7 @@ function toggleAllSound() {
  * @param {HTMLElement} soundIcon - Sound toggle icon element.
  */
 function turnOffMusic(soundIcon) {
+    if (!audioManager || !soundIcon) return;
     audioManager.mute();
     soundIcon.classList.remove('toggleAllSoundEnabled');
     soundIcon.classList.add('toggleAllSoundDisabled');
@@ -209,6 +213,7 @@ function turnOffMusic(soundIcon) {
  * @param {HTMLElement} soundIcon - Sound toggle icon element.
  */
 function turnOnMusic(soundIcon) {
+    if (!audioManager || !soundIcon) return;
     audioManager.unmute();
     soundIcon.classList.remove('toggleAllSoundDisabled');
     soundIcon.classList.add('toggleAllSoundEnabled');

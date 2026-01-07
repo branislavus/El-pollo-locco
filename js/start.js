@@ -15,6 +15,8 @@ function hideStartWallpaper() {
         startWallpaper.style.display = 'none';
         canvas.style.display = 'block';
     }
+
+    enableDesktopButtons();
 }
 
 /**
@@ -28,6 +30,7 @@ function showStartWallpaper() {
 
     hideEndScreens(endWinWallpaper, endLoseWallpaper);
     displayStartScreen(startWallpaper, canvas);
+    disableDesktopButtons();
 }
 
 /**
@@ -218,6 +221,28 @@ function logCooldownMessage(timeSinceLastRestart) {
  */
 function updateLastRestartTime(currentTime) {
     lastRestartTime = currentTime;
+}
+
+/**
+ * Enables desktop action buttons for gameplay.
+ * Adds active class to make buttons interactive and fully opaque.
+ */
+function enableDesktopButtons() {
+    const desktopButtons = document.querySelector('.desktop-action-buttons');
+    if (desktopButtons) {
+        desktopButtons.classList.add('active');
+    }
+}
+
+/**
+ * Disables desktop action buttons on start screen.
+ * Removes active class to make buttons non-interactive and semi-transparent.
+ */
+function disableDesktopButtons() {
+    const desktopButtons = document.querySelector('.desktop-action-buttons');
+    if (desktopButtons) {
+        desktopButtons.classList.remove('active');
+    }
 }
 
 document.addEventListener('DOMContentLoaded', initializeScreens);
