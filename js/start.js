@@ -152,21 +152,23 @@ function touchStart() {
 document.addEventListener('DOMContentLoaded', touchStart);
 
 /**
- * Attaches click event listeners to the press enter key to restart and Stop if cooldown is active.
+ * Attaches click event listeners to the press enter key to restart and Stop if cooldown is active or character lives.
  */
 document.addEventListener("keyup", function (event) {
     if (event.key === "Enter") {
         if (!countRestart()) return;
+        if (world && world.character.isDead()) return;
         stopAllGameAnimations();
         StartGame();
     }
 });
 
 /**
- * restart game after the press on button and Stops if cooldown is active.
+ * restart game after the press on button and Stops if cooldown is active or character lives.
  */
 function restartGame() {
     if (!countRestart()) return;
+    if (world && world.character.isDead()) return;
     stopAllGameAnimations();
     stopAllSounds();
     StartGame();
