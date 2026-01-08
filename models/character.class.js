@@ -67,7 +67,7 @@ class Character extends MovableObject {
     lastMoveTime;
     lastCharacterX;
     offset = {
-        top: 70,
+        top: 100,
         left: 30,
         right: 30,
         bottom: 10,
