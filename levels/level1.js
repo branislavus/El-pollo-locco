@@ -1,13 +1,12 @@
 let level1;
 function initLevel() {
-    // Stop all enemies from previous level
+
     if (level1 && level1.enemies) {
         level1.enemies.forEach(enemy => {
             if (enemy.stopAnimations) enemy.stopAnimations();
         });
     }
 
-    // Reset chicken counters for new game
     if (typeof ChickenSmall !== 'undefined') ChickenSmall.instanceCounter = 0;
     if (typeof Chicken !== 'undefined') Chicken.instanceCounter = 0;
     if (typeof Endboss !== 'undefined') Endboss.instanceCounter = 0;

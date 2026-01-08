@@ -8,7 +8,6 @@ class EndbossAnimationSequence {
         this.boss = boss;
     }
 
-
     /**
      * Starts the attack animation sequence.
      */
@@ -20,7 +19,6 @@ class EndbossAnimationSequence {
         this.executeAttackSequence(attackConfig, startX);
     }
 
-
     /**
      * Initializes attack state.
      */
@@ -28,7 +26,6 @@ class EndbossAnimationSequence {
         this.boss.attackInProgress = true;
         this.boss.attackPhase = 'moving_left';
     }
-
 
     /**
      * Executes the complete attack sequence.
@@ -44,7 +41,6 @@ class EndbossAnimationSequence {
         }, config.moveDuration);
     }
 
-
     /**
      * Starts the move left phase.
      * @param {number} moveSpeed - Movement speed.
@@ -58,7 +54,6 @@ class EndbossAnimationSequence {
         }, 1000 / 10);
     }
 
-
     /**
      * Moves left and plays animation.
      * @param {number} moveSpeed - Movement speed.
@@ -68,7 +63,6 @@ class EndbossAnimationSequence {
         this.boss.playAnimation(this.boss.IMAGES_WALKING);
         this.boss.playBossWalkSound();
     }
-
 
     /**
      * Starts the attack phase.
@@ -83,7 +77,6 @@ class EndbossAnimationSequence {
         this.scheduleMoveRightPhase(config, startX);
     }
 
-
     /**
      * Plays attack animation.
      * @returns {number} Interval ID.
@@ -93,7 +86,6 @@ class EndbossAnimationSequence {
             this.boss.playAnimation(this.boss.IMAGES_ATTACK);
         }, 150);
     }
-
 
     /**
      * Schedules stopping of attack interval.
@@ -105,7 +97,6 @@ class EndbossAnimationSequence {
             clearInterval(attackInterval);
         }, 1000);
     }
-
 
     /**
      * Schedules the move right phase.
@@ -122,7 +113,6 @@ class EndbossAnimationSequence {
         }, 1200);
     }
 
-
     /**
      * Starts the move right phase.
      * @param {number} moveSpeed - Movement speed.
@@ -134,7 +124,6 @@ class EndbossAnimationSequence {
             this.updateMovingRightInterval(moveSpeed, startX, moveRightInterval);
         }, 1000 / 10);
     }
-
 
     /**
      * Updates the move right interval.
@@ -154,7 +143,6 @@ class EndbossAnimationSequence {
         }
     }
 
-
     /**
      * Checks if should continue moving right.
      * @param {number} startX - Starting X position.
@@ -163,7 +151,6 @@ class EndbossAnimationSequence {
     shouldMoveRight(startX) {
         return this.boss.x < startX;
     }
-
 
     /**
      * Moves right and plays animation.
@@ -175,7 +162,6 @@ class EndbossAnimationSequence {
         this.boss.playBossWalkSound();
     }
 
-
     /**
      * Finishes move right phase.
      * @param {number} moveRightInterval - Interval ID.
@@ -183,9 +169,8 @@ class EndbossAnimationSequence {
     finishMoveRight(moveRightInterval) {
         clearInterval(moveRightInterval);
         this.boss.resetAttackState();
-        this.boss.eggHandler.throwEgg(); // Call throwEgg through egg handler
+        this.boss.eggHandler.throwEgg();
     }
-
 
     /**
      * Plays hurt animation and sound.
@@ -195,7 +180,6 @@ class EndbossAnimationSequence {
             this.startHurtAnimation();
         }
     }
-
 
     /**
      * Starts hurt animation sequence.
@@ -208,7 +192,6 @@ class EndbossAnimationSequence {
         this.startHurtAnimationInterval();
     }
 
-
     /**
      * Plays hurt sound.
      */
@@ -216,7 +199,6 @@ class EndbossAnimationSequence {
         if (this.world?.gameOver) return;
         if (typeof audioManager !== 'undefined') audioManager.onBossHurt();
     }
-
 
     /**
      * Starts hurt animation interval.
@@ -226,7 +208,6 @@ class EndbossAnimationSequence {
             this.updateHurtAnimation(hurtInterval);
         }, 200);
     }
-
 
     /**
      * Updates hurt animation frame.
@@ -240,7 +221,6 @@ class EndbossAnimationSequence {
         }
     }
 
-
     /**
      * Checks if there are more hurt frames.
      * @returns {boolean} True if more frames available.
@@ -248,7 +228,6 @@ class EndbossAnimationSequence {
     hasMoreHurtFrames() {
         return this.boss.currentImage < this.boss.IMAGES_HURT.length;
     }
-
 
     /**
      * Plays next hurt animation frame.
@@ -258,7 +237,6 @@ class EndbossAnimationSequence {
         this.boss.img = this.boss.imagePool[path];
         this.boss.currentImage++;
     }
-
 
     /**
      * Handles damage and schedules counter attack.
@@ -272,7 +250,6 @@ class EndbossAnimationSequence {
         }
     }
 
-
     /**
      * Resets hurt animation state.
      * @param {number} hurtInterval - Interval ID.
@@ -285,7 +262,6 @@ class EndbossAnimationSequence {
         this.boss.movementEnabled = true;
     }
 
-
     /**
      * Plays death animation sequence.
      */
@@ -295,7 +271,6 @@ class EndbossAnimationSequence {
             this.startDeathAnimationInterval();
         }
     }
-
 
     /**
      * Starts death animation interval.
@@ -310,7 +285,6 @@ class EndbossAnimationSequence {
         }, 200);
     }
 
-
     /**
      * Checks if there are more death frames.
      * @returns {boolean} True if more frames available.
@@ -318,7 +292,6 @@ class EndbossAnimationSequence {
     hasMoreDeathFrames() {
         return this.boss.currentImage < this.boss.IMAGES_DEAD.length;
     }
-
 
     /**
      * Plays next death animation frame.
@@ -328,7 +301,6 @@ class EndbossAnimationSequence {
         this.boss.img = this.boss.imagePool[path];
         this.boss.currentImage++;
     }
-
 
     /**
      * Finishes death animation and sets final frame.
@@ -341,7 +313,6 @@ class EndbossAnimationSequence {
         this.scheduleRemoval();
     }
 
-
     /**
      * Sets the last death frame as current image.
      */
@@ -349,7 +320,6 @@ class EndbossAnimationSequence {
         let lastFrame = this.boss.IMAGES_DEAD[this.boss.IMAGES_DEAD.length - 1];
         this.boss.img = this.boss.imagePool[lastFrame];
     }
-
 
     /**
      * Schedules boss removal after delay.
@@ -360,6 +330,4 @@ class EndbossAnimationSequence {
             this.boss.shouldBeRemoved = true;
         }, 2000);
     }
-
-
 }

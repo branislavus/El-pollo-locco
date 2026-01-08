@@ -10,7 +10,7 @@ class World {
     statusBarBottles = new StatusBarBottles();
     statusBarEndboss = null;
     throwableObject = [];
-    eggs = []; // Array to store thrown eggs from endboss
+    eggs = [];
     lastThrow = 0;
     gameOver = false;
     gameActive = true;

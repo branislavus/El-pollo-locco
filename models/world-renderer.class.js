@@ -48,7 +48,7 @@ class WorldRenderer {
         this.addObjectsToMap(this.world.level.clouds);
         this.addObjectsToMap(this.world.level.bottles);
         this.addObjectsToMap(this.world.level.coins);
-        this.addObjectsToMap(this.world.eggs); // Add eggs from endboss
+        this.addObjectsToMap(this.world.eggs);
         this.addToMap(this.world.character);
         this.addObjectsToMap(this.world.throwableObject);
     }
@@ -99,9 +99,7 @@ class WorldRenderer {
      * @param {MovableObject} mo - Movable object to add to map.
      */
     addToMap(mo) {
-        // Skip drawing if object is far off-screen (optimization)
-        if (this.isOffScreen(mo)) return;
-
+        if (this.isOffScreenSkipObject(mo)) return;
         if (mo.characterDirectionLeft)
             this.flipImage(mo);
         mo.draw(this.ctx);
@@ -129,13 +127,13 @@ class WorldRenderer {
      * @param {MovableObject} mo - Object to check.
      * @returns {boolean} True if object is far off-screen.
      */
-    isOffScreen(mo) {
-        const buffer = 200; // Extra buffer for smooth entry
+    isOffScreenSkipObject(mo) {
+        const bufferForSmoothEntry = 200;
         const cameraLeft = -this.world.camera_x;
         const cameraRight = cameraLeft + this.canvas.width;
         
-        return mo.x + mo.width < cameraLeft - buffer || 
-               mo.x > cameraRight + buffer;
+        return mo.x + mo.width < cameraLeft - bufferForSmoothEntry || 
+               mo.x > cameraRight + bufferForSmoothEntry;
     }
 
     /**
@@ -143,7 +141,6 @@ class WorldRenderer {
      * @param {MovableObject} mo - Object to draw borders for.
      */
     drawBorderFramesStart(mo) {
-        // Draw debug frames for all relevant objects if enabled
         if (this.world.drawBorderFramesYes) {
             mo.drawBorderFrames(this.ctx);
             mo.drawOffsetFrames(this.ctx);

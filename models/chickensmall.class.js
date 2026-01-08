@@ -37,7 +37,6 @@ class ChickenSmall extends MovableObject {
 
     }
 
-
     /**
      * Starts the movement, animation, and sound intervals for the small chicken.
      */
@@ -54,17 +53,15 @@ class ChickenSmall extends MovableObject {
         }, 5000);
     }
 
-
     /**
      * Displays the dead chicken image and stops all animations.
      */
     showDeadChicken() {
         this.speed = 0;
-        this.stopAnimations(); // Stop intervals FIRST before setting isDead
+        this.stopAnimations();
         this.isDead = () => true;
         this.loadImage(this.IMAGE_DEAD_SMALL_CHICKEN);
     }
-
 
     /**
      * Stops all animation, movement, and sound intervals.
@@ -78,7 +75,6 @@ class ChickenSmall extends MovableObject {
             this.stopSoundInterval();
     }
 
-
     /**
      * Stops the movement interval.
      */
@@ -87,7 +83,6 @@ class ChickenSmall extends MovableObject {
         this.moveInterval = null;
     }
 
-
     /**
      * Stops the animation interval.
      */
@@ -95,7 +90,6 @@ class ChickenSmall extends MovableObject {
         clearInterval(this.animationInterval);
         this.animationInterval = null;
     }
-
 
     /**
      * Stops the sound interval and pending sound timeout.
@@ -109,7 +103,6 @@ class ChickenSmall extends MovableObject {
         }
     }
 
-
     /**
      * Generates a random number for sound selection.
      * @returns {number} Random number between 0 and 2.
@@ -117,7 +110,6 @@ class ChickenSmall extends MovableObject {
     chickenRandomSound() {
         return Math.floor(Math.random() * 3);
     }
-
 
     /**
      * Queues a random chicken sound with a delay.
@@ -129,7 +121,6 @@ class ChickenSmall extends MovableObject {
             this.chooseSound(randomSound);
         }, Math.floor(Math.random() * 5000));
     }
-
 
     /**
      * Plays a small chicken sound based on the random number.

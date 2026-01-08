@@ -55,17 +55,15 @@ class Chicken extends MovableObject {
         }, 10000);
     }
 
-
     /**
      * Displays the dead chicken image and stops all animations.
      */
     showDeadChicken() {
         this.speed = 0;
-        this.stopAnimations(); // Stop intervals FIRST before setting isDead
+        this.stopAnimations();
         this.isDead = () => true;
         this.loadImage(this.IMAGE_DEAD);
     }
-
 
     /**
      * Stops all animation, movement, and sound intervals.
@@ -79,7 +77,6 @@ class Chicken extends MovableObject {
             this.stopSoundInterval();
     }
 
-
     /**
      * Stops the movement interval.
      */
@@ -88,7 +85,6 @@ class Chicken extends MovableObject {
         this.moveInterval = null;
     }
 
-
     /**
      * Stops the animation interval.
      */
@@ -96,7 +92,6 @@ class Chicken extends MovableObject {
         clearInterval(this.animationInterval);
         this.animationInterval = null;
     }
-
 
     /**
      * Stops the sound interval and pending sound timeout.
@@ -110,7 +105,6 @@ class Chicken extends MovableObject {
         }
     }
 
-
     /**
      * Generates a random number for sound selection.
      * @returns {number} Random number between 0 and 2.
@@ -118,7 +112,6 @@ class Chicken extends MovableObject {
     chickenRandomSound() {
         return Math.floor(Math.random() * 3);
     }
-
 
     /**
      * Queues a random chicken sound with a delay.
@@ -129,7 +122,6 @@ class Chicken extends MovableObject {
             this.chooseSound(randomSound);
         }, Math.floor(Math.random() * 5000));
     }
-
 
     /**
      * Plays a chicken sound based on the random number.
