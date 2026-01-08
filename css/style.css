@@ -84,7 +84,7 @@ body {
     justify-content: center;
     align-items: center;
     font-family: 'Chewy', Arial, Helvetica, sans-serif;
-    text-shadow: 5px 5px 10px rgb(230, 92, 0);
+    text-shadow: 2px 1px 6px rgb(255, 240, 173);
     background-image: url(../img/wallpaper/desert3.png);
     background-repeat: no-repeat;
     background-size: cover;
