@@ -214,8 +214,8 @@ h1 {
     background-image:
         url("../img/6_salsa_bottle/bottle_rotation/1_bottle_rotation.png"),
         url("../img/duotone-redo-round-svgrepo-com.svg");
-    background-size: 48px 48px, cover;
-    background-position: calc(50% - 11px) center, center;
+    background-size: 32px 32px, cover;
+    background-position: calc(50% - 1px) calc(50% + 7px), center;
     background-repeat: no-repeat, no-repeat;
 }
 
