@@ -27,25 +27,34 @@ function endProceses() {
     removeTouchButtons();
 }
 
-window.addEventListener("keydown", (e) => {
-    if (e.keyCode == 39) keyboard.RIGHT = true;
-    if (e.keyCode == 37) keyboard.LEFT = true;
-    if (e.keyCode == 32) keyboard.SPACE = true;
-    if (e.keyCode == 38) keyboard.UP = true;
-    if (e.keyCode == 40) keyboard.DOWN = true;
-    if (e.keyCode == 68) keyboard.D = true;
-    if (e.keyCode == 13) keyboard.ENTER = true;
-});
+const keyMap = {
+    ArrowLeft: "LEFT",
+    ArrowRight: "RIGHT",
+    ArrowUp: "UP",
+    ArrowDown: "DOWN",
+    " ": "SPACE",
+    d: "D",
+    D: "D",
+    Enter: "ENTER"
+};
 
-window.addEventListener("keyup", (e) => {
-    if (e.keyCode == 39) keyboard.RIGHT = false;
-    if (e.keyCode == 37) keyboard.LEFT = false;
-    if (e.keyCode == 32) keyboard.SPACE = false;
-    if (e.keyCode == 38) keyboard.UP = false;
-    if (e.keyCode == 40) keyboard.DOWN = false;
-    if (e.keyCode == 68) keyboard.D = false;
-    if (e.keyCode == 13) keyboard.ENTER = false;
-});
+/**
+ * Handles keyboard input and updates the keyboard state.
+ * Maps key names to keyboard properties using the keyMap.
+ * Prevents default browser behavior for mapped keys.
+ * @param {KeyboardEvent} event - The keyboard event object containing the key pressed.
+ * @param {boolean} isDown - True if key is pressed (keydown), false if released (keyup).
+ */
+function handleKey(event, isDown) {
+    const prop = keyMap[event.key];
+    if (prop) {
+        keyboard[prop] = isDown;
+        event.preventDefault();
+    }
+}
+
+window.addEventListener("keydown", e => handleKey(e, true));
+window.addEventListener("keyup", e => handleKey(e, false));
 
 /**
  * Adds touch event listeners to a button element.
