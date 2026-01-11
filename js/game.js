@@ -5,6 +5,16 @@ let audioManager;
 let fullscreenFlag = false;
 const touchButtonRegistry = [];
 let soundFlag;
+const keyMap = {
+    ArrowLeft: "LEFT",
+    ArrowRight: "RIGHT",
+    ArrowUp: "UP",
+    ArrowDown: "DOWN",
+    " ": "SPACE",
+    d: "D",
+    D: "D",
+    Enter: "ENTER"
+};
 
 /**
  * Initializes the game canvas, world, and touch controls.
@@ -26,17 +36,6 @@ function endProceses() {
     }
     removeTouchButtons();
 }
-
-const keyMap = {
-    ArrowLeft: "LEFT",
-    ArrowRight: "RIGHT",
-    ArrowUp: "UP",
-    ArrowDown: "DOWN",
-    " ": "SPACE",
-    d: "D",
-    D: "D",
-    Enter: "ENTER"
-};
 
 /**
  * Handles keyboard input and updates the keyboard state.
