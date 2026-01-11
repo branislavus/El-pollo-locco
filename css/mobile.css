@@ -254,29 +254,28 @@ a:hover {
         font-size: 5vw;
     }
 
-    .title{
+    .title {
         display: none;
     }
 
-    .action-keys-legend-section{
+    .action-keys-legend-section {
         display: none;
     }
 }
 
 @media (max-height: 431px) {
-.touch-key {
+    .touch-key {
         max-width: 50px;
         max-height: 50px;
         border: 3px red ridge;
     }
 
-.ButtonImage {
-    width: 40px;
-    height: 40px;
-}
+    .ButtonImage {
+        width: 40px;
+        height: 40px;
+    }
 
-.buttonBottle {
-    background-size: 18px 18px, cover;
-}
-
+    .buttonBottle {
+        background-size: 18px 18px, cover;
+    }
 }

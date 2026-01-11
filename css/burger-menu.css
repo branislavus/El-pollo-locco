@@ -156,6 +156,7 @@
     .burger-menu {
         display: none !important;
     }
+
     .desktop-action-buttons {
         display: flex !important;
     }
@@ -165,7 +166,14 @@
     .desktop-action-buttons {
         display: none !important;
     }
+
     .burger-menu {
         display: flex !important;
+    }
+}
+
+@media (max-height: 431px) {
+    .burger-menu {
+        margin-top: 0px;
     }
 }
