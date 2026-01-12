@@ -125,7 +125,7 @@ class MovableObject extends DrawableObject {
         if (enemy instanceof Endboss) {
             this.energy -= 20;
         } else {
-            this.energy -= 5;
+            this.energy -= 10;
         }
         if (this.energy < 0) {
             this.energy = 0;

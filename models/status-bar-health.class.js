@@ -4,10 +4,15 @@ class StatusBarHealth extends DrawableObject {
 
    IMAGES_HEALTH_BLUE = [
       'img/7_statusbars/1_statusbar/2_statusbar_health/blue/0.png',
+      'img/7_statusbars/1_statusbar/2_statusbar_health/blue/10.png',
       'img/7_statusbars/1_statusbar/2_statusbar_health/blue/20.png',
+      'img/7_statusbars/1_statusbar/2_statusbar_health/blue/30.png',
       'img/7_statusbars/1_statusbar/2_statusbar_health/blue/40.png',
+      'img/7_statusbars/1_statusbar/2_statusbar_health/blue/50.png',
       'img/7_statusbars/1_statusbar/2_statusbar_health/blue/60.png',
+      'img/7_statusbars/1_statusbar/2_statusbar_health/blue/70.png',
       'img/7_statusbars/1_statusbar/2_statusbar_health/blue/80.png',
+      'img/7_statusbars/1_statusbar/2_statusbar_health/blue/90.png',
       'img/7_statusbars/1_statusbar/2_statusbar_health/blue/100.png'
    ];
 
@@ -39,23 +44,32 @@ class StatusBarHealth extends DrawableObject {
 
    /**
     * Resolves the image index based on current health percentage.
-    * @returns {number} The image index (0-5).
+    * Maps 0-100% to image indices 0-10 in 10% steps.
+    * @returns {number} The image index (0-10).
     */
    resolveImageIndex() {
-      if (this.percentage == 100) {
-         return 5;
-      } else if (this.percentage > 85) {
-         return 4;
-      } else if (this.percentage > 54) {
-         return 3;
-      } else if (this.percentage > 27) {
-         return 2;
-      } else if (this.percentage > 1) {
-         return 1;
-      } else {
+      if (this.percentage <= 0) {
          return 0;
+      } else if (this.percentage <= 10) {
+         return 1;
+      } else if (this.percentage <= 20) {
+         return 2;
+      } else if (this.percentage <= 30) {
+         return 3;
+      } else if (this.percentage <= 40) {
+         return 4;
+      } else if (this.percentage <= 50) {
+         return 5;
+      } else if (this.percentage <= 60) {
+         return 6;
+      } else if (this.percentage <= 70) {
+         return 7;
+      } else if (this.percentage <= 80) {
+         return 8;
+      } else if (this.percentage <= 90) {
+         return 9;
+      } else {
+         return 10;
       }
    }
-
-
 }
