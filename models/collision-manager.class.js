@@ -303,6 +303,7 @@ class CollisionManager {
      */
     damageCharacter(enemy) {
         this.world.character.hit(enemy);
+        this.world.smoothKnockbackCharacter(-40);
         if (typeof audioManager !== 'undefined') audioManager.onHurt();
         this.world.statusBarHealth.setPercentage(this.world.character.energy);
     }
