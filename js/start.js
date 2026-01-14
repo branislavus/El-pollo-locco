@@ -152,26 +152,35 @@ function touchStart() {
 document.addEventListener('DOMContentLoaded', touchStart);
 
 /**
- * Attaches click event listeners to the press enter key to restart and Stop if cooldown is active or character lives.
+ * Attaches click event listeners to the press enter key to restart and stop if cooldown is active or game is finished.
  */
 document.addEventListener("keyup", function (event) {
     if (event.key === "Enter") {
         if (!countRestart()) return;
-        if (world && world.character.isDead()) return;
+        if (isGameFinished()) return;
         stopAllGameAnimations();
         StartGame();
     }
 });
 
 /**
- * restart game after the press on button and Stops if cooldown is active or character lives.
+ * restart game after the press on button and Stops if cooldown is active or game is finished.
  */
 function restartGame() {
     if (!countRestart()) return;
-    if (world && world.character.isDead()) return;
+    if (isGameFinished()) return;
+    
     stopAllGameAnimations();
     stopAllSounds();
     StartGame();
+}
+
+/**
+ * Checks if the game is finished (player won or lost).
+ * @returns {boolean} True if game is over.
+ */
+function isGameFinished() {
+    return loseGame || winGame;
 }
 
 /**
