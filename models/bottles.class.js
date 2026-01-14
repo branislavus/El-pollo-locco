@@ -13,6 +13,10 @@ class Bottles extends DrawableObject {
         this.width = 44;
     }
 
+    /**
+     * Returns a random bottle image index.
+     * @returns {number} Random index 0 or 1 for bottle image selection.
+     */
     randomBottle() {
         return Math.floor(Math.random() * 2);
     }

@@ -7,7 +7,6 @@ class DrawableObject {
     height = 100;
     width = 100;
 
-
     /**
      * Loads a single image from the specified path.
      * @param {string} path - The path to the image file.
@@ -16,7 +15,6 @@ class DrawableObject {
         this.img = new Image();
         this.img.src = path;
     }
-
 
     /**
      * Loads multiple images from an array of paths into the image pool.
@@ -30,7 +28,6 @@ class DrawableObject {
         });
     }
 
-
     /**
      * Draws the object on the canvas.
      * @param {CanvasRenderingContext2D} ctx - The canvas rendering context.
@@ -39,7 +36,6 @@ class DrawableObject {
             if (this.img && this.img.complete && this.img.naturalHeight > 0) 
                 ctx.drawImage(this.img, this.x, this.y, this.width, this.height);
     }
-
 
     /**
      * Checks if this object is colliding with another movable object.
@@ -52,7 +48,6 @@ class DrawableObject {
             this.x < mo.x + mo.width &&
             this.y < mo.y + mo.height;
     }
-
 
     /**
      * Checks collision with offset boundaries for more precise detection.
@@ -67,7 +62,6 @@ class DrawableObject {
             this.y + this.height - this.offset.bottom > mo.y
         );
     }
-
 
     /**
      * Draws red offset frames for debugging collision boundaries (Character only).
@@ -102,5 +96,4 @@ class DrawableObject {
             ctx.stroke();
         }
     }
-
 }

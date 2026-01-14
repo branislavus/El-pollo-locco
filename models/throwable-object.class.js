@@ -14,7 +14,6 @@ class ThrowableObject extends MovableObject {
     hasHitEnemy = false;
     splashInterval = null;
 
-
     /**
      * Creates a new ThrowableObject instance and initiates the throw.
      * @param {number} x - Starting x position.
@@ -32,7 +31,6 @@ class ThrowableObject extends MovableObject {
         this.throw();
     }
 
-
     /**
      * Initiates the throw animation and physics.
      */
@@ -42,14 +40,12 @@ class ThrowableObject extends MovableObject {
         this.startThrowInterval();
     }
 
-
     /**
      * Plays the throw sound.
      */
     playThrowSound() {
         if (typeof audioManager !== 'undefined') audioManager.onThrow();
     }
-
 
     /**
      * Initializes throw physics.
@@ -60,7 +56,6 @@ class ThrowableObject extends MovableObject {
         this.rotationAngle = 0;
     }
 
-
     /**
      * Starts the throw movement interval.
      */
@@ -69,7 +64,6 @@ class ThrowableObject extends MovableObject {
             this.updateThrowMovement();
         }, 1000 / 60);
     }
-
 
     /**
      * Updates throw movement and rotation.
@@ -83,7 +77,6 @@ class ThrowableObject extends MovableObject {
         }
     }
 
-
     /**
      * Moves the bottle horizontally.
      */
@@ -91,14 +84,12 @@ class ThrowableObject extends MovableObject {
         this.x += this.throwLeft ? -6 : 6;
     }
 
-
     /**
      * Rotates the bottle.
      */
     rotateBottle() {
         this.rotationAngle += 0.1;
     }
-
 
     /**
      * Handles bottle landing and starts splash animation.
@@ -108,7 +99,6 @@ class ThrowableObject extends MovableObject {
         this.startSplashAnimation();
     }
 
-
     /**
      * Starts the splash animation and sound.
      */
@@ -116,7 +106,6 @@ class ThrowableObject extends MovableObject {
         this.playBreakSound();
         this.animateSplash()
     }
-
 
     /**
      * Plays the bottle break sound once.
@@ -127,7 +116,6 @@ class ThrowableObject extends MovableObject {
             this.soundPlayed = true;
         }
     }
-
 
     /**
      * Animates the splash effect frame by frame.
@@ -144,7 +132,6 @@ class ThrowableObject extends MovableObject {
         }, 80);
     }
 
-
     /**
      * Checks if there are more splash frames.
      * @param {number} splashIndex - Current splash frame index.
@@ -154,7 +141,6 @@ class ThrowableObject extends MovableObject {
         return splashIndex < this.BOTTLE_SPLASH.length;
     }
 
-
     /**
      * Shows a specific splash frame.
      * @param {number} splashIndex - Splash frame index to display.
@@ -162,7 +148,6 @@ class ThrowableObject extends MovableObject {
     showSplashFrame(splashIndex) {
         this.img = this.imagePool[this.BOTTLE_SPLASH[splashIndex]];
     }
-
 
     /**
      * bottle removal after animation.
@@ -174,7 +159,6 @@ class ThrowableObject extends MovableObject {
         }
         this.shouldBeRemoved = true;
     }
-
 
     /**
      * Draws the bottle with rotation if in air, or normally if on ground.
@@ -188,7 +172,6 @@ class ThrowableObject extends MovableObject {
         }
     }
 
-
     /**
      * Checks if bottle should be drawn rotated.
      * @returns {boolean} True if should be rotated.
@@ -196,7 +179,6 @@ class ThrowableObject extends MovableObject {
     shouldDrawRotated() {
         return this.isAboveGround() && this.rotationAngle !== undefined;
     }
-
 
     /**
      * Draws the bottle with rotation.
@@ -210,7 +192,6 @@ class ThrowableObject extends MovableObject {
         ctx.restore();
     }
 
-
     /**
      * Draws the bottle normally without rotation.
      * @param {CanvasRenderingContext2D} ctx - Canvas rendering context.
@@ -218,6 +199,4 @@ class ThrowableObject extends MovableObject {
     drawNormal(ctx) {
         ctx.drawImage(this.img, this.x, this.y, this.width, this.height);
     }
-
-
 }

@@ -79,8 +79,8 @@ class Egg extends MovableObject {
     }
 
     /**
- * Plays onEggCracking sound.
- */
+    * Plays onEggCracking sound.
+    */
     playEggCrackingSound() {
         if (typeof audioManager !== 'undefined')
             audioManager.onEggCracking();

@@ -70,11 +70,9 @@ class AudioManager {
    */
   playSound(soundName, playbackRate = 1.0, volume = null) {
     if (this.isMuted || !this.sounds[soundName]) return;
-
     const sound = this.sounds[soundName];
     sound.currentTime = 0;
     sound.playbackRate = playbackRate;
-
     if (volume !== null)
       sound.volume = volume * this.masterVolume;
     sound.play();
@@ -335,7 +333,6 @@ class AudioManager {
   onEggCracking() {
     this.playSound('eggCracking', 1);
   }
-
 
   /**
    * Starts playing background music.

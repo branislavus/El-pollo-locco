@@ -235,7 +235,6 @@ class CollisionManager {
      * @param {Endboss} endboss - Endboss to damage.
      */
     hurtEndboss(endboss) {
-
         if (endboss.bossEnergy > 0) {
             endboss.bossEnergy -= 1;
             endboss.hurtImageIndex = 1;

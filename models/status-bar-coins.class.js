@@ -12,7 +12,6 @@ class StatusBarCoins extends DrawableObject {
 
     ];
 
-
     /**
      * Creates a new StatusBarCoins instance and initializes position.
      */
@@ -26,7 +25,6 @@ class StatusBarCoins extends DrawableObject {
         this.setCoinsAmount(0);
     }
 
-
     /**
      * Sets the coin amount and updates the displayed image.
      * @param {number} coinsCollected - Number of coins collected (divided by 4 for display).
@@ -36,6 +34,4 @@ class StatusBarCoins extends DrawableObject {
         let path = this.IMAGES_STATUSBAR_COINS_BLUE[this.coinsCollected];
         this.img = this.imagePool[path];
     }
-
-
 }

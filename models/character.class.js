@@ -132,10 +132,9 @@ class Character extends MovableObject {
         } else {
             this.resetJumpAnimation();
             if (this.canMove() && !this.isDead())
-                this.playAnimation(this.IMAGES_WALKING);
+         this.playAnimation(this.IMAGES_WALKING);
         }
     }
-
 
     /**
      * Executes the dead animation and stops all movement.
@@ -203,7 +202,6 @@ class Character extends MovableObject {
             this.playAnimation(this.IMAGES_IDLE);
         }
     }
-
 
     /**
      * Plays sleep sound if bored.

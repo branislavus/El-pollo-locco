@@ -168,8 +168,7 @@ document.addEventListener("keyup", function (event) {
  */
 function restartGame() {
     if (!countRestart()) return;
-    if (isGameFinished()) return;
-    
+    if (isGameFinished()) return; 
     stopAllGameAnimations();
     stopAllSounds();
     StartGame();
@@ -190,12 +189,10 @@ function isGameFinished() {
 function countRestart() {
     const currentTime = Date.now();
     const timeSinceLastRestart = calculateTimeSinceLastRestart(currentTime);
-
     if (isRestartOnCooldown(timeSinceLastRestart)) {
         logCooldownMessage(timeSinceLastRestart);
         return false;
     }
-
     updateLastRestartTime(currentTime);
     return true;
 }

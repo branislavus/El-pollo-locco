@@ -19,7 +19,3 @@ function loadSoundState() {
 function saveSoundState(state) {
     localStorage.setItem("soundFlag", JSON.stringify(state));
 }
-
-
-
-

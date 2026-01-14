@@ -16,7 +16,6 @@ class MovableObject extends DrawableObject {
         bottom: 0,
     };
 
-
     /**
      * Applies gravity to the object, making it fall down.
      */
@@ -31,7 +30,6 @@ class MovableObject extends DrawableObject {
         }, 1000 / 30);
     }
 
-
     /**
      * Checks if the object is above ground level.
      * @returns {boolean} True if above ground, else false.
@@ -44,7 +42,6 @@ class MovableObject extends DrawableObject {
         }
     }
 
-
     /**
      * Moves the object to the right.
      */
@@ -52,7 +49,6 @@ class MovableObject extends DrawableObject {
         this.x += this.speed;
         this.characterDirectionLeft = false;
     }
-
 
     /**
      * Moves the object to the left.
@@ -62,7 +58,6 @@ class MovableObject extends DrawableObject {
         if (this instanceof Character)
             this.characterDirectionLeft = true;
     }
-
 
     /**
      * Plays an animation by cycling through the given images.
@@ -75,7 +70,6 @@ class MovableObject extends DrawableObject {
         this.currentImage++;
     }
 
-
     /**
      * Plays jump animation once without looping.
      * @param {string[]} images - Array of jump image paths.
@@ -84,7 +78,6 @@ class MovableObject extends DrawableObject {
         this.startPlayJumpAnimationOnce();
         this.continuePlayJumpAnimationOnce(images);
     }
-
 
     /**
     * Start animation on first call.
@@ -95,7 +88,6 @@ class MovableObject extends DrawableObject {
             this.jumpAnimationIndex = 0;
         }
     }
-
 
     /**
     * Play through frames once. Stay at last frame if still in air
@@ -108,7 +100,6 @@ class MovableObject extends DrawableObject {
         }
     }
 
-
     /**
      * Resets jump animation state (call when landing).
      */
@@ -116,7 +107,6 @@ class MovableObject extends DrawableObject {
         this.isJumping = false;
         this.jumpAnimationIndex = 0;
     }
-
 
     /**
      * Reduces energy when hit and records the time.
@@ -133,7 +123,6 @@ class MovableObject extends DrawableObject {
         this.lastHit = new Date().getTime();
     }
 
-
     /**
      * Checks if the object is dead.
      * @returns {boolean} True if energy is 0 or less.
@@ -141,7 +130,6 @@ class MovableObject extends DrawableObject {
     isDead() {
         return this.energy <= 0;
     }
-
 
     /**
      * Checks if the object is hurt (recently hit).
@@ -153,7 +141,6 @@ class MovableObject extends DrawableObject {
         return timePast < 1.5;
     }
 
-
     /**
      * Collects a bottle if colliding with it.
      * @param {Object} bottle - The bottle object to collect.
@@ -163,7 +150,6 @@ class MovableObject extends DrawableObject {
         if (this.isColliding(bottle))
             this.collectedBottles += 1;
     }
-
 
     /**
      * Collects a coin if colliding with it.
@@ -175,7 +161,6 @@ class MovableObject extends DrawableObject {
             this.collectedCoins += 1;
     }
 
-
     /**
      * Stops the gravity interval.
      */
@@ -185,6 +170,4 @@ class MovableObject extends DrawableObject {
             this.gravityInterval = null;
         }
     }
-
-
 }

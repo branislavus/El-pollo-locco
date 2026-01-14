@@ -7,7 +7,6 @@ class Coins extends MovableObject {
 
      currentImage = 0;
 
-
     /**
      * Creates a new Coin instance at the specified position.
      * @param {number} x - The x-coordinate of the coin.
@@ -22,7 +21,6 @@ class Coins extends MovableObject {
         this.width = 60;
         this.animate();
     }
-
 
     /**
      * Starts the coin animation interval.

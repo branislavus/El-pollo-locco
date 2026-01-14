@@ -22,7 +22,6 @@ class Chicken extends MovableObject {
     currentImage = 0;
     soundTimeout = null;
 
-
     /**
      * Creates a new Chicken instance and initializes movement and animation.
      */
@@ -36,7 +35,6 @@ class Chicken extends MovableObject {
         this.animate();
 
     }
-
 
     /**
      * Starts the movement, animation, and sound intervals for the chicken.
@@ -130,7 +128,6 @@ class Chicken extends MovableObject {
     chooseSound(randomSound) {
         if (world?.gameOver || this.isDead()) return;
         if (typeof audioManager === 'undefined') return;
-
         const sounds = [audioManager.onChicken1, audioManager.onChicken2, audioManager.onChicken1];
         sounds[randomSound]?.call(audioManager);
     }

@@ -208,7 +208,6 @@ class World {
         this.eggs.push(egg);
     }
 
-
     /**
      * Removes eggs that are marked for removal.
      */
@@ -231,7 +230,6 @@ class World {
         this.smoothKnockbackCharacter(-40);
     }
 
-
     /**
      * Reduces character energy by specified amount.
      * @param {number} damage - Amount of damage to apply.
@@ -242,14 +240,12 @@ class World {
             this.character.energy = 0;
     }
 
-
     /**
      * Updates the health status bar with current character energy.
      */
     updateHealthBar() {
         this.statusBarHealth.setPercentage(this.character.energy);
     }
-
 
     /**
      * Checks if character died and triggers death animation.
@@ -263,7 +259,6 @@ class World {
         return false;
     }
 
-
     /**
      * Plays hurt sound effect if audio manager is available.
      */
@@ -271,7 +266,6 @@ class World {
         if (typeof audioManager !== 'undefined')
             audioManager.onHurt();
     }
-
 
     /**
      * Smoothly knocks character back with animation.

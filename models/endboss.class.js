@@ -75,7 +75,6 @@ class Endboss extends MovableObject {
     ];
     static instanceCounter = 0;
 
-
     /**
      * Creates a new Endboss instance and initializes all animations.
      */
@@ -99,7 +98,6 @@ class Endboss extends MovableObject {
         this.eggHandler.startEggThrowTimer();
     }
 
-
     /**
      * Starts the main animation interval for the endboss.
      */
@@ -108,7 +106,6 @@ class Endboss extends MovableObject {
             this.handleAnimationState();
         }, 200);
     }
-
 
     /**
      * Handles the animation state based on priority.
@@ -128,7 +125,6 @@ class Endboss extends MovableObject {
         }
     }
 
-
     /**
      * Checks if death animation should play.
      * @returns {boolean} True if should play death animation.
@@ -136,7 +132,6 @@ class Endboss extends MovableObject {
     shouldPlayDeathAnimation() {
         return this.isDead() && !this.isDeathAnimationComplete && !this.deathSoundPlayed;
     }
-
 
     /**
      * Plays death sound and schedules death animation.
@@ -150,7 +145,6 @@ class Endboss extends MovableObject {
         }, 1000);
     }
 
-
     /**
      * Checks if hurt animation should play.
      * @returns {boolean} True if should play hurt animation.
@@ -158,7 +152,6 @@ class Endboss extends MovableObject {
     shouldPlayHurtAnimation() {
         return this.isHurt() && !this.isDead() && !this.isDeathAnimationComplete;
     }
-
 
     /**
      * Checks if attack animation should play.
@@ -178,7 +171,6 @@ class Endboss extends MovableObject {
         return shouldAttack;
     }
 
-
     /**
      * Checks if alert animation should play.
      * @returns {boolean} True if should play alert animation.
@@ -186,7 +178,6 @@ class Endboss extends MovableObject {
     shouldPlayAlertAnimation() {
         return !this.isDead() && !this.isHurt() && !this.attackInProgress && !this.isDeathAnimationComplete;
     }
-
 
     /**
      * Generates random attack settings.
@@ -200,7 +191,6 @@ class Endboss extends MovableObject {
         };
     }
 
-
     /**
      * Resets attack state to idle.
      */
@@ -208,7 +198,6 @@ class Endboss extends MovableObject {
         this.attackInProgress = false;
         this.attackPhase = 'idle';
     }
-
 
     /**
      * Checks if boss should attack based on character distance.
@@ -223,7 +212,6 @@ class Endboss extends MovableObject {
         return false;
     }
 
-
     /**
      * Plays walk animation and sound.
      */
@@ -231,7 +219,6 @@ class Endboss extends MovableObject {
         this.playAnimation(this.IMAGES_WALKING);
         this.playBossWalkSound();
     }
-
 
     /**
      * Plays boss walk sound if not muted.
@@ -250,7 +237,6 @@ class Endboss extends MovableObject {
         }
     }
 
-
     /**
      * Plays bite sound with delay.
      */
@@ -267,7 +253,6 @@ class Endboss extends MovableObject {
         if (typeof audioManager !== 'undefined') audioManager.bossOnGrowl();
     }
 
-
     /**
      * Checks if boss is hurt.
      * @returns {boolean} True if hurt.
@@ -275,7 +260,6 @@ class Endboss extends MovableObject {
     isHurt() {
         return this.hurtImageIndex == 1;
     }
-
 
     /**
      * Checks if boss is dead.
@@ -285,14 +269,12 @@ class Endboss extends MovableObject {
         return this.bossEnergy <= 0;
     }
 
-
     /**
      * Plays alert animation.
      */
     alert() {
         this.playAnimation(this.IMAGES_ALERT);
     }
-
 
     /**
      * Stops all boss movements and sets death state.
@@ -303,7 +285,6 @@ class Endboss extends MovableObject {
         this.deathAnimationStarted = true;
         this.currentImage = 0;
     }
-
 
     /**
      * Stops all animations and movements.
@@ -316,7 +297,6 @@ class Endboss extends MovableObject {
         this.launchClearIntervals();
         this.launchClearTimeouts();
     }
-
 
     /**
      * Clears all active intervals.
@@ -332,7 +312,6 @@ class Endboss extends MovableObject {
         }
     }
 
-
     /**
      * Clears all active timeouts.
      */
@@ -344,8 +323,4 @@ class Endboss extends MovableObject {
             }
         });
     }
-
-
-
-
 }

@@ -183,8 +183,6 @@ function fullscreen() {
     }
 }
 
-
-
 /**
  * Opens fullscreen mode with cross-browser support.
  * @param {HTMLElement} fullscreen - Element to display in fullscreen.

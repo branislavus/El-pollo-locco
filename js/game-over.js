@@ -14,7 +14,6 @@ function endGame() {
     }, 8000);
 }
 
-
 /**
  * Resets the global game state variables.
  */
@@ -96,7 +95,6 @@ function stopEnemyAnimations() {
         });
     }
 }
-
 
 /**
  * Removes all throwable objects from the game.

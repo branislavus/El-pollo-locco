@@ -8,7 +8,6 @@ class CollisionJumpKill {
         this.world = world;
     }
 
-
     /**
      * Checks if character is jumping on enemy.
      * @param {MovableObject} enemy - Enemy to check collision with.
@@ -17,10 +16,8 @@ class CollisionJumpKill {
     isJumpingOnEnemy(enemy) {
         const characterBox = this.getCharacterCollisionBox();
         const enemyBox = this.getEnemyCollisionBox(enemy);
-
         return this.isValidJumpKill(characterBox, enemyBox);
     }
-
 
     /**
      * Gets character collision box with offset.
@@ -33,7 +30,6 @@ class CollisionJumpKill {
             bottom: this.world.character.y + this.world.character.height - this.world.character.offset.bottom
         };
     }
-
 
     /**
      * Gets enemy collision box with offset.
@@ -48,7 +44,6 @@ class CollisionJumpKill {
         };
     }
 
-
     /**
      * Validates if jump kill conditions are met.
      * @param {Object} characterBox - Character collision box.
@@ -62,10 +57,8 @@ class CollisionJumpKill {
         const isHorizontallyOverlapping =
             characterBox.right > enemyBox.left &&
             characterBox.left < enemyBox.right;
-
         return isFalling && isLandingOnTop && isAboveEnemy && isHorizontallyOverlapping;
     }
-
 
     /**
      * Collects all enemies that can be killed by jump.
@@ -73,18 +66,14 @@ class CollisionJumpKill {
      */
     collectJumpKillableEnemies() {
         const enemiesToKill = [];
-
         for (let i = this.world.level.enemies.length - 1; i >= 0; i--) {
             const enemy = this.world.level.enemies[i];
             if (enemy.isDead() || !this.world.character.isCollidingOffset(enemy)) continue;
-
             if (this.isJumpingOnEnemy(enemy)) 
                 enemiesToKill.push({ enemy, index: i });           
         }
-
         return enemiesToKill;
     }
-
 
     /**
      * Executes jump kill on collected enemies.
@@ -96,5 +85,4 @@ class CollisionJumpKill {
             collisionManager.killEnemy(enemy, index);
         });
     }
-
 }

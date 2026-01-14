@@ -2,7 +2,6 @@ class StatusBarEndBoss extends DrawableObject {
 
     bossEnergy = 5;
 
-
     IMAGES_STATUSBAR_BOSS_ORANGE = [
         'img/7_statusbars/2_statusbar_endboss/orange/orange0.png',
         'img/7_statusbars/2_statusbar_endboss/orange/orange20.png',
@@ -11,7 +10,6 @@ class StatusBarEndBoss extends DrawableObject {
         'img/7_statusbars/2_statusbar_endboss/orange/orange80.png',
         'img/7_statusbars/2_statusbar_endboss/orange/orange100.png',
     ];
-
 
     /**
      * Creates a new StatusBarEndBoss instance and initializes position.
@@ -26,7 +24,6 @@ class StatusBarEndBoss extends DrawableObject {
         this.setBossEnergyAmount(5);
     }
 
-
     /**
      * Sets the boss energy amount and updates the displayed image.
      * @param {number} bossEnergy - Boss energy level (0-5).
@@ -36,6 +33,4 @@ class StatusBarEndBoss extends DrawableObject {
         let path = this.IMAGES_STATUSBAR_BOSS_ORANGE[this.bossEnergy];
         this.img = this.imagePool[path];
     }
-
-
 }
