@@ -56,8 +56,60 @@ window.addEventListener("keydown", e => handleKey(e, true));
 window.addEventListener("keyup", e => handleKey(e, false));
 
 /**
+ * Creates a preventDefault handler for a callback.
+ * @param {Function} callback - Function to call after preventing default.
+ * @returns {Function} Event handler function.
+ */
+function createPreventDefaultHandler(callback) {
+    return (e) => {
+        e.preventDefault();
+        callback();
+    };
+}
+
+/**
+ * Creates event handler functions for touch button.
+ * @param {Function} onPress - Callback when button is pressed.
+ * @param {Function} onRelease - Callback when button is released.
+ * @param {Function} onCancel - Callback when touch is cancelled.
+ * @returns {Object} Object with handleStart, handleEnd, handleCancel functions.
+ */
+function createTouchHandlers(onPress, onRelease, onCancel) {
+    return {
+        handleStart: createPreventDefaultHandler(onPress),
+        handleEnd: createPreventDefaultHandler(onRelease),
+        handleCancel: createPreventDefaultHandler(onCancel)
+    };
+}
+
+/**
+ * Attaches event listeners to button element.
+ * @param {HTMLElement} btn - Button element.
+ * @param {Object} handlers - Object containing handleStart, handleEnd, handleCancel.
+ */
+function attachTouchListeners(btn, handlers) {
+    btn.addEventListener('touchstart', handlers.handleStart, { passive: false });
+    btn.addEventListener('touchend', handlers.handleEnd, { passive: false });
+    btn.addEventListener('touchcancel', handlers.handleCancel, { passive: false });
+}
+
+/**
+ * Stores button and handlers in the touch button registry.
+ * @param {string} id - Button element ID.
+ * @param {HTMLElement} btn - Button element.
+ * @param {Object} handlers - Object containing handleStart, handleEnd, handleCancel.
+ */
+function addTouchButtonToRegistry(id, btn, handlers) {
+    touchButtonRegistry.push({
+        id,
+        btn,
+        ...handlers
+    });
+}
+
+/**
  * Adds touch event listeners to a button element.
- * Handles touchstart, touchend, touchcancel and store events to Registry.
+ * Handles touchstart, touchend, touchcancel and stores events in registry.
  * @param {string} id - Button element ID.
  * @param {Function} onPress - Callback when button is pressed.
  * @param {Function} onRelease - Callback when button is released.
@@ -67,32 +119,9 @@ function addTouchButton(id, onPress, onRelease, onCancel = onRelease) {
     const btn = document.getElementById(id);
     if (!btn) return;
 
-    const handleStart = (e) => {
-        e.preventDefault();
-        onPress();
-    };
-
-    const handleEnd = (e) => {
-        e.preventDefault();
-        onRelease();
-    };
-
-    const handleCancel = (e) => {
-        e.preventDefault();
-        onCancel();
-    };
-
-    btn.addEventListener('touchstart', handleStart, { passive: false });
-    btn.addEventListener('touchend', handleEnd, { passive: false });
-    btn.addEventListener('touchcancel', handleCancel, { passive: false });
-
-    touchButtonRegistry.push({
-        id,
-        btn,
-        handleStart,
-        handleEnd,
-        handleCancel
-    });
+    const handlers = createTouchHandlers(onPress, onRelease, onCancel);
+    attachTouchListeners(btn, handlers);
+    addTouchButtonToRegistry(id, btn, handlers);
 }
 
 /**
@@ -153,6 +182,8 @@ function fullscreen() {
         fullscreenIcon.classList.remove('fullscreenIcon');
     }
 }
+
+
 
 /**
  * Opens fullscreen mode with cross-browser support.
