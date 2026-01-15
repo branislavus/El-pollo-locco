@@ -67,6 +67,16 @@
         justify-content: space-between;
     }
 
+    .end-wallpaper {
+        position: absolute;
+        top: 0;
+        width: 100vw;
+        height: 100vh;
+        flex-direction: column;
+        align-items: center;
+        justify-content: space-between;
+    }
+
     .impressum-mobile {
         display: flex;
     }
@@ -135,6 +145,16 @@
     }
 
     .startWallpaper {
+        position: absolute;
+        top: 0;
+        width: 100vw;
+        height: 100vh;
+        flex-direction: column;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+     .end-wallpaper {
         position: absolute;
         top: 0;
         width: 100vw;

@@ -10,6 +10,7 @@
     <link rel="stylesheet" href="./css/style.css">
     <link rel="stylesheet" href="./css/mobile.css">
     <link rel="stylesheet" href="./css/burger-menu.css">
+    <link rel="stylesheet" href="./css/animations.css">
 
     <script src="./models/drawable-object.class.js"></script>
     <script src="./models/movable-object.class.js"></script>
@@ -71,7 +72,17 @@
 
                 <canvas id="canvas" width="720" height="480"></canvas>
                 <div id="startWallpaper" class="startWallpaper">
-                    <button type="button" id="startButton" class="startButton mar-top-20">Start</button>
+                    <button type="button" id="startButton" class="start-button mar-top-20 zoom-button">Start</button>
+                    <div class="impressum-mobile" id="impressum-mobile">
+                        <a class="impressum-text" href="./impressum.html" target="_blank"
+                            rel="noopener noreferrer">impressum</a><br>
+                        <a class="impressum-text" href="./legal-policy.html" target="_blank"
+                            rel="noopener noreferrer">legal-policy</a>
+                    </div>
+                </div>
+                <div id="endWallpaper" class="end-wallpaper">
+                    <div id="endHomeButton" class="start-button end-home-button mar-top-20 zoom-button" onclick="quitGame()">Home</div>
+                    <div id="endResetButton" class="start-button end-restart-button mar-top-20 zoom-button" onclick="restartGame()">Restart</div>
                     <div class="impressum-mobile" id="impressum-mobile">
                         <a class="impressum-text" href="./impressum.html" target="_blank"
                             rel="noopener noreferrer">impressum</a><br>
@@ -123,7 +134,7 @@
                         <tr class="legendButtons">
                             <td class="legendButtonsName">press start to play</td>
                             <td class="legendButtonsTd">- <button type="button"
-                                    class="startButton start-button-legend" disabled>Start</button>
+                                    class="start-button start-button-legend" disabled>Start</button>
                             </td>
                         </tr>
                         <tr class="legendButtons">
