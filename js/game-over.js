@@ -2,16 +2,74 @@ let winGame = false;
 let loseGame = false;
 
 /**
- * Ends the game, stops all animations and sounds, shows the end screen, and resets everything after a timeout.
+ * Ends the game with a timed sequence of animations and state resets.
+ * Shows win/lose screen, stops game after 2s, then hides screens and shows end wallpaper after 4s total.
  */
 function endGame() {
+    showWinOrLoseScreen();
     stopGame();
-    showEndAnimation();
     setTimeout(() => {
-        hideEndAnimation();
-        showStartWallpaper();
         resetGameState();
-    }, 8000);
+        setTimeout(() => {
+            hideWinOrLoseScreen();
+            hideCanvas();
+            endWallpaperOn();
+        }, 2000);
+    }, 2000);
+}
+
+/**
+ * Closes the end wallpaper and returns to the start screen.
+ * Used when player quits from the end game screen.
+ */
+function quitGametoStartscreen() {
+    endWallpaperOff();
+    showStartWallpaper();
+    showCanvas();
+}
+
+/**
+ * Closes the end wallpaper and restarts the game.
+ * Used when player chooses to play again from the end game screen.
+ */
+function restartGameFromEndscreen() {
+    endWallpaperOff();
+    showCanvas();
+    restartGame();
+}
+
+/**
+ * Shows the end game wallpaper overlay.
+ */
+function endWallpaperOn() {
+    const endWallpaper = document.getElementById('endWallpaper');
+    endWallpaper.classList.remove('d_none');
+    endWallpaper.style.display = 'flex';
+}
+
+/**
+ * Hides the end game wallpaper overlay.
+ */
+function endWallpaperOff() {
+    const endWallpaper = document.getElementById('endWallpaper');
+    endWallpaper.classList.add('d_none');
+    endWallpaper.style.display = 'none';
+}
+
+/**
+ * Hides the game canvas.
+ */
+function hideCanvas() {
+    const canvas = document.getElementById('canvas');
+    canvas.classList.add('d_none');
+}
+
+/**
+ * Shows the game canvas.
+ */
+function showCanvas() {
+    const canvas = document.getElementById('canvas');
+    canvas.classList.remove('d_none');
 }
 
 /**
@@ -220,7 +278,7 @@ function stoppGlobalAudioManager() {
 /**
  * Shows the end animation (win/lose screen).
  */
-function showEndAnimation() {
+function showWinOrLoseScreen() {
     if (winGame) {
         showWinScreen();
     } else if (loseGame) {
@@ -253,7 +311,7 @@ function showLoseScreen() {
 /**
  * Hides the end animation (both screens).
  */
-function hideEndAnimation() {
+function hideWinOrLoseScreen() {
     hideWinScreen();
     hideLoseScreen();
 }

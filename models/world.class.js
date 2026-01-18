@@ -103,7 +103,7 @@ class World {
         this.gameOver = true;
         setTimeout(() => {
             endGame();
-        }, 4000);
+        }, 1000);
     }
 
     /**
@@ -114,7 +114,7 @@ class World {
         this.gameOver = true;
         setTimeout(() => {
             endGame();
-        }, 4000);
+        }, 1000);
     }
 
     /**

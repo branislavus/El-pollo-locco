@@ -23,26 +23,37 @@ function hideStartWallpaper() {
  * Shows the start wallpaper and hides the canvas and end screens.
  */
 function showStartWallpaper() {
-    const startWallpaper = document.getElementById('startWallpaper');
-    const canvas = document.getElementById('canvas');
-    const endWinWallpaper = document.getElementById('endWinWallpaper');
-    const endLoseWallpaper = document.getElementById('endLoseWallpaper');
-
-    hideEndScreens(endWinWallpaper, endLoseWallpaper);
-    displayStartScreen(startWallpaper, canvas);
+    hideEndScreens();
+    displayStartScreen();
     disableDesktopButtons();
 }
 
 /**
  * Hides both end game screens.
- * @param {HTMLElement} endWinWallpaper - Win screen element.
- * @param {HTMLElement} endLoseWallpaper - Lose screen element.
  */
-function hideEndScreens(endWinWallpaper, endLoseWallpaper) {
+function hideEndScreens() {
+    const endWinWallpaper = document.getElementById('endWinWallpaper');
+    const endLoseWallpaper = document.getElementById('endLoseWallpaper');
+    hideEndWinWallpaper(endWinWallpaper);
+    hideEndLoseWallpaper(endLoseWallpaper);
+}
+
+/**
+ * Hides the win screen.
+ * @param {HTMLElement} endWinWallpaper - Win screen element.
+ */
+function hideEndWinWallpaper(endWinWallpaper) {
     if (endWinWallpaper) {
         endWinWallpaper.classList.add('d_none');
         endWinWallpaper.style.display = 'none';
     }
+}
+
+/**
+ * Hides the lose screen.
+ * @param {HTMLElement} endLoseWallpaper - Lose screen element.
+ */
+function hideEndLoseWallpaper(endLoseWallpaper) {
     if (endLoseWallpaper) {
         endLoseWallpaper.classList.add('d_none');
         endLoseWallpaper.style.display = 'none';
@@ -54,7 +65,9 @@ function hideEndScreens(endWinWallpaper, endLoseWallpaper) {
  * @param {HTMLElement} startWallpaper - Start screen element.
  * @param {HTMLElement} canvas - Game canvas element.
  */
-function displayStartScreen(startWallpaper, canvas) {
+function displayStartScreen() {
+    const startWallpaper = document.getElementById('startWallpaper');
+    const canvas = document.getElementById('canvas');
     if (startWallpaper && canvas) {
         canvas.style.display = 'none';
         startWallpaper.style.display = 'flex';
@@ -168,7 +181,7 @@ document.addEventListener("keyup", function (event) {
  */
 function restartGame() {
     if (!countRestart()) return;
-    if (isGameFinished()) return; 
+    if (isGameFinished()) return;
     stopAllGameAnimations();
     stopAllSounds();
     StartGame();

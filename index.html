@@ -50,7 +50,8 @@
     <div class="main-container">
         <div class="desktop-action-buttons">
             <div id="restartGameDesktop" class="restartGame burger-menu-button" onclick="restartGame()"></div>
-            <div id="toggleAllSoundDesktop" class="toggleAllSoundEnabled burger-menu-button" onclick="toggleAllSound()"></div>
+            <div id="toggleAllSoundDesktop" class="toggleAllSoundEnabled burger-menu-button" onclick="toggleAllSound()">
+            </div>
             <div id="fullscreenIconDesktop" class="fullscreenIcon burger-menu-button" onclick="fullscreen()"></div>
         </div>
         <div class="burger-menu" id="burger-menu">
@@ -80,9 +81,13 @@
                             rel="noopener noreferrer">legal-policy</a>
                     </div>
                 </div>
-                <div id="endWallpaper" class="end-wallpaper">
-                    <div id="endHomeButton" class="start-button end-home-button mar-top-20 zoom-button" onclick="quitGame()">Home</div>
-                    <div id="endResetButton" class="start-button end-restart-button mar-top-20 zoom-button" onclick="restartGame()">Restart</div>
+                <div id="endWallpaper" class="end-wallpaper d_none">
+                    <div class="endWallpaper-buttons">
+                        <div id="endHomeButton" class="start-button end-home-button mar-top-20 zoom-button"
+                            onclick="quitGametoStartscreen()">Home</div>
+                        <div id="endResetButton" class="start-button end-restart-button mar-top-20 zoom-button"
+                            onclick="restartGameFromEndscreen()">Restart</div>
+                    </div>
                     <div class="impressum-mobile" id="impressum-mobile">
                         <a class="impressum-text" href="./impressum.html" target="_blank"
                             rel="noopener noreferrer">impressum</a><br>
@@ -110,7 +115,7 @@
             <div id="action-keys-legend-section" class="action-keys-legend-section">
                 <h2>action keys</h2>
                 <div class="tables">
-                    <table  class="tableButtonsLegend">
+                    <table class="tableButtonsLegend">
 
                         <tr>
                             <td class="legendButtonsName">left</td>
@@ -133,8 +138,8 @@
                     <table class="tableButtonsLegend">
                         <tr class="legendButtons">
                             <td class="legendButtonsName">press start to play</td>
-                            <td class="legendButtonsTd">- <button type="button"
-                                    class="start-button start-button-legend" disabled>Start</button>
+                            <td class="legendButtonsTd">- <button type="button" class="start-button start-button-legend"
+                                    disabled>Start</button>
                             </td>
                         </tr>
                         <tr class="legendButtons">
@@ -143,16 +148,18 @@
                             <td class="legendButtonsTd">- <button type="button"
                                     class="restartGame legend-menu-button restartGameLegend" disabled></button></td>
                         </tr>
-                         <tr class="legendButtons">
+                        <tr class="legendButtons">
                             <td class="legendButtonsName">press to sound on/off</td>
                             <td class="legendButtonsTd">- <button type="button"
-                                    class="toggleAllSoundEnabled legend-menu-button fullscreenIconLegend buttonHide" disabled></button>
+                                    class="toggleAllSoundEnabled legend-menu-button fullscreenIconLegend buttonHide"
+                                    disabled></button>
                             </td>
                         </tr>
-                         <tr class="legendButtons">
+                        <tr class="legendButtons">
                             <td class="legendButtonsName">press to fullscreen</td>
                             <td class="legendButtonsTd">- <button type="button"
-                                    class="fullscreenIcon legend-menu-button fullscreenIconLegend buttonHide" disabled></button>
+                                    class="fullscreenIcon legend-menu-button fullscreenIconLegend buttonHide"
+                                    disabled></button>
                             </td>
                         </tr>
 
