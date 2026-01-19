@@ -68,8 +68,9 @@ class CollisionJumpKill {
         const enemiesToKill = [];
         for (let i = this.world.level.enemies.length - 1; i >= 0; i--) {
             const enemy = this.world.level.enemies[i];
-            if (enemy.isDead() || !this.world.character.isCollidingOffset(enemy)) continue;
-            if (this.isJumpingOnEnemy(enemy)) 
+            if (enemy.isDead()) continue;
+            const isColliding = this.world.character.isColliding(enemy);
+            if (isColliding && this.isJumpingOnEnemy(enemy)) 
                 enemiesToKill.push({ enemy, index: i });           
         }
         return enemiesToKill;
