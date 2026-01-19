@@ -56,7 +56,7 @@ class Egg extends MovableObject {
     }
 
     /**
-     * Custom draw method with rotation for rolling effect and don't draw cracked egg.
+     * Draw method with rotation for rolling effect and without draw cracked egg.
      * @param {CanvasRenderingContext2D} ctx - The canvas rendering context.
      */
     draw(ctx) {
