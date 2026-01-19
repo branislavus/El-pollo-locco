@@ -48,6 +48,7 @@ class Endboss extends MovableObject {
     height = 300;
     width = 300;
     speed = 15;
+    x = 2000;
     y = 140;
     bossEnergy = 5;
     hurtImageIndex = 0;
@@ -74,6 +75,12 @@ class Endboss extends MovableObject {
         'moveRightPhaseTimeout2', 'attackStopTimeout', 'hurtCounterTimeout', 'removalTimeout'
     ];
     static instanceCounter = 0;
+    offset = {
+            top: 0,
+            left: 50,
+            right: 0,
+            bottom: 0,
+        };
 
     /**
      * Creates a new Endboss instance and initializes all animations.
@@ -86,8 +93,6 @@ class Endboss extends MovableObject {
         this.loadImages(this.IMAGES_ATTACK);
         this.loadImages(this.IMAGES_HURT);
         this.loadImages(this.IMAGES_DEAD);
-        this.x = 2000;
-        this.energy = 100;
         this.isDeathAnimationComplete = false;
         this.shouldBeRemoved = false;
         this.hurtAnimationStarted = false;
@@ -229,7 +234,7 @@ class Endboss extends MovableObject {
         if (typeof audioManager !== 'undefined') {
             const currentTime = Date.now();
             const timeSinceLastSound = currentTime - this.lastWalkSoundTime;
-            
+
             if (timeSinceLastSound > 800) {
                 audioManager.bossOnWalk();
                 this.lastWalkSoundTime = currentTime;
