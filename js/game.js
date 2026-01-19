@@ -198,6 +198,7 @@ function openFullscreen(fullscreen) {
             fullscreen.msRequestFullscreen();
         }
     }
+    showFullscreenIconInCanvas();
 }
 
 /**
@@ -214,6 +215,23 @@ function closeFullscreen() {
             document.msExitFullscreen();
         }
     }
+    hideFullscreenIconInCanvas();
+}
+
+/**
+ * Shows the fullscreen icon in the canvas during fullscreen mode.
+ */
+function showFullscreenIconInCanvas() {
+    const icon = document.getElementById('fullscreenIconDesktopInCanvas');
+    icon.classList.remove('d_none');
+}
+
+/**
+ * Hides the fullscreen icon in the canvas when exiting fullscreen mode.
+ */
+function hideFullscreenIconInCanvas() {
+    const icon = document.getElementById('fullscreenIconDesktopInCanvas');
+    icon.classList.add('d_none');
 }
 
 /**
