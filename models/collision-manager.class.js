@@ -255,10 +255,8 @@ class CollisionManager {
     /**
      * Kills enemy when character jumps on it.
      * @param {MovableObject} enemy - Enemy to kill.
-     * @param {number} index - Enemy index in array (not used, kept for compatibility).
-     * Mark enemy for removal instead of using index
      */
-    killEnemy(enemy, index) {
+    killEnemy(enemy) {
         this.world.character.speedY = 10;
         this.turnOffEnemySound(enemy);
         this.animateDeadChicken(enemy);
