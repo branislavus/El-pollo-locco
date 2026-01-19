@@ -45,6 +45,7 @@ function endWallpaperOn() {
     const endWallpaper = document.getElementById('endWallpaper');
     endWallpaper.classList.remove('d_none');
     endWallpaper.style.display = 'flex';
+    disableDesktopButtons();
 }
 
 /**
@@ -54,6 +55,7 @@ function endWallpaperOff() {
     const endWallpaper = document.getElementById('endWallpaper');
     endWallpaper.classList.add('d_none');
     endWallpaper.style.display = 'none';
+    enableDesktopButtons();
 }
 
 /**
