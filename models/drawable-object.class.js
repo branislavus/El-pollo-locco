@@ -56,19 +56,20 @@ class DrawableObject {
      */
     isCollidingOffset(mo) {
         return (
-            this.x + this.offset.left < mo.x + mo.width &&
-            this.x + this.width - this.offset.right > mo.x &&
-            this.y + this.offset.top < mo.y + mo.height &&
-            this.y + this.height - this.offset.bottom > mo.y
+            this.x + this.offset.left < mo.x + mo.width - (mo.offset?.right || 0) &&
+            this.x + this.width - this.offset.right > mo.x + (mo.offset?.left || 0) &&
+            this.y + this.offset.top < mo.y + mo.height - (mo.offset?.bottom || 0) &&
+            this.y + this.height - this.offset.bottom > mo.y + (mo.offset?.top || 0)
         );
     }
 
     /**
      * Draws red offset frames for debugging collision boundaries (Character only).
      * @param {CanvasRenderingContext2D} ctx - The canvas rendering context.
+     * set drawBorderFramesYes = true to work
      */
     drawOffsetFrames(ctx) {
-        if (this instanceof Character || this instanceof Chicken || this instanceof ChickenSmall) {
+        if (this instanceof Character || this instanceof Chicken || this instanceof ChickenSmall || this instanceof Endboss) {
             if (this.offset) {
                 ctx.beginPath();
                 ctx.lineWidth = '3';
@@ -86,7 +87,8 @@ class DrawableObject {
     /**
      * Draws blue border frames for debugging object boundaries.
      * @param {CanvasRenderingContext2D} ctx - The canvas rendering context.
-     */
+     * set drawBorderFramesYes = true to work
+      */
     drawBorderFrames(ctx) {
         if (this instanceof Character || this instanceof Chicken || this instanceof ChickenSmall || this instanceof Endboss) {
             ctx.beginPath();
