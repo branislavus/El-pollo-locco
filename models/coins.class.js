@@ -5,7 +5,9 @@ class Coins extends MovableObject {
         'img/8_coin/coin_2.png'
     ];
 
-     currentImage = 0;
+    currentImage = 0;
+    height = 60;
+    width = 60;
 
     /**
      * Creates a new Coin instance at the specified position.
@@ -17,8 +19,6 @@ class Coins extends MovableObject {
         this.loadImages(this.IMAGES_COINS);
         this.x = x;
         this.y = y;
-        this.height = 60;
-        this.width = 60;
         this.animate();
     }
 
@@ -31,8 +31,8 @@ class Coins extends MovableObject {
         }, 500);
     }
 
-    stopShineCoinsInterval(){
-         clearInterval(this.shineCoinsInterval);
-          this.shineCoinsInterval = null;
+    stopShineCoinsInterval() {
+        clearInterval(this.shineCoinsInterval);
+        this.shineCoinsInterval = null;
     }
 }

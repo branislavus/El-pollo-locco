@@ -1,23 +1,23 @@
 class Egg extends MovableObject {
     IMAGE_EGG = 'img/egg.svg';
 
+    height = 80;
+    width = 60;
+    speed = 8;
+    offset = {
+        top: 15,
+        bottom: 15,
+        left: 10,
+        right: 10
+    };
+
     constructor(x, y) {
         super().loadImage(this.IMAGE_EGG);
         this.x = x;
         this.y = y;
-        this.height = 80;
-        this.width = 60;
-        this.speed = 8;
         this.shouldBeRemoved = false;
         this.isCracked = false;
         this.startX = x;
-
-        this.offset = {
-            top: 15,
-            bottom: 15,
-            left: 10,
-            right: 10
-        };
         this.throwEgg();
     }
 

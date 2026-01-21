@@ -72,6 +72,9 @@ class Character extends MovableObject {
         right: 30,
         bottom: 10,
     };
+    y = 226;
+    lastWalkSoundTime = 0;
+    lastSleepSoundTime = 0;
 
     /**
      * Creates a new Character instance and loads all images and sounds.
@@ -84,9 +87,6 @@ class Character extends MovableObject {
         this.loadImages(this.IMAGES_HURT);
         this.loadImages(this.IMAGES_IDLE);
         this.loadImages(this.IMAGES_LONG_IDLE);
-        this.y = 226; 
-        this.lastWalkSoundTime = 0;
-        this.lastSleepSoundTime = 0;
         this.animate();
         this.applyGravity();
     }
@@ -132,7 +132,7 @@ class Character extends MovableObject {
         } else {
             this.resetJumpAnimation();
             if (this.canMove() && !this.isDead())
-         this.playAnimation(this.IMAGES_WALKING);
+                this.playAnimation(this.IMAGES_WALKING);
         }
     }
 
@@ -180,7 +180,7 @@ class Character extends MovableObject {
         if (!audioManager.isMuted) {
             const currentTime = Date.now();
             const timeSinceLastSound = currentTime - this.lastWalkSoundTime;
-            
+
             if (timeSinceLastSound > 300) {
                 audioManager.onWalk();
                 this.lastWalkSoundTime = currentTime;
@@ -196,7 +196,7 @@ class Character extends MovableObject {
         if (this.lastMoveTime > 16000) {
             this.playAnimation(this.IMAGES_LONG_IDLE);
             if (this.movementEnabled && !audioManager.isMuted) {
-               this.playSleepSound();
+                this.playSleepSound();
             }
         } else {
             this.playAnimation(this.IMAGES_IDLE);
@@ -206,13 +206,13 @@ class Character extends MovableObject {
     /**
      * Plays sleep sound if bored.
      */
-    playSleepSound(){
+    playSleepSound() {
         const currentTime = Date.now();
-            const timeSinceLastSound = currentTime - this.lastSleepSoundTime;
-                
-            if (timeSinceLastSound > 5000) {
-                audioManager.onSleep();
-                this.lastSleepSoundTime = currentTime;
+        const timeSinceLastSound = currentTime - this.lastSleepSoundTime;
+
+        if (timeSinceLastSound > 5000) {
+            audioManager.onSleep();
+            this.lastSleepSoundTime = currentTime;
         }
     }
 

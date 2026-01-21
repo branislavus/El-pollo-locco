@@ -12,6 +12,7 @@ class ChickenSmall extends MovableObject {
 
     height = 40;
     width = 40;
+    x = 300 + Math.random() * 1000;
     y = 380;
     currentImage = 0;
     chickenSound = ['onChickeSmall1', 'onChickeSmall2', 'onChickeSmall3'];
@@ -22,6 +23,7 @@ class ChickenSmall extends MovableObject {
         right: 10,
         bottom: 0,
     };
+    speed = 0.1 + Math.random() * 0.3;
 
     /**
      * Creates a new ChickenSmall instance and initializes movement and animation.
@@ -29,10 +31,8 @@ class ChickenSmall extends MovableObject {
     constructor() {
         super().loadImage('img/3_enemies_chicken/chicken_normal/1_walk/1_w.png');
         this.id = ++ChickenSmall.instanceCounter;
-        this.x = 300 + Math.random() * 1000;
         this.loadImages(this.IMAGES_WALKING);
         this.loadImage(this.IMAGE_DEAD_SMALL_CHICKEN);
-        this.speed = 0.1 + Math.random() * 0.3;
         this.animate();
     }
 

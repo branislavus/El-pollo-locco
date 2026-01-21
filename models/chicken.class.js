@@ -12,6 +12,7 @@ class Chicken extends MovableObject {
     world;
     height = 50;
     width = 50;
+    x = 350 + Math.random() * 1500;
     y = 370;
     offset = {
         top: 30,
@@ -21,6 +22,7 @@ class Chicken extends MovableObject {
     };
     currentImage = 0;
     soundTimeout = null;
+    speed = 0.1 + Math.random() * 0.3;
 
     /**
      * Creates a new Chicken instance and initializes movement and animation.
@@ -28,12 +30,9 @@ class Chicken extends MovableObject {
     constructor() {
         super().loadImage('img/3_enemies_chicken/chicken_normal/1_walk/1_w.png');
         this.id = ++Chicken.instanceCounter;
-        this.x = 350 + Math.random() * 1500;
         this.loadImages(this.IMAGES_WALKING);
         this.loadImage(this.IMAGE_DEAD);
-        this.speed = 0.1 + Math.random() * 0.3;
         this.animate();
-
     }
 
     /**

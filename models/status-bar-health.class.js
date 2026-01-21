@@ -1,7 +1,5 @@
 class StatusBarHealth extends DrawableObject {
 
-   percentage = 100;
-
    IMAGES_HEALTH_BLUE = [
       'img/7_statusbars/1_statusbar/2_statusbar_health/blue/0.png',
       'img/7_statusbars/1_statusbar/2_statusbar_health/blue/10.png',
@@ -16,16 +14,18 @@ class StatusBarHealth extends DrawableObject {
       'img/7_statusbars/1_statusbar/2_statusbar_health/blue/100.png'
    ];
 
+   x = 25;
+   y = 10;
+   width = 120;
+   height = 40;
+   percentage = 100;
+
    /**
     * Creates a new StatusBarHealth instance and initializes position.
     */
    constructor() {
       super();
       this.loadImages(this.IMAGES_HEALTH_BLUE);
-      this.x = 25;
-      this.y = 10;
-      this.width = 120;
-      this.height = 40;
       this.setPercentage(100);
    }
 

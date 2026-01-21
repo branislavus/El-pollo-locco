@@ -1,7 +1,5 @@
 class StatusBarBottles extends DrawableObject {
 
-    bottlesCollected = 0;
-
     IMAGES_BOTTLES_BLUE = [
         'img/7_statusbars/1_statusbar/3_statusbar_bottle/blue/0.png',
         'img/7_statusbars/1_statusbar/3_statusbar_bottle/blue/20.png',
@@ -11,16 +9,18 @@ class StatusBarBottles extends DrawableObject {
         'img/7_statusbars/1_statusbar/3_statusbar_bottle/blue/100.png'
     ];
 
+    x = 25;
+    y = 40;
+    width = 120;
+    height = 40;
+    bottlesCollected = 0;
+
     /**
      * Creates a new StatusBarBottles instance and initializes position.
      */
     constructor() {
         super();
         this.loadImages(this.IMAGES_BOTTLES_BLUE);
-        this.x = 25;
-        this.y = 40;
-        this.width = 120;
-        this.height = 40;
         this.setBottlesAmount(0);
     }
 

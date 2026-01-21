@@ -1,7 +1,5 @@
 class StatusBarCoins extends DrawableObject {
 
-     coinsCollected = 0;
-
     IMAGES_STATUSBAR_COINS_BLUE = [
         'img/7_statusbars/1_statusbar/1_statusbar_coin/blue/0.png',
         'img/7_statusbars/1_statusbar/1_statusbar_coin/blue/20.png',
@@ -12,16 +10,18 @@ class StatusBarCoins extends DrawableObject {
 
     ];
 
+    x = 25;
+    y = 70;
+    width = 120;
+    height = 40;
+    coinsCollected = 0;
+
     /**
      * Creates a new StatusBarCoins instance and initializes position.
      */
     constructor() {
         super();
         this.loadImages(this.IMAGES_STATUSBAR_COINS_BLUE);
-        this.x = 25;
-        this.y = 70;
-        this.width = 120;
-        this.height = 40;
         this.setCoinsAmount(0);
     }
 

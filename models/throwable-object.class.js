@@ -9,6 +9,8 @@ class ThrowableObject extends MovableObject {
         'img/6_salsa_bottle/bottle_rotation/bottle_splash/6_bottle_splash.png',
     ]
 
+    height = 60;
+    width = 44;
     shouldBeRemoved = false;
     soundPlayed = false;
     hasHitEnemy = false;
@@ -25,8 +27,6 @@ class ThrowableObject extends MovableObject {
         this.loadImages(this.BOTTLE_SPLASH);
         this.x = x;
         this.y = y;
-        this.height = 60;
-        this.width = 44;
         this.throwLeft = direction;
         this.throw();
     }
