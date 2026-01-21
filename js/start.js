@@ -252,6 +252,7 @@ function enableDesktopButtons() {
     const desktopButtons = document.querySelector('.desktop-action-buttons');
     if (desktopButtons) {
         desktopButtons.classList.add('active');
+        desktopButtons.style.cursor = 'auto';
     }
 }
 
@@ -263,6 +264,7 @@ function disableDesktopButtons() {
     const desktopButtons = document.querySelector('.desktop-action-buttons');
     if (desktopButtons) {
         desktopButtons.classList.remove('active');
+        desktopButtons.style.cursor = 'not-allowed';
     }
 }
 
